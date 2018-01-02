@@ -13,11 +13,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.example.daniel.digit.R.id.fab
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class MainActivity : AppCompatActivity() {
+
+    //URL googleMaps = https://www.google.com/maps/search/mexican+food/@26.4228543,-80.1039212,14z/data=!4m3!2m2!5m1!1e0;
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -39,13 +42,6 @@ class MainActivity : AppCompatActivity() {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         // Set up the ViewPager with the sections adapter.
-        container.adapter = mSectionsPagerAdapter
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
     }
 
 

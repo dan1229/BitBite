@@ -29,19 +29,44 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="172dp"
+        android:layout_marginTop="72dp"
+        app:srcCompat="@drawable/main_activity_logo"
+        tools:layout_editor_absoluteY="105dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:layout_anchor="@+id/container"
-        app:layout_anchorGravity="right|center"
-        app:srcCompat="@drawable/ic_action_name" />
+        android:layout_height="256dp"
+        android:layout_marginTop="256dp"
+        android:orientation="vertical"
+        android:paddingTop="0dp">
+
+        <Spinner
+            android:id="@+id/styleSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Spinner
+            android:id="@+id/priceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="96dp"
+            android:layout_marginRight="96dp"
+            android:layout_marginTop="136dp"
+            android:layout_weight="1"
+            android:text="Submit" />
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
