@@ -35,18 +35,23 @@
         android:layout_width="383dp"
         android:layout_height="172dp"
         android:layout_marginTop="72dp"
+        android:contentDescription="@string/main_activity_logo"
         android:cropToPadding="true"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
         app:srcCompat="@drawable/main_activity_logo"
-        tools:layout_editor_absoluteY="105dp" android:contentDescription="@string/main_activity_logo"/>
+        tools:layout_editor_absoluteY="105dp" />
 
     <LinearLayout
+        android:id="@+id/ll_main_layout"
         android:layout_width="match_parent"
-        android:layout_height="273dp"
-        android:layout_marginTop="296dp"
+        android:layout_height="295dp"
+        android:layout_marginTop="264dp"
         android:orientation="vertical"
-        android:paddingTop="0dp">
+        android:paddingTop="0dp"
+        tools:layout_editor_absoluteY="242dp">
 
-        <EditText
+        <TextView
             android:id="@+id/style_spinner_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +60,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="What kind of food do you want?" />
+            android:text="@string/style_spinner_header" />
 
         <Spinner
             android:id="@+id/styleSpinner"
@@ -64,10 +69,9 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            android:layout_weight="1"
-            android:entries="@array/style_spinner" />
+            android:layout_weight="1" />
 
-        <EditText
+        <TextView
             android:id="@+id/price_spinner_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +80,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="How much do you want to spend?" />
+            android:text="@string/price_spinner_header" />
 
         <Spinner
             android:id="@+id/priceSpinner"
@@ -85,8 +89,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            android:layout_weight="1"
-            android:entries="@array/price_spinner" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/submitButton"
@@ -95,6 +98,7 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="96dp"
             android:layout_marginRight="96dp"
+            android:layout_marginTop="24dp"
             android:layout_weight="1"
             android:paddingBottom="0dp"
             android:paddingTop="0dp"

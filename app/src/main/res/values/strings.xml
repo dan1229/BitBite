@@ -5,21 +5,7 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="main_activity_logo">Logo for main activity</string>
     <string name="submit_button">Submit</string>
+    <string name="style_spinner_header">Style of food</string>
+    <string name="price_spinner_header">Price of food</string>
 
-    <string-array name="style_spinner">
-        <item>Random</item>
-        <item>American</item>
-        <item>Hispanice</item>
-        <item>Italian</item>
-        <item>Breakfast</item>
-        <item>Fast Food</item>
-    </string-array>
-    <string-array name="price_spinner">
-        <item>Any Price</item>
-        <item>$</item>
-        <item>$$</item>
-        <item>$$$</item>
-        <item>$$$$</item>
-        <item>$$$$$</item>
-    </string-array>
 </resources>
