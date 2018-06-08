@@ -5,9 +5,6 @@ import android.content.pm.PackageManager
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -28,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 import org.jetbrains.anko.alert
 import android.content.pm.ApplicationInfo
 import android.location.Location
-import android.support.v4.app.FragmentActivity
+import android.support.v4.app.*
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -49,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     var prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    val LOCATION_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +55,10 @@ class MainActivity : AppCompatActivity() {
 
         // Get API Key
         val api_key = "@meta-data/value"
+
+        // Request location permission
+        setupPermissions()
+        makeRequest()
 
         //Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
@@ -128,8 +130,25 @@ class MainActivity : AppCompatActivity() {
             // GO TO NEXT ACTIVITY
         }
     }
+
+    // Implicit request of location permission (API 20 and under)
+    private fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) { // PERMISSION DENIED
+
+        }
+    }
+
+    // Explicit request of location permission (API over 20)
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+    }
+
 //
-//    fun getUserInputLocation() : Int {
+//    private fun getUserInputLocation() : Int {
 //        // WHILE LOOP CHECKING STATUS CODE
 //
 //        // PROMPT USER FOR LOCATION
@@ -144,6 +163,9 @@ class MainActivity : AppCompatActivity() {
 //
 //        // STORE IN lat/lng
 //    }
+
+
+
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        // Inflate the menu; this adds items to the action bar if it is present.
