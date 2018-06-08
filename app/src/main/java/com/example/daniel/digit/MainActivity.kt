@@ -25,21 +25,38 @@ import com.example.daniel.digit.R.layout.activity_main
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
+import org.jetbrains.anko.alert
+import android.content.pm.ApplicationInfo
+import android.location.Location
+import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AlertDialog
+import android.util.Log
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import org.jetbrains.anko.toast
+
 
 var style:String = "Random"
 var price:Int = -1
+var lat:Double = 0.0
+var lng:Double = 0.0
 
 class MainActivity : AppCompatActivity() {
 
     //URL googleMaps = https://www.google.com/maps/search/mexican+food/@26.4228543,-80.1039212,14z/data=!4m3!2m2!5m1!1e0;
 
-    var styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast")
+    var styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast", "Fast Food")
     var prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        // Get API Key
+        val api_key = "@meta-data/value"
 
         //Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
@@ -63,18 +80,70 @@ class MainActivity : AppCompatActivity() {
 
         //set on click listener for submitButton
         submitButton.setOnClickListener{
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // TODO: POPUP ASKING FOR ZIP CODE/LOCATION
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // LOCATION PERMISSION NOT GRANTED - GET USER LOCATION
+                var res = 0
+                while(res == 0){
+                    res = 1
+                    // res = getUserInputLocation()
+                }
+
+                // DIALOG BOX FOR TESTING
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setMessage("Lat: " + lat + "\nLng: " + lng)
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+            else{
+                // GET LOCATION FROM DEVICE
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                fusedLocationClient.lastLocation
+                        .addOnSuccessListener { location : Location ->
+                            // Got last known location. In some rare situations this can be null.
+                            lat = location.getLatitude()
+                            lng = location.getLongitude()
+
+                            // DIALOG BOX FOR TESTING
+                            val builder = AlertDialog.Builder(this@MainActivity)
+                            builder.setMessage("Lat: " + lat + "\nLng: " + lng)
+                            val dialog: AlertDialog = builder.create()
+                            dialog.show()
+                        }
             }
 
-            //TODO:
-            // 1. Make API call (lat, lng, style, price)
-            // 2. Create new intent and go to new activity
-            // 3. Pass API call response to next activity
+            // MAKE API CALL (lat, lng, style, price)
+            // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
+            // &key
+            // &radius
+            // &keyword
+            // &minprice and &maxprice
+            // &opennow
+            // &rankbys
+
+
+
+            // PASS DATA TO NEXT ACTIVITY
+
+            // GO TO NEXT ACTIVITY
         }
     }
-
+//
+//    fun getUserInputLocation() : Int {
+//        // WHILE LOOP CHECKING STATUS CODE
+//
+//        // PROMPT USER FOR LOCATION
+//        alert {
+//            title = "Where are you?"
+//        }.show()
+//
+//        // CONVERT LOCATION TO LAT/LNG USING GOOGLE GEOCODING API
+//        // https://maps.googleapis.com/maps/api/geocode/json?parameters
+//
+//        // PARSE JSON
+//
+//        // STORE IN lat/lng
+//    }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        // Inflate the menu; this adds items to the action bar if it is present.
