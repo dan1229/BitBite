@@ -2,35 +2,21 @@ package com.example.daniel.digit
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
-import android.support.v4.view.ViewPager
+import android.location.Location
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import com.example.daniel.digit.R.id.fab
-import com.example.daniel.digit.R.layout.activity_main
-
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
-import org.jetbrains.anko.alert
-import android.content.pm.ApplicationInfo
-import android.location.Location
-import android.support.v4.app.*
-import android.support.v7.app.AlertDialog
-import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import org.jetbrains.anko.toast
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.net.URL
 
 
 var style:String = "Random"
@@ -40,26 +26,142 @@ var lng:Double = 0.0
 
 class MainActivity : AppCompatActivity() {
 
-    //URL googleMaps = https://www.google.com/maps/search/mexican+food/@26.4228543,-80.1039212,14z/data=!4m3!2m2!5m1!1e0;
-
-    var styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast", "Fast Food")
-    var prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
+    val styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast", "Fast Food")
+    val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    val LOCATION_REQUEST_CODE = 101
+    private val LOCATION_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        // Get API Key
-        val api_key = "@meta-data/value"
+        // Setup spinners
+        spinnerSetup()
 
         // Request location permission
         setupPermissions()
         makeRequest()
 
+        //set on click listener for submitButton
+        submitButton.setOnClickListener{
+
+            //testDialog("price: $price\nstyle: $style")
+
+            // Run Async task for API call
+            doAsync {
+                val result = URL(searchUrlBuilder()).readText()
+                uiThread {
+                    // TODO: Check response is valid, if so store for next activity
+                    testDialog(searchUrlBuilder())
+                    testDialog(result)
+                }
+            }
+
+            // PASS DATA TO NEXT ACTIVITY
+
+            // GO TO NEXT ACTIVITY
+        }
+    }
+
+    // Creates URL for Place Search API call
+    // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
+    // &key         = api key
+    // &location    = lat,lng
+    // &radius      = 30 miles
+    // &type        = restaurant
+    // &keyword     = style
+    // &minprice    = 0
+    // &maxprice    = price
+    // &opennow     = true
+    // &rankby      = distance
+    private
+    fun searchUrlBuilder() : String {
+        var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
+                "?location=" + lat + "," + lng +
+                "&type=restaurant"
+                "&radius=10000" +
+                "&opennow=true" +
+                "&rankby=distance" +
+                "&minprice=0"
+        if(price == 0){ // User selected any price
+            price = 5
+        }
+        url += "&maxprice=" + price
+
+        if(style.compareTo("Random") == 0) { // User selected not random style
+            url += "&keyword=" + style
+        }
+
+        url += "&key=" + getString(R.string.google_api_key) // Add API key
+        return url
+    }
+
+    // Test dialog - ya know for testing stuff
+    private
+    fun testDialog(s : String) {
+        // TEST DIALOG
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setMessage(s)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+        // TEST DIALOG
+    }
+
+    // Check permission response
+    override
+    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            LOCATION_REQUEST_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // PERMISSION GRANTED - use sensors to get lat/lng
+                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                    fusedLocationClient.lastLocation.addOnSuccessListener { location: Location ->
+                        // Got last known location. In some rare situations this can be null.
+                        lat = location.latitude
+                        lng = location.longitude
+                    }
+                } else {
+                    // PERMISSION DENIED - prompt user for location
+                    // TODO: IMPLEMENT GOOGLE PLACE SEARCH BOX FOR PEOPLE WHO DENY THE LOCATION PERMISSION
+                    // CHECK PLACES AUTOCOMPLETE API
+                    var res = 0
+                    while(res == 0){
+                        res = 1
+                        // res = getUserInputLocation()
+                    }
+                }
+                return
+            }
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
+    // Check if location permission is granted already
+    private
+    fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            makeRequest()
+        }
+    }
+
+    // Make request for location permission
+    private
+    fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+    }
+
+    // Setup spinners in MainActivity
+    private
+    fun spinnerSetup(){
         //Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
         //item selected listener for styleSpinner
@@ -79,72 +181,6 @@ class MainActivity : AppCompatActivity() {
                 price = p2
             }
         }
-
-        //set on click listener for submitButton
-        submitButton.setOnClickListener{
-
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // LOCATION PERMISSION NOT GRANTED - GET USER LOCATION
-                var res = 0
-                while(res == 0){
-                    res = 1
-                    // res = getUserInputLocation()
-                }
-
-                // DIALOG BOX FOR TESTING
-                val builder = AlertDialog.Builder(this@MainActivity)
-                builder.setMessage("Lat: " + lat + "\nLng: " + lng)
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
-            }
-            else{
-                // GET LOCATION FROM DEVICE
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-                fusedLocationClient.lastLocation
-                        .addOnSuccessListener { location : Location ->
-                            // Got last known location. In some rare situations this can be null.
-                            lat = location.getLatitude()
-                            lng = location.getLongitude()
-
-                            // DIALOG BOX FOR TESTING
-                            val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setMessage("Lat: " + lat + "\nLng: " + lng)
-                            val dialog: AlertDialog = builder.create()
-                            dialog.show()
-                        }
-            }
-
-            // MAKE API CALL (lat, lng, style, price)
-            // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
-            // &key
-            // &radius
-            // &keyword
-            // &minprice and &maxprice
-            // &opennow
-            // &rankbys
-
-
-
-            // PASS DATA TO NEXT ACTIVITY
-
-            // GO TO NEXT ACTIVITY
-        }
-    }
-
-    // Implicit request of location permission (API 20 and under)
-    private fun setupPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-
-        if (permission != PackageManager.PERMISSION_GRANTED) { // PERMISSION DENIED
-
-        }
-    }
-
-    // Explicit request of location permission (API over 20)
-    private fun makeRequest() {
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
     }
 
 //
@@ -163,6 +199,10 @@ class MainActivity : AppCompatActivity() {
 //
 //        // STORE IN lat/lng
 //    }
+
+
+
+
 
 
 
