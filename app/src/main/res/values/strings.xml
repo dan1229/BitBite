@@ -8,5 +8,4 @@
     <string name="submit_button">Submit</string>
     <string name="style_spinner_header">Style of food</string>
     <string name="price_spinner_header">Price of food</string>
-
 </resources>

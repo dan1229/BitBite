@@ -47,14 +47,12 @@ class MainActivity : AppCompatActivity() {
         //set on click listener for submitButton
         submitButton.setOnClickListener{
 
-            //testDialog("price: $price\nstyle: $style")
-
             // Run Async task for API call
             doAsync {
                 val result = URL(searchUrlBuilder()).readText()
                 uiThread {
-                    // TODO: Check response is valid, if so store for next activity
-                    testDialog(searchUrlBuilder())
+                    // TODO: Check response is valid, if so store for next activity, else break and prompt user
+
                     testDialog(result)
                 }
             }
@@ -72,25 +70,23 @@ class MainActivity : AppCompatActivity() {
     // &radius      = 30 miles
     // &type        = restaurant
     // &keyword     = style
-    // &minprice    = 0
     // &maxprice    = price
     // &opennow     = true
-    // &rankby      = distance
+    // &rank_by     = distance
     private
     fun searchUrlBuilder() : String {
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
-                "&type=restaurant"
+                "&type=food" +
                 "&radius=10000" +
                 "&opennow=true" +
-                "&rankby=distance" +
-                "&minprice=0"
+                "&rank_by=distance"
         if(price == 0){ // User selected any price
             price = 5
         }
         url += "&maxprice=" + price
 
-        if(style.compareTo("Random") == 0) { // User selected not random style
+        if(style.compareTo("Random") == 1) { // User selected not random style
             url += "&keyword=" + style
         }
 
