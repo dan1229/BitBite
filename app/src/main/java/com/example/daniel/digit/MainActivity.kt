@@ -11,11 +11,16 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.JsonReader
+import com.beust.klaxon.Klaxon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import org.json.JSONObject
+import java.io.StringReader
 import java.net.URL
 
 
@@ -31,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 101
+    lateinit var placesList:List<JsonObject>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +55,19 @@ class MainActivity : AppCompatActivity() {
 
             // Run Async task for API call
             doAsync {
-                val result = URL(searchUrlBuilder()).readText()
+                try{
+                    // Call API, store JsonObjects in placesList
+                    placesList = streamJSON()
+                    printJsonObject(placesList[0])
+                } catch (e : java.lang.RuntimeException){
+                    // Error
+                    testDialog("Invalid Request")
+                }
+
                 uiThread {
                     // TODO: Check response is valid, if so store for next activity, else break and prompt user
 
-                    testDialog(result)
+                    //testDialog(result)
                 }
             }
 
@@ -94,6 +108,55 @@ class MainActivity : AppCompatActivity() {
         return url
     }
 
+    // Streams and parses JSON response from Places API
+    private
+    fun streamJSON() : ArrayList<JsonObject> {
+        val klaxon = Klaxon()
+        var result = arrayListOf<JsonObject>()
+        JsonReader(StringReader(searchUrlBuilder())).use { reader -> reader.beginObject {
+                while (reader.hasNext()) {
+                    var name = reader.nextName()
+                    if (name.equals("results")) { // Stores results array in return list
+                        result = parseResultsArray(reader)
+//                        result = parseResultsArray(reader.nextArray())
+                    }
+                    if(name.equals("status")) { // Checks if valid response
+                        var status = reader.nextString()
+                        if (!status.equals("OK")) {
+                            throw RuntimeException("Invalid Request")
+                        }
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    // Parse results JSONArray from places API call
+    private
+    fun parseResultsArray(reader : JsonReader) : ArrayList<JsonObject> {
+        var result = arrayListOf<JsonObject>()
+
+        reader.beginArray {
+            while(reader.hasNext()){
+                result.add(reader.nextObject())
+            }
+        }
+
+        return result
+    }
+
+//    private
+//    fun parseResultsArray(list : List<Any>) : ArrayList<JsonObject> {
+//        var result = arrayListOf<JsonObject>()
+//
+//        for ( n in list ) {
+//            result.add(list[n])
+//        }
+//
+//        return result
+//    }
+
     // Test dialog - ya know for testing stuff
     private
     fun testDialog(s : String) {
@@ -103,6 +166,15 @@ class MainActivity : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
         // TEST DIALOG
+    }
+
+    // Prints JsonObjects - primarily for testing
+    private
+    fun printJsonObject(o : JsonObject) {
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setMessage(o as String)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     // Check permission response

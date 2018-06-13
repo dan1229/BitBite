@@ -24,6 +24,7 @@ android {
 
 dependencies {
     compile 'org.jetbrains.anko:anko-common:0.9'
+    implementation 'com.beust:klaxon:3.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     compile 'org.jetbrains.anko:anko-common:0.9'
