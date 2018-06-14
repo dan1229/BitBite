@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.json.JSONObject
+import java.io.IOException
 import java.io.StringReader
 import java.net.URL
 
@@ -34,9 +35,9 @@ class MainActivity : AppCompatActivity() {
     val styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast", "Fast Food")
     val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
     private val LOCATION_REQUEST_CODE = 101
-    lateinit var placesList:List<JsonObject>
+    var placesList = ArrayList<Place>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 try{
                     // Call API, store JsonObjects in placesList
                     placesList = streamJSON()
-                    printJsonObject(placesList[0])
+                    printPlace(placesList[0])
                 } catch (e : java.lang.RuntimeException){
                     // Error
                     testDialog("Invalid Request")
@@ -110,42 +111,163 @@ class MainActivity : AppCompatActivity() {
 
     // Streams and parses JSON response from Places API
     private
-    fun streamJSON() : ArrayList<JsonObject> {
-        val klaxon = Klaxon()
+    fun streamJSON() : ArrayList<Place> {
         var result = arrayListOf<JsonObject>()
-        JsonReader(StringReader(searchUrlBuilder())).use { reader -> reader.beginObject {
-                while (reader.hasNext()) {
-                    var name = reader.nextName()
-                    if (name.equals("results")) { // Stores results array in return list
-                        result = parseResultsArray(reader)
-//                        result = parseResultsArray(reader.nextArray())
-                    }
-                    if(name.equals("status")) { // Checks if valid response
-                        var status = reader.nextString()
-                        if (!status.equals("OK")) {
-                            throw RuntimeException("Invalid Request")
-                        }
+        JsonReader(StringReader(searchUrlBuilder())).use { reader -> reader.beginObject() {
+//                while (reader.hasNext()) {
+//                    var name = reader.nextName()
+//                    if (name.equals("results")) { // Stores results array in return list
+//                        result = parseResultsArray(reader)
+////                        result = parseResultsArray(reader.nextArray())
+//                    }
+//                    if(name.equals("status")) { // Checks if valid response
+//                        var status = reader.nextString()
+//                        if (!status.equals("OK")) {
+//                            throw RuntimeException("Invalid Request")
+//                        }
+//                    }
+//                }
+//            }
+        }
+//        return result
+            try {
+                return readStream(reader)
+            } finally {
+                reader.close()
+            }
+        }
+    }
+
+
+    private
+    fun readStream(reader : JsonReader) : ArrayList<Place> {
+        var places = ArrayList<Place>()
+
+        reader.beginObject {
+            while (reader.hasNext()) {
+                var name = reader.nextName()
+                if(name.equals("html_attributions")){
+                    name = reader.nextName()
+                }
+                if(name.equals("results")) {
+                    places.add(readJsonObject(reader))
+                }
+                if(name.equals("status")) {
+                    var status = reader.nextString()
+                    if(!status.equals("OK")){
+                        throw IOException("Invalid Request")
                     }
                 }
             }
         }
-        return result
+
+        return places
     }
 
-    // Parse results JSONArray from places API call
+
     private
-    fun parseResultsArray(reader : JsonReader) : ArrayList<JsonObject> {
-        var result = arrayListOf<JsonObject>()
+    fun readJsonObject(reader : JsonReader) : Place {
+        var name = "Unavailable"
+        var placeID = ""
+        var description = ""
+        var photoRef = ""
+        var price = 0
+        var rating = 0
+        var lat = 0.0
+        var lng = 0.0
 
         reader.beginArray {
             while(reader.hasNext()){
-                result.add(reader.nextObject())
+                var name = reader.nextName()
+                if(name.equals("geometry")) { // location
+                    var locationArray : DoubleArray = doubleArrayOf(lat, lng)
+                    locationArray = getLocation(reader)
+                    lat = locationArray[0]
+                    lng = locationArray[1]
+                } else if (name.equals("name")) { // name
+                    name = reader.nextString()
+                } else if (name.equals("photos")) { // photo ref
+                    photoRef = getPhotoRef(reader)
+                } else if (name.equals("place_id")) { // place id
+                    placeID = reader.nextString()
+                } else if (name.equals("price_level")) { // price
+                    price = reader.nextInt()
+                } else if (name.equals("rating")) { // rating
+
+                } else if (name.equals("types")) { // description
+                    description = getDescription(reader)
+                }
+            }
+        }
+        var place = Place(name, placeID, description, photoRef, price, rating, lat, lng)
+        return place
+    }
+
+
+    private
+    fun getLocation(reader : JsonReader) : DoubleArray {
+        var resArray : DoubleArray = DoubleArray(2)
+        reader.beginObject {
+            while(reader.hasNext()){
+                var name = reader.nextName()
+                if(name.equals("location")){
+                    reader.beginObject {
+                        resArray[0] = reader.nextString().toDouble()
+                        resArray[1] = reader.nextString().toDouble()
+                    }
+                }
+            }
+        }
+        return resArray
+    }
+
+
+    private
+    fun getPhotoRef(reader : JsonReader) : String {
+        var photoRef = "No Photo"
+
+        reader.beginArray {
+            reader.beginObject {
+                while(reader.hasNext()){
+                    var name = reader.nextName()
+                    if(name.equals("photo_reference")){
+                        photoRef = reader.nextString()
+                    }
+                }
             }
         }
 
-        return result
+        return photoRef
     }
 
+
+    private
+    fun getDescription(reader : JsonReader) : String {
+        var desc = "No description available"
+
+        reader.beginArray {
+            desc = reader.nextString()
+        }
+
+        return desc
+    }
+
+
+
+//    // Parse results JSONArray from places API call
+//    private
+//    fun parseResultsArray(reader : JsonReader) : ArrayList<JsonObject> {
+//        var result = arrayListOf<JsonObject>()
+//
+//        reader.beginArray {
+//            while(reader.hasNext()){
+//                result.add(reader.nextObject())
+//            }
+//        }
+//
+//        return result
+//    }
+//
 //    private
 //    fun parseResultsArray(list : List<Any>) : ArrayList<JsonObject> {
 //        var result = arrayListOf<JsonObject>()
@@ -170,9 +292,9 @@ class MainActivity : AppCompatActivity() {
 
     // Prints JsonObjects - primarily for testing
     private
-    fun printJsonObject(o : JsonObject) {
+    fun printPlace(p : Place) {
         val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setMessage(o as String)
+        builder.setMessage(p.get_name())
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

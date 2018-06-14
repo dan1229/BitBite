@@ -5,35 +5,55 @@ import java.net.URL
 /**
  * Created by Daniel on 6/13/2018.
  */
-class Place (name: String){
+class Place constructor (name:String, placeID:String, description:String,
+                         photoRef:String, price:Int, rating:Int,
+                         lat:Double, lng:Double){
 
     // Data Members
     var name:String
     //@Json(placeID = "place_id")
-    var placeID = ""
+    var placeID:String
     // results -> types -> grab first three or so
-    var description = ""
+    var description:String
     // results -> photos -> photo_reference
-    var photoRef: String = ""
+    var photoRef:String
     // https://www.google.com/maps/search/?api=1&parameters
     // Param
     // &query = lat + lng
     // &query_place_id = placeID
-    var googleURL: URL? = null
+    var googleURL:String = ""
     //@Json(price = "price_level")
-    var price = 0
+    var price:Int
     // results -> rating
-    var rating = 0
+    var rating:Int
     // results -> geometry -> location -> lat/lng
-    var lng = 0.0
-    var lat = 0.0
+    var lat:Double
+    var lng:Double
 
     // Initialization instructions
     init{
         this.name = name
+        this.placeID = placeID
+        this.description = description
+        this.photoRef = photoRef
+        this.price = price
+        this.rating = rating
+        this.lat = lat
+        this.lng = lng
+        googleURL = makeGoogleURL(lat, lng, placeID)
     }
 
     // Public Methods--------------------------------------------------------------------------------
+
+    //*****Functions*****//
+    private
+    fun makeGoogleURL(lat : Double, lng : Double, placeID : String): String{
+        var url =  "https://www.google.com/maps/search/?api=1&"
+        url += "&query=" + lat + "," + lng
+        url += "&query_place_id=" + placeID
+        return url
+    }
+
 
     //*****Accessor Methods*****//
     fun get_name(): String {
@@ -52,7 +72,7 @@ class Place (name: String){
         return photoRef
     }
 
-    fun get_googleURL(): URL? {
+    fun get_googleURL(): String {
         return googleURL
     }
 
@@ -89,7 +109,7 @@ class Place (name: String){
         photoRef = n
     }
 
-    fun set_url(n: URL) {
+    fun set_url(n: String) {
         googleURL = n
     }
 
