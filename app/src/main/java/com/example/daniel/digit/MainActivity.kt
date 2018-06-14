@@ -22,6 +22,7 @@ import org.jetbrains.anko.uiThread
 import org.json.JSONObject
 import java.io.IOException
 import java.io.StringReader
+import java.lang.RuntimeException
 import java.net.URL
 
 
@@ -54,23 +55,33 @@ class MainActivity : AppCompatActivity() {
         //set on click listener for submitButton
         submitButton.setOnClickListener{
 
-            // Run Async task for API call
-            doAsync {
-                try{
-                    // Call API, store JsonObjects in placesList
-                    placesList = streamJSON()
-                    printPlace(placesList[0])
-                } catch (e : java.lang.RuntimeException){
-                    // Error
-                    testDialog("Invalid Request")
-                }
-
-                uiThread {
-                    // TODO: Check response is valid, if so store for next activity, else break and prompt user
-
-                    //testDialog(result)
-                }
+            try{
+                // Call API, store Place objects in placesList
+                placesList = streamJSON()
+                printPlace(placesList[0])
+            } catch (e : java.lang.RuntimeException){
+                // Error
+                testDialog("Invalid Request")
             }
+
+
+            // Run Async task for API call
+//            doAsync {
+//
+//                try{
+//                    // Call API, store Place objects in placesList
+//                    placesList = streamJSON()
+//                    printPlace(placesList[0])
+//                } catch (e : java.lang.RuntimeException){
+//                    // Error
+//                    testDialog("Invalid Request")
+//                }
+//
+//                uiThread {
+//                    // TODO: Check response is valid, if so store for next activity, else break and prompt user
+//                    //testDialog(result)
+//                }
+//            }
 
             // PASS DATA TO NEXT ACTIVITY
 
@@ -112,8 +123,8 @@ class MainActivity : AppCompatActivity() {
     // Streams and parses JSON response from Places API
     private
     fun streamJSON() : ArrayList<Place> {
-        var result = arrayListOf<JsonObject>()
-        JsonReader(StringReader(searchUrlBuilder())).use { reader -> reader.beginObject() {
+//        var result = arrayListOf<JsonObject>()
+//        JsonReader(StringReader(searchUrlBuilder())).use { reader -> reader.beginObject() {
 //                while (reader.hasNext()) {
 //                    var name = reader.nextName()
 //                    if (name.equals("results")) { // Stores results array in return list
@@ -128,13 +139,13 @@ class MainActivity : AppCompatActivity() {
 //                    }
 //                }
 //            }
-        }
+
 //        return result
-            try {
-                return readStream(reader)
-            } finally {
-                reader.close()
-            }
+        var reader = JsonReader(StringReader(searchUrlBuilder()))
+        try {
+            return readStream(reader)
+        } finally {
+            reader.close()
         }
     }
 
@@ -155,7 +166,7 @@ class MainActivity : AppCompatActivity() {
                 if(name.equals("status")) {
                     var status = reader.nextString()
                     if(!status.equals("OK")){
-                        throw IOException("Invalid Request")
+                        throw RuntimeException("Invalid Request")
                     }
                 }
             }
@@ -167,7 +178,7 @@ class MainActivity : AppCompatActivity() {
 
     private
     fun readJsonObject(reader : JsonReader) : Place {
-        var name = "Unavailable"
+        var placeName = "Unavailable"
         var placeID = ""
         var description = ""
         var photoRef = ""
@@ -180,12 +191,11 @@ class MainActivity : AppCompatActivity() {
             while(reader.hasNext()){
                 var name = reader.nextName()
                 if(name.equals("geometry")) { // location
-                    var locationArray : DoubleArray = doubleArrayOf(lat, lng)
-                    locationArray = getLocation(reader)
+                    var locationArray : DoubleArray = getLocation(reader)
                     lat = locationArray[0]
                     lng = locationArray[1]
                 } else if (name.equals("name")) { // name
-                    name = reader.nextString()
+                    placeName = reader.nextString()
                 } else if (name.equals("photos")) { // photo ref
                     photoRef = getPhotoRef(reader)
                 } else if (name.equals("place_id")) { // place id
@@ -199,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        var place = Place(name, placeID, description, photoRef, price, rating, lat, lng)
+        var place = Place(placeName, placeID, description, photoRef, price, rating, lat, lng)
         return place
     }
 
