@@ -8,4 +8,7 @@
     <string name="submit_button">Submit</string>
     <string name="style_spinner_header">Style of food</string>
     <string name="price_spinner_header">Price of food</string>
+    <string name="title_activity_results">ResultsActivity</string>
+    <string name="display_next_3">Show More</string>
+    <string name="feeling_lucky_button">I\'m Feeling Lucky</string>
 </resources>

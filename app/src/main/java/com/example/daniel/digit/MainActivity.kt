@@ -1,6 +1,7 @@
 package com.example.daniel.digit
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -11,21 +12,16 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.beust.klaxon.JsonObject
 import com.beust.klaxon.JsonReader
-import com.beust.klaxon.Klaxon
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import org.json.JSONObject
-import java.io.IOException
 import java.io.StringReader
 import java.lang.RuntimeException
-import java.net.URL
 
-
+const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
 var style:String = "Random"
 var price:Int = -1
 var lat:Double = 0.0
@@ -37,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
     private lateinit var fusedLocationClient : FusedLocationProviderClient
-    private val LOCATION_REQUEST_CODE = 101
+    private val locationRequestCode = 101
     var placesList = ArrayList<Place>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,19 +51,10 @@ class MainActivity : AppCompatActivity() {
         //set on click listener for submitButton
         submitButton.setOnClickListener{
 
-            try{
-                // Call API, store Place objects in placesList
-                placesList = streamJSON()
-                printPlace(placesList[0])
-            } catch (e : java.lang.RuntimeException){
-                // Error
-                testDialog("Invalid Request")
-            }
-
 
             // Run Async task for API call
-//            doAsync {
-//
+            doAsync {
+
 //                try{
 //                    // Call API, store Place objects in placesList
 //                    placesList = streamJSON()
@@ -76,16 +63,15 @@ class MainActivity : AppCompatActivity() {
 //                    // Error
 //                    testDialog("Invalid Request")
 //                }
-//
-//                uiThread {
-//                    // TODO: Check response is valid, if so store for next activity, else break and prompt user
-//                    //testDialog(result)
-//                }
-//            }
 
-            // PASS DATA TO NEXT ACTIVITY
-
-            // GO TO NEXT ACTIVITY
+                uiThread {
+                    // Go to ResultsActivity, pass placesList
+                    val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
+                        putExtra(EXTRA_PLACES_LIST, placesList)
+                    }
+                    startActivity(intent)
+                }
+            }
         }
     }
 
@@ -139,14 +125,20 @@ class MainActivity : AppCompatActivity() {
 //                    }
 //                }
 //            }
-
 //        return result
-        var reader = JsonReader(StringReader(searchUrlBuilder()))
-        try {
-            return readStream(reader)
-        } finally {
-            reader.close()
-        }
+
+//        var res = ArrayList<Place>()
+//        JsonReader(StringReader(searchUrlBuilder())).use {
+//            reader -> reader.beginObject {
+//                try {
+//                    res = readStream(reader)
+//                } finally {
+//                    reader.close()
+//                }
+//            }
+//        }
+//        return res
+        return ArrayList()
     }
 
 
@@ -154,7 +146,7 @@ class MainActivity : AppCompatActivity() {
     fun readStream(reader : JsonReader) : ArrayList<Place> {
         var places = ArrayList<Place>()
 
-        reader.beginObject {
+        //reader.beginObject {
             while (reader.hasNext()) {
                 var name = reader.nextName()
                 if(name.equals("html_attributions")){
@@ -170,7 +162,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
+        //}
 
         return places
     }
@@ -313,7 +305,7 @@ class MainActivity : AppCompatActivity() {
     override
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            LOCATION_REQUEST_CODE -> {
+            locationRequestCode -> {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // PERMISSION GRANTED - use sensors to get lat/lng
@@ -356,7 +348,7 @@ class MainActivity : AppCompatActivity() {
     private
     fun makeRequest() {
         ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST_CODE)
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
     }
 
     // Setup spinners in MainActivity

@@ -30,79 +30,88 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="383dp"
-        android:layout_height="172dp"
-        android:layout_marginTop="72dp"
-        android:contentDescription="@string/main_activity_logo"
-        android:cropToPadding="true"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        app:srcCompat="@drawable/main_activity_logo"
-        tools:layout_editor_absoluteY="105dp" />
-
     <LinearLayout
         android:id="@+id/ll_main_layout"
         android:layout_width="match_parent"
-        android:layout_height="295dp"
-        android:layout_marginTop="264dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
         android:paddingTop="0dp"
+        android:weightSum="4"
         tools:layout_editor_absoluteY="242dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="164dp"
+            android:layout_marginBottom="12dp"
+            android:contentDescription="@string/main_activity_logo"
+            android:cropToPadding="true"
+            android:layout_weight="1"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            app:srcCompat="@drawable/main_activity_logo"
+            tools:layout_editor_absoluteY="105dp" />
 
         <TextView
             android:id="@+id/style_spinner_title"
+            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="24dp"
-            android:layout_weight="1"
+            android:layout_weight=".5"
             android:ems="10"
-            android:inputType="textPersonName"
             android:text="@string/style_spinner_header" />
 
         <Spinner
             android:id="@+id/styleSpinner"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            android:layout_weight="1" />
+            android:layout_weight=".5" />
 
         <TextView
             android:id="@+id/price_spinner_title"
+            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="24dp"
-            android:layout_weight="1"
+            android:layout_weight=".5"
             android:ems="10"
-            android:inputType="textPersonName"
             android:text="@string/price_spinner_header" />
 
         <Spinner
             android:id="@+id/priceSpinner"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            android:layout_weight="1" />
+            android:layout_weight=".5" />
 
         <Button
             android:id="@+id/submitButton"
-            android:layout_width="match_parent"
+            android:background="?attr/colorAccent"
+            android:textColor="@color/colorBackground"
+            android:layout_width="@dimen/main_button_width"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:layout_marginLeft="96dp"
-            android:layout_marginRight="96dp"
-            android:layout_marginTop="24dp"
-            android:layout_weight="1"
-            android:paddingBottom="0dp"
-            android:paddingTop="0dp"
             android:text="@string/submit_button" />
+
+        <Button
+            android:id="@+id/feelingLuckyButton"
+            android:background="?attr/colorAccent"
+            android:textColor="@color/colorBackground"
+            android:layout_width="@dimen/main_button_width"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/feeling_lucky_button" />
 
     </LinearLayout>
 
