@@ -22,6 +22,7 @@ import java.io.StringReader
 import java.lang.RuntimeException
 
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
+const val EXTRA_LIST_SIZE = "com.example.daniel.digit.PLACESLISTSIZE"
 var style:String = "Random"
 var price:Int = -1
 var lat:Double = 0.0
@@ -67,7 +68,8 @@ class MainActivity : AppCompatActivity() {
                 uiThread {
                     // Go to ResultsActivity, pass placesList
                     val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
-                        putExtra(EXTRA_PLACES_LIST, placesList)
+//                        putExtra(EXTRA_PLACES_LIST, placesList)
+//                        putExtra(EXTRA_LIST_SIZE, placesList.size)
                     }
                     startActivity(intent)
                 }
