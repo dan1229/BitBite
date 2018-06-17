@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5">
                     <TextView
-                        android:id="@+id/restaurant1"
+                        android:id="@+id/name1"
                         android:textSize="22sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -126,11 +126,70 @@
             android:layout_weight="1"
             card_view:cardCornerRadius="4dp"
             card_view:cardElevation="4dp">
-            <TextView
-                android:id="@+id/card2_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="card 2" />
+                android:weightSum="3"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:orientation="vertical">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/main_activity_logo" />
+                    <TextView
+                        android:id="@+id/price2"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foreground="@color/colorPrimaryDark"
+                        android:foregroundGravity="right"
+                        android:gravity="end"
+                        android:text="" />
+                </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+                    <TextView
+                        android:id="@+id/name2"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="start"
+                        android:text="Not Available" />
+                    <TextView
+                        android:id="@+id/rating2"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+                    <TextView
+                        android:id="@+id/description2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="N/A" />
+                </LinearLayout>
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
 
@@ -144,11 +203,70 @@
             android:layout_weight="1"
             card_view:cardCornerRadius="4dp"
             card_view:cardElevation="4dp">
-            <TextView
-                android:id="@+id/card3_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="card 3" />
+                android:weightSum="3"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:orientation="vertical">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3">
+                    <ImageView
+                        android:id="@+id/image3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/main_activity_logo" />
+                    <TextView
+                        android:id="@+id/price3"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foreground="@color/colorPrimaryDark"
+                        android:foregroundGravity="right"
+                        android:gravity="end"
+                        android:text="" />
+                </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+                    <TextView
+                        android:id="@+id/name3"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="start"
+                        android:text="Not Available" />
+                    <TextView
+                        android:id="@+id/rating3"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+                    <TextView
+                        android:id="@+id/description3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="N/A" />
+                </LinearLayout>
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
 

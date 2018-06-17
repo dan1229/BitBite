@@ -11,4 +11,8 @@
     <string name="title_activity_results">ResultsActivity</string>
     <string name="display_next_3">Show More</string>
     <string name="feeling_lucky_button">I\'m Feeling Lucky</string>
+    <string name="default_name">Not Available</string>
+    <string name="default_price"></string>
+    <string name="default_rating"></string>
+    <string name="default_description">N/A</string>
 </resources>

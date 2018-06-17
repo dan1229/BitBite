@@ -172,10 +172,10 @@ class MainActivity : AppCompatActivity() {
 
     private
     fun readJsonObject(reader : JsonReader) : Place {
-        var placeName = "Unavailable"
+        var placeName = "Not Available"
         var placeID = ""
-        var description = ""
-        var photoRef = ""
+        var description = "N/A"
+        var photoRef = "@drawable/main_activity_logo"
         var price = 0
         var rating = 0
         var lat = 0.0
@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
 
     private
     fun getLocation(reader : JsonReader) : DoubleArray {
-        var resArray : DoubleArray = DoubleArray(2)
+        var resArray = DoubleArray(2)
         reader.beginObject {
             while(reader.hasNext()){
                 var name = reader.nextName()
