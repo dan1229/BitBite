@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
@@ -97,7 +97,7 @@
 
         <Button
             android:id="@+id/submitButton"
-            android:background="?attr/colorAccent"
+            android:background="@color/colorAccent"
             android:textColor="@color/colorBackground"
             android:layout_width="@dimen/main_button_width"
             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
 
         <Button
             android:id="@+id/feelingLuckyButton"
-            android:background="?attr/colorAccent"
+            android:background="@color/colorAccent"
             android:textColor="@color/colorBackground"
             android:layout_width="@dimen/main_button_width"
             android:layout_height="wrap_content"

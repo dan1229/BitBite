@@ -25,14 +25,14 @@ class ResultsActivity : AppCompatActivity() {
 
         // Get places ArrayList and size from MainActivity
         val bundle = intent.extras
-        //places = bundle.get("EXTRA_PLACES_LIST")
-        //listSize = bundle.getInt("EXTRA_LIST_SIZE")
+        places = bundle.getParcelableArrayList<Place>("EXTRA_PLACES_LIST")
+        listSize = bundle.getInt("EXTRA_LIST_SIZE")
 
 
         // ArrayList index
         var index = 0
 
-        // Update cards in activity_main.xml
+        // Update all three cards for the first time
         updateCard(1, index)
         index = nextIndex(index)
         updateCard(2, index)
@@ -40,6 +40,7 @@ class ResultsActivity : AppCompatActivity() {
         updateCard(3, index)
         index = nextIndex(index)
 
+        // Set on click listener for "Next 3" button
         displayNext3.setOnClickListener{
             if (index > listSize) { // Index in bounds, update cards
                 for (i in 1..3) {
@@ -53,6 +54,17 @@ class ResultsActivity : AppCompatActivity() {
         }
 
         // Set on click listeners for cards
+        card1.setOnClickListener {
+
+        }
+
+        card2.setOnClickListener {
+
+        }
+
+        card3.setOnClickListener {
+
+        }
     }
 
     // Calls update function for each segment of card
@@ -87,7 +99,6 @@ class ResultsActivity : AppCompatActivity() {
             textView.setText(R.string.default_price)
         }
     }
-
 
     // Updates phto on the card
     fun updatePhoto(card : Int, index : Int) {
@@ -196,4 +207,5 @@ class ResultsActivity : AppCompatActivity() {
         }
         return view
     }
-}
+
+} // END CLASS ResultsActivity.kt

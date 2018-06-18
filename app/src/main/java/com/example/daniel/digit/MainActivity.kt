@@ -9,17 +9,22 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.beust.klaxon.JsonReader
+import com.example.daniel.digit.R.id.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.StringReader
 import java.lang.RuntimeException
+import java.net.URL
 
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
 const val EXTRA_LIST_SIZE = "com.example.daniel.digit.PLACESLISTSIZE"
@@ -40,55 +45,53 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar as Toolbar)
 
         // Setup spinners
         spinnerSetup()
 
         // Request location permission
         setupPermissions()
-        makeRequest()
 
         //set on click listener for submitButton
         submitButton.setOnClickListener{
-
-
-            // Run Async task for API call
             doAsync {
-
-//                try{
-//                    // Call API, store Place objects in placesList
-//                    placesList = streamJSON()
-//                    printPlace(placesList[0])
-//                } catch (e : java.lang.RuntimeException){
-//                    // Error
-//                    testDialog("Invalid Request")
-//                }
-
-                uiThread {
-                    // Go to ResultsActivity, pass placesList
-                    val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
-//                        putExtra(EXTRA_PLACES_LIST, placesList)
-//                        putExtra(EXTRA_LIST_SIZE, placesList.size)
-                    }
-                    startActivity(intent)
+                try{
+                    // Call API, store Place objects in placesList
+                    testDialog("streamJSON call")
+                    placesList = streamJSON()
+                    printPlace(placesList[0])
+                } catch (e : java.lang.RuntimeException){
+                    // Error parsing JSON
+                    testDialog("Invalid Request")
                 }
+
+//                uiThread {
+//
+//                }
             }
+            // Go to ResultsActivity, pass placesList
+            val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
+                putExtra(EXTRA_PLACES_LIST, placesList)
+                putExtra(EXTRA_LIST_SIZE, placesList.size)
+            }
+            startActivity(intent)
         }
     }
 
     // Creates URL for Place Search API call
-    // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
-    // &key         = api key
-    // &location    = lat,lng
-    // &radius      = 30 miles
-    // &type        = restaurant
-    // &keyword     = style
-    // &maxprice    = price
-    // &opennow     = true
-    // &rank_by     = distance
     private
     fun searchUrlBuilder() : String {
+        // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
+        // &key         = api key
+        // &location    = lat,lng
+        // &radius      = 30 miles
+        // &type        = restaurant
+        // &keyword     = style
+        // &maxprice    = price
+        // &opennow     = true
+        // &rank_by     = distance
+
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=food" +
@@ -128,29 +131,25 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 //        return result
-
-//        var res = ArrayList<Place>()
-//        JsonReader(StringReader(searchUrlBuilder())).use {
-//            reader -> reader.beginObject {
-//                try {
-//                    res = readStream(reader)
-//                } finally {
-//                    reader.close()
-//                }
-//            }
-//        }
-//        return res
-        return ArrayList()
+        var res = ArrayList<Place>()
+        testDialog("streamJSON")
+        JsonReader(StringReader(URL(searchUrlBuilder()).readText())).use {
+            reader -> reader.beginObject {
+                res = readStream(reader)
+            }
+        }
+        return res
     }
 
 
     private
     fun readStream(reader : JsonReader) : ArrayList<Place> {
         var places = ArrayList<Place>()
-
         //reader.beginObject {
             while (reader.hasNext()) {
                 var name = reader.nextName()
+                testDialog(name)
+                testDialog(name)
                 if(name.equals("html_attributions")){
                     name = reader.nextName()
                 }
@@ -178,39 +177,49 @@ class MainActivity : AppCompatActivity() {
         var photoRef = "@drawable/main_activity_logo"
         var price = 0
         var rating = 0
-        var lat = 0.0
-        var lng = 0.0
+        var locationArray = arrayOf<Double>()
 
         reader.beginArray {
             while(reader.hasNext()){
                 var name = reader.nextName()
-                if(name.equals("geometry")) { // location
-                    var locationArray : DoubleArray = getLocation(reader)
-                    lat = locationArray[0]
-                    lng = locationArray[1]
-                } else if (name.equals("name")) { // name
-                    placeName = reader.nextString()
-                } else if (name.equals("photos")) { // photo ref
-                    photoRef = getPhotoRef(reader)
-                } else if (name.equals("place_id")) { // place id
-                    placeID = reader.nextString()
-                } else if (name.equals("price_level")) { // price
-                    price = reader.nextInt()
-                } else if (name.equals("rating")) { // rating
-
-                } else if (name.equals("types")) { // description
-                    description = getDescription(reader)
+                testDialog(name)
+                when(name) {
+                    "geometry" -> locationArray = getLocation(reader)
+                    "name" -> placeName = reader.nextString()
+                    "photos" -> photoRef = getPhotoRef(reader)
+                    "place_id" -> placeID = reader.nextString()
+                    "price_level" -> price = reader.nextInt()
+                    "rating" -> rating = reader.nextString().toInt()
+                    "types" -> description = getDescription(reader)
                 }
+
+//                if(name.equals("geometry")) { // location
+//                    var locationArray : DoubleArray = getLocation(reader)
+//                    lat = locationArray[0]
+//                    lng = locationArray[1]
+//                } else if (name.equals("name")) { // name
+//                    placeName = reader.nextString()
+//                } else if (name.equals("photos")) { // photo ref
+//                    photoRef = getPhotoRef(reader)
+//                } else if (name.equals("place_id")) { // place id
+//                    placeID = reader.nextString()
+//                } else if (name.equals("price_level")) { // price
+//                    price = reader.nextInt()
+//                } else if (name.equals("rating")) { // rating
+//                    rating = reader.nextString().toInt()
+//                } else if (name.equals("types")) { // description
+//                    description = getDescription(reader)
+//                }
             }
         }
-        var place = Place(placeName, placeID, description, photoRef, price, rating, lat, lng)
+        var place = Place(placeName, placeID, description, photoRef, price, rating, locationArray)
         return place
     }
 
 
     private
-    fun getLocation(reader : JsonReader) : DoubleArray {
-        var resArray = DoubleArray(2)
+    fun getLocation(reader : JsonReader) : Array<Double> {
+        var resArray = arrayOf<Double>()
         reader.beginObject {
             while(reader.hasNext()){
                 var name = reader.nextName()
@@ -303,6 +312,24 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // Check if location permission is granted already
+    private
+    fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            makeRequest()
+        }
+    }
+
+    // Make request for location permission
+    private
+    fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
+    }
+
     // Check permission response
     override
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -335,24 +362,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Check if location permission is granted already
-    private
-    fun setupPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            makeRequest()
-        }
-    }
-
-    // Make request for location permission
-    private
-    fun makeRequest() {
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
-    }
-
     // Setup spinners in MainActivity
     private
     fun spinnerSetup(){
@@ -377,22 +386,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//
-//    private fun getUserInputLocation() : Int {
-//        // WHILE LOOP CHECKING STATUS CODE
-//
-//        // PROMPT USER FOR LOCATION
-//        alert {
-//            title = "Where are you?"
-//        }.show()
-//
-//        // CONVERT LOCATION TO LAT/LNG USING GOOGLE GEOCODING API
-//        // https://maps.googleapis.com/maps/api/geocode/json?parameters
-//
-//        // PARSE JSON
-//
-//        // STORE IN lat/lng
-//    }
+
 
 
 
@@ -472,4 +466,4 @@ class MainActivity : AppCompatActivity() {
 //        }
 //    }
 
-}
+}  // END CLASS MainActivity.kt

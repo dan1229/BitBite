@@ -1,34 +1,19 @@
 package com.example.daniel.digit
 
-import java.net.URL
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Daniel on 6/13/2018.
  */
-class Place constructor (name:String, placeID:String, description:String,
-                         photoRef:String, price:Int, rating:Int,
-                         lat:Double, lng:Double){
+@Parcelize
+class Place constructor (var name:String, var placeID:String, var description:String,
+                         var photoRef:String, var price:Int, var rating:Int,
+                         var location:Array<Double>) : Parcelable {
 
-    // Data Members
-    var name:String
-    //@Json(placeID = "place_id")
-    var placeID:String
-    // results -> types -> grab first three or so
-    var description:String
-    // results -> photos -> photo_reference
-    var photoRef:String
-    // https://www.google.com/maps/search/?api=1&parameters
-    // Param
-    // &query = lat + lng
-    // &query_place_id = placeID
-    var googleURL:String = ""
-    //@Json(price = "price_level")
-    var price:Int
-    // results -> rating
-    var rating:Int
-    // results -> geometry -> location -> lat/lng
-    var lat:Double
-    var lng:Double
+    var googleURL : String
+    var lat : Double
+    var lng : Double
 
     // Initialization instructions
     init{
@@ -38,19 +23,23 @@ class Place constructor (name:String, placeID:String, description:String,
         this.photoRef = photoRef
         this.price = price
         this.rating = rating
-        this.lat = lat
-        this.lng = lng
-        googleURL = makeGoogleURL(lat, lng, placeID)
+        this.lat = location[0]
+        this.lng = location[1]
+        googleURL = makeGoogleMapsURL()
     }
 
     // Public Methods--------------------------------------------------------------------------------
 
     //*****Functions*****//
     private
-    fun makeGoogleURL(lat : Double, lng : Double, placeID : String): String{
-        var url =  "https://www.google.com/maps/search/?api=1&"
-        url += "&query=" + lat + "," + lng
-        url += "&query_place_id=" + placeID
+    fun makeGoogleMapsURL(): String{
+        // https://www.google.com/maps/search/?api=1&parameters
+        // Param
+        // &query = lat + lng
+        // &query_place_id = placeID
+        var url =  "https://www.google.com/maps/search/?api=1&" +
+                "&query=" + lat + "," + lng +
+                "&query_place_id=" + placeID
         return url
     }
 
