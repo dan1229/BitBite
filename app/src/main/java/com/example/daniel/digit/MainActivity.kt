@@ -24,6 +24,7 @@ import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.StringReader
 import java.lang.RuntimeException
+import java.lang.Thread.sleep
 import java.net.URL
 
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
@@ -55,25 +56,54 @@ class MainActivity : AppCompatActivity() {
 
         //set on click listener for submitButton
         submitButton.setOnClickListener{
-            doAsync {
-                try{
-                    // Call API, store Place objects in placesList
-                    testDialog("streamJSON call")
-                    placesList = streamJSON()
-                    printPlace(placesList[0])
-                } catch (e : java.lang.RuntimeException){
-                    // Error parsing JSON
-                    testDialog("Invalid Request")
-                }
-
-//                uiThread {
-//
+//            doAsync {
+//                try {
+//                    // Call API, store Place objects in placesList
+//                    testDialog("streamJSON call")
+//                    placesList = streamJSON()
+//                    printPlace(placesList[0])
+//                } catch (e: java.lang.RuntimeException) {
+//                    // Error parsing JSON
+//                    testDialog("Invalid Request")
 //                }
-            }
-            // Go to ResultsActivity, pass placesList
+//
+//                uiThread {
+//                    // Go to ResultsActivity, pass placesList
+//                    val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
+//                        putExtra(EXTRA_PLACES_LIST, placesList)
+//                        putExtra(EXTRA_LIST_SIZE, placesList.size)
+//                    }
+//                    startActivity(intent)
+//                }
+//            }
+
+
+            //test places ******************************************************************************************************
+            var arr = DoubleArray(2)
+            arr[0] = 26.3523517
+            arr[1] = -80.1568702
+            var place1 = Place("Sweet Tomatoes", "e5922636c1c678cec92268ce9e03907613f258e6", "Restaurant",
+                    "CmRaAAAAoawTX5603PlBx7KE3H0OhaD6FkyHRyeqwj_MopXLvtYirZWrvvqrYzpbk2sPzhnEkq-aiXKeozAMshBbPgZSuHpMLTcAtB8aeynfpZ__-o2lJPMrPI-VjYgkySWLwH7dEhAbX5XTWMN6So_5ABc80CRiGhTR3N0t8tOjcAUwpmHRbt77gf9h9w",
+                    1, 4, arr)
+            arr[0] = 26.362137
+            arr[1] = -80.15299999999999
+            var place2 = Place("Bonefish Grill", "3411a36e4d6b0c1c87adab1cd73c3ae0314cebe1", "bar",
+                    "CmRaAAAAxTcFWTCAoMk0OwYncPFV6J6imuUGTA3B-uX2twxcoFw6Dv9SRpRtZNqVqIW73BqRzwzy9D9jCJxAl0CT-j34kBUB7WzrkVz3s1BuHMZYMt6hzGJycFPe57qgsPLM8MFwEhBfLdBuMYPx6FVjlc9X1yKlGhTnHmkyfRPVRiaTb8RcRSTS-ybBlQ",
+                    2, 4, arr)
+            arr[0] = 26.4618978
+            arr[1] = -80.07089839999999
+            var place3 = Place("The Office Delray", "a53bd95ae1f5779b7a415ec1cddfb6af928b0189", "bar",
+                    "CmRaAAAAepicIBIE9K8v5awRAUFBgF_FCVGA7j4wJOjvABr2GhgUjxpb361h9MST6OcjGxQ_yImMq2O2QcvWv21_dbuMhPHMLXbZoWzpIEQPG2h8GaNcO_qyVuCGO0j7Z6BNE2TEEhBpbGXT2rrM3Bm4EMbkA70UGhSD5HPWwLdrAZ6qoiMUMdPtX7ilUw",
+                    2, 4, arr)
+            placesList.add(place1)
+            placesList.add(place2)
+            placesList.add(place3)
+            // *****************************************************************************************************************
+
+
             val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
-                putExtra(EXTRA_PLACES_LIST, placesList)
-                putExtra(EXTRA_LIST_SIZE, placesList.size)
+//                putExtra(EXTRA_PLACES_LIST, placesList)
+//                putExtra(EXTRA_LIST_SIZE, placesList.size)
             }
             startActivity(intent)
         }
@@ -132,7 +162,6 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        return result
         var res = ArrayList<Place>()
-        testDialog("streamJSON")
         JsonReader(StringReader(URL(searchUrlBuilder()).readText())).use {
             reader -> reader.beginObject {
                 res = readStream(reader)
@@ -174,10 +203,10 @@ class MainActivity : AppCompatActivity() {
         var placeName = "Not Available"
         var placeID = ""
         var description = "N/A"
-        var photoRef = "@drawable/main_activity_logo"
+        var photoRef = "DEFAULT"
         var price = 0
         var rating = 0
-        var locationArray = arrayOf<Double>()
+        var locationArray = DoubleArray(2)
 
         reader.beginArray {
             while(reader.hasNext()){
@@ -218,8 +247,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private
-    fun getLocation(reader : JsonReader) : Array<Double> {
-        var resArray = arrayOf<Double>()
+    fun getLocation(reader : JsonReader) : DoubleArray {
+        var resArray = DoubleArray(2)
         reader.beginObject {
             while(reader.hasNext()){
                 var name = reader.nextName()
@@ -301,15 +330,6 @@ class MainActivity : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
         // TEST DIALOG
-    }
-
-    // Prints JsonObjects - primarily for testing
-    private
-    fun printPlace(p : Place) {
-        val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setMessage(p.get_name())
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     // Check if location permission is granted already
