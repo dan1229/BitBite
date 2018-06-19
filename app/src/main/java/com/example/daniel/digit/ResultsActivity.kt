@@ -80,44 +80,45 @@ class ResultsActivity : AppCompatActivity() {
         }
 
         // Set on click listener for "Next 3" button
-        displayNext3.setOnClickListener{
-            if (index < listSize) { // Index in bounds, update cards
+        displayNext3.setOnClickListener {
+            if (index < listSize) { // Display next page
                 for (i in 1..3) {
                     updateCard(i, index)
                     index = nextIndex(index)
                 }
-            }
-            else { // Index out of bounds, display error message
+            } else { // Can't go forward, display error
                 toast("Out of options.\nPlease go back or search again.")
+            }
+        }
+
+        // Set on click listener for "Go back" button
+        displayPrev3.setOnClickListener {
+            if (index < 3) { // Can't go back, display error
+                toast("Beginning of list - can't go back further")
+            }
+            else { // Display prev page
+                for (i in 3 downTo 1) {
+                    index = prevIndex(index)
+                    updateCard(i, index)
+                }
             }
         }
 
         // Set on click listeners for cards to send to Google Maps
         card1.setOnClickListener {
             if (cardIndeces[1] != -1)
-                openWebPage(places[cardIndeces[1]].makeGoogleMapsURL(), this)
+                places[cardIndeces[1]].openWebPage(this)
         }
 
         card2.setOnClickListener {
             if (cardIndeces[2] != -1)
-                openWebPage(places[cardIndeces[2]].makeGoogleMapsURL(), this)
+                places[cardIndeces[2]].openWebPage(this)
         }
 
         card3.setOnClickListener {
             if (cardIndeces[3] != -1)
-                openWebPage(places[cardIndeces[3]].makeGoogleMapsURL(), this)
+                places[cardIndeces[3]].openWebPage(this)
         }
-    }
-
-    // Opens web page for Google Maps
-    private
-    fun openWebPage(urls: String, mContext : Context) {
-        val uris = Uri.parse(urls)
-        val intents = Intent(Intent.ACTION_VIEW, uris)
-        val b = Bundle()
-        b.putBoolean("new_window", true)
-        intents.putExtras(b)
-        mContext.startActivity(intents)
     }
 
     // Calls update function for each segment of card
@@ -132,7 +133,7 @@ class ResultsActivity : AppCompatActivity() {
         updatePhoto(card, i)
         updateRating(card, i)
         updateDescription(card, i)
-        cardIndeces[card] = index
+        cardIndeces[card] = i
     }
 
     // Updates name on the card
@@ -290,18 +291,24 @@ class ResultsActivity : AppCompatActivity() {
     private
     fun createRequestURL(ref : String) : String {
         return  "https://maps.googleapis.com/maps/api/place/photo?" +
-                "maxwidth=400" +
+                "maxwidth=1000" +
                 "&photoreference=" + ref +
                 "&key=" + getString(R.string.google_api_key)
     }
 
-    // "Iterator" function for index
+    // Increments index variable
     private
     fun nextIndex(n : Int) : Int{
         var i = n
         return ++i
     }
 
+    // Decrements index variable
+    private
+    fun prevIndex(n : Int) : Int{
+        var i = n
+        return --i
+    }
 
     // Test dialog - ya know for testing stuff
     private
@@ -313,6 +320,5 @@ class ResultsActivity : AppCompatActivity() {
         dialog.show()
         // TEST DIALOG
     }
-
 
 } // END CLASS ResultsActivity.kt

@@ -1,9 +1,11 @@
 package com.example.daniel.digit
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -19,9 +21,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import java.io.StringReader
 import java.lang.RuntimeException
 import java.lang.Thread.sleep
@@ -48,6 +48,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
 
+
+
+        //test places ******************************************************************************************************
+        var arr1 = DoubleArray(2)
+        arr1[0] = 26.3523517
+        arr1[1] = -80.1568702
+        var place1 = Place("Sweet Tomatoes", "e5922636c1c678cec92268ce9e03907613f258e6", "Restaurant",
+                "CmRaAAAAoawTX5603PlBx7KE3H0OhaD6FkyHRyeqwj_MopXLvtYirZWrvvqrYzpbk2sPzhnEkq-aiXKeozAMshBbPgZSuHpMLTcAtB8aeynfpZ__-o2lJPMrPI-VjYgkySWLwH7dEhAbX5XTWMN6So_5ABc80CRiGhTR3N0t8tOjcAUwpmHRbt77gf9h9w",
+                1, 4, arr1)
+        var arr2 = DoubleArray(2)
+        arr2[0] = 26.362137
+        arr2[1] = -80.15299999999999
+        var place2 = Place("Bonefish Grill", "3411a36e4d6b0c1c87adab1cd73c3ae0314cebe1", "bar",
+                "CmRaAAAAxTcFWTCAoMk0OwYncPFV6J6imuUGTA3B-uX2twxcoFw6Dv9SRpRtZNqVqIW73BqRzwzy9D9jCJxAl0CT-j34kBUB7WzrkVz3s1BuHMZYMt6hzGJycFPe57qgsPLM8MFwEhBfLdBuMYPx6FVjlc9X1yKlGhTnHmkyfRPVRiaTb8RcRSTS-ybBlQ",
+                2, 4, arr2)
+        var arr3 = DoubleArray(2)
+        arr3[0] = 26.4618978
+        arr3[1] = -80.07089839999999
+        var place3 = Place("The Office Delray", "a53bd95ae1f5779b7a415ec1cddfb6af928b0189", "bar",
+                "CmRaAAAAepicIBIE9K8v5awRAUFBgF_FCVGA7j4wJOjvABr2GhgUjxpb361h9MST6OcjGxQ_yImMq2O2QcvWv21_dbuMhPHMLXbZoWzpIEQPG2h8GaNcO_qyVuCGO0j7Z6BNE2TEEhBpbGXT2rrM3Bm4EMbkA70UGhSD5HPWwLdrAZ6qoiMUMdPtX7ilUw",
+                2, 4, arr3)
+        var arr4 = DoubleArray(2)
+        arr3[0] = 26.365652
+        arr3[1] = -80.12607299999999
+        var place4 = Place("Hooters", "fd78a0c66e03b22525d004c666be633869c827cc", "bar",
+                "CmRaAAAAmHecV-otAdP1vBPhCFs3BvEFvLFZHwZ82vvxuD7-wt_6tfSED7AyxjdE5ivAAAGKkjpWEytVSDsHgO7W86ZhPIWBuwfHtd0tKyeu2Dzc40aAmKM6x-6gE1wcRc4CdktPEhBbIYPCE09h5U0vqiXJvc7tGhRmAgR83YO54Bgg7sa9scOeHm0S2g",
+                2, 3, arr4)
+
+        placesList.add(place1)
+        placesList.add(place2)
+        placesList.add(place3)
+        placesList.add(place4)
+        // *****************************************************************************************************************
+
+
+
         // Setup spinners
         spinnerSetup()
 
@@ -61,7 +97,6 @@ class MainActivity : AppCompatActivity() {
 //                    // Call API, store Place objects in placesList
 //                    testDialog("streamJSON call")
 //                    placesList = streamJSON()
-//                    printPlace(placesList[0])
 //                } catch (e: java.lang.RuntimeException) {
 //                    // Error parsing JSON
 //                    testDialog("Invalid Request")
@@ -78,34 +113,36 @@ class MainActivity : AppCompatActivity() {
 //            }
 
 
-            //test places ******************************************************************************************************
-            var arr = DoubleArray(2)
-            arr[0] = 26.3523517
-            arr[1] = -80.1568702
-            var place1 = Place("Sweet Tomatoes", "e5922636c1c678cec92268ce9e03907613f258e6", "Restaurant",
-                    "CmRaAAAAoawTX5603PlBx7KE3H0OhaD6FkyHRyeqwj_MopXLvtYirZWrvvqrYzpbk2sPzhnEkq-aiXKeozAMshBbPgZSuHpMLTcAtB8aeynfpZ__-o2lJPMrPI-VjYgkySWLwH7dEhAbX5XTWMN6So_5ABc80CRiGhTR3N0t8tOjcAUwpmHRbt77gf9h9w",
-                    1, 4, arr)
-            arr[0] = 26.362137
-            arr[1] = -80.15299999999999
-            var place2 = Place("Bonefish Grill", "3411a36e4d6b0c1c87adab1cd73c3ae0314cebe1", "bar",
-                    "CmRaAAAAxTcFWTCAoMk0OwYncPFV6J6imuUGTA3B-uX2twxcoFw6Dv9SRpRtZNqVqIW73BqRzwzy9D9jCJxAl0CT-j34kBUB7WzrkVz3s1BuHMZYMt6hzGJycFPe57qgsPLM8MFwEhBfLdBuMYPx6FVjlc9X1yKlGhTnHmkyfRPVRiaTb8RcRSTS-ybBlQ",
-                    2, 4, arr)
-            arr[0] = 26.4618978
-            arr[1] = -80.07089839999999
-            var place3 = Place("The Office Delray", "a53bd95ae1f5779b7a415ec1cddfb6af928b0189", "bar",
-                    "CmRaAAAAepicIBIE9K8v5awRAUFBgF_FCVGA7j4wJOjvABr2GhgUjxpb361h9MST6OcjGxQ_yImMq2O2QcvWv21_dbuMhPHMLXbZoWzpIEQPG2h8GaNcO_qyVuCGO0j7Z6BNE2TEEhBpbGXT2rrM3Bm4EMbkA70UGhSD5HPWwLdrAZ6qoiMUMdPtX7ilUw",
-                    2, 4, arr)
-            placesList.add(place1)
-            placesList.add(place2)
-            placesList.add(place3)
-            // *****************************************************************************************************************
-
-
             val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
 //                putExtra(EXTRA_PLACES_LIST, placesList)
 //                putExtra(EXTRA_LIST_SIZE, placesList.size)
             }
             startActivity(intent)
+        }
+
+        //set on click listener for submitButton
+        feelingLuckyButton.setOnClickListener {
+//            doAsync {
+//                try {
+//                    // Call API, store Place objects in placesList
+//                    placesList = streamJSON()
+//                } catch (e: java.lang.RuntimeException) {
+//                    // Error parsing JSON
+//                    testDialog("Invalid Request")
+//                }
+//
+//                uiThread {
+//                    // Open Google Maps link
+//                    placesList[0].openWebPage(this)
+//                }
+//            }
+
+            // Alerts user of location selected
+            alert("You have selected " + placesList[0].name + " click OK to open Google Maps") {
+                title = "I'm Feeling Lucky!"
+                yesButton { placesList[0].openWebPage(this@MainActivity) }
+                noButton { }
+            }.show()
         }
     }
 
@@ -170,7 +207,7 @@ class MainActivity : AppCompatActivity() {
         return res
     }
 
-
+    // Reads stream, sends to corresponding functions for parsing
     private
     fun readStream(reader : JsonReader) : ArrayList<Place> {
         var places = ArrayList<Place>()
@@ -197,7 +234,7 @@ class MainActivity : AppCompatActivity() {
         return places
     }
 
-
+    // Reads place JSONObjects and creates corresponding Place objects
     private
     fun readJsonObject(reader : JsonReader) : Place {
         var placeName = "Not Available"
@@ -245,7 +282,7 @@ class MainActivity : AppCompatActivity() {
         return place
     }
 
-
+    // Gets location array out of JSON response
     private
     fun getLocation(reader : JsonReader) : DoubleArray {
         var resArray = DoubleArray(2)
@@ -263,7 +300,7 @@ class MainActivity : AppCompatActivity() {
         return resArray
     }
 
-
+    // Gets photo reference out of JSON response
     private
     fun getPhotoRef(reader : JsonReader) : String {
         var photoRef = "No Photo"
@@ -282,19 +319,17 @@ class MainActivity : AppCompatActivity() {
         return photoRef
     }
 
-
+    // Gets description out of JSON response
     private
     fun getDescription(reader : JsonReader) : String {
         var desc = "No description available"
 
         reader.beginArray {
-            desc = reader.nextString()
+            desc = reader.nextString().capitalize()
         }
 
         return desc
     }
-
-
 
 //    // Parse results JSONArray from places API call
 //    private

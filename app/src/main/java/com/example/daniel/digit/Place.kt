@@ -1,5 +1,9 @@
 package com.example.daniel.digit
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -32,8 +36,21 @@ class Place (var name:String) : Parcelable {
 
     // Methods--------------------------------------------------------------------------------
 
+    //***** openWebPage *****//
+    // Opens web page for Google Maps
+    fun openWebPage( mContext : Context) {
+        val uris = Uri.parse(makeGoogleMapsURL())
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val b = Bundle()
+        b.putBoolean("new_window", true)
+        intents.putExtras(b)
+        mContext.startActivity(intents)
+    }
+
+
     //***** makeGoogleMapsURL *****//
     // Creates and returns maps URL to direct users to location
+    private
     fun makeGoogleMapsURL(): String{
         // https://www.google.com/maps/search/?api=1&parameters
         // Param
@@ -44,5 +61,6 @@ class Place (var name:String) : Parcelable {
                 "&query_place_id=" + placeID
         return url
     }
+
 
 } // END CLASS PLACE
