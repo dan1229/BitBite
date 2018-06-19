@@ -325,7 +325,7 @@ class MainActivity : AppCompatActivity() {
         var desc = "No description available"
 
         reader.beginArray {
-            desc = reader.nextString().capitalize()
+            desc = reader.nextString()
         }
 
         return desc

@@ -82,7 +82,7 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/main_activity_logo" />
+                        app:srcCompat="@drawable/default_place_image" />
                 </FrameLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,12 +98,14 @@
                         android:layout_marginRight="8dp"
                         android:gravity="start"
                         android:text="@string/default_name" />
-                    <TextView
+                    <ImageView
                         android:id="@+id/rating1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="@string/default_rating" />
+                        android:layout_height="match_parent"
+                        android:padding="4dp"
+                        android:gravity="start"
+                        android:scaleType="fitStart"
+                        app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -160,7 +162,7 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/main_activity_logo" />
+                        app:srcCompat="@drawable/default_place_image" />
                 </FrameLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,12 +178,14 @@
                         android:layout_marginRight="8dp"
                         android:gravity="start"
                         android:text="@string/default_name" />
-                    <TextView
+                    <ImageView
                         android:id="@+id/rating2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="@string/default_rating" />
+                        android:layout_height="match_parent"
+                        android:padding="4dp"
+                        android:gravity="start"
+                        android:scaleType="fitStart"
+                        app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -238,7 +242,7 @@
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/main_activity_logo" />
+                        app:srcCompat="@drawable/default_place_image" />
                 </FrameLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -254,12 +258,14 @@
                         android:layout_marginRight="8dp"
                         android:gravity="start"
                         android:text="@string/default_name" />
-                    <TextView
+                    <ImageView
                         android:id="@+id/rating3"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:text="@string/default_rating" />
+                        android:layout_height="match_parent"
+                        android:padding="4dp"
+                        android:gravity="start"
+                        android:scaleType="fitStart"
+                        app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

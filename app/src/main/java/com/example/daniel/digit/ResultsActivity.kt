@@ -1,9 +1,7 @@
 package com.example.daniel.digit
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
@@ -87,7 +85,7 @@ class ResultsActivity : AppCompatActivity() {
                     index = nextIndex(index)
                 }
             } else { // Can't go forward, display error
-                toast("Out of options.\nPlease go back or search again.")
+                toast("End of list - can't go further")
             }
         }
 
@@ -161,22 +159,22 @@ class ResultsActivity : AppCompatActivity() {
     // Updates photo on the card
     private
     fun updatePhoto(card : Int, index : Int) {
-        var view = getImageView(card)
+        var view = getPhotoView(card)
         if(index >= 0){ // In bounds
             placePhotoCall(places[index].photoRef, view)
         } else{ // Out of bounds, default photo
-            view.setImageDrawable(getResources().getDrawable(R.drawable.main_activity_logo))
+            view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
         }
     }
 
     // Updates rating on the card
     private
     fun updateRating(card : Int, index : Int) {
-        var textView = getRatingView(card)
+        var view = getRatingView(card)
         if(index >= 0){ // In bounds
-            textView.setText(ratingConversion(places[index].rating))
-        } else{ // Out of bounds, default val
-            textView.setText(R.string.default_rating)
+            view.setImageDrawable(ContextCompat.getDrawable(this, ratingConversion(places[index].rating)))
+        } else{ // Out of bounds, default photo
+            view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_star))
         }
     }
 
@@ -185,7 +183,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateDescription(card : Int, index : Int) {
         var textView = getDescriptionView(card)
         if(index >= 0){ // In bounds
-            textView.setText(places[index].description)
+            textView.setText(places[index].description.capitalize())
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_description)
         }
@@ -217,24 +215,24 @@ class ResultsActivity : AppCompatActivity() {
 
     // Gets ImageView for photo view based on card number
     private
-    fun getImageView(card : Int) : ImageView {
-        var view = findViewById<ImageView>(R.id.image1) as ImageView
+    fun getPhotoView(card : Int) : ImageView {
+        var view = findViewById<ImageView>(R.id.image1)
         when(card) {
-            1 -> view = findViewById<ImageView>(R.id.image1) as ImageView
-            2 -> view = findViewById<ImageView>(R.id.image2) as ImageView
-            3 -> view = findViewById<ImageView>(R.id.image3) as ImageView
+            1 -> view = findViewById(R.id.image1)
+            2 -> view = findViewById(R.id.image2)
+            3 -> view = findViewById(R.id.image3)
         }
         return view
     }
 
     // Gets TextView for rating view based on card number
     private
-    fun getRatingView(card : Int) : TextView {
-        var view = findViewById<TextView>(R.id.rating1) as TextView
+    fun getRatingView(card : Int) : ImageView {
+        var view = findViewById<ImageView>(R.id.rating1)
         when(card) {
-            1 -> view = findViewById<TextView>(R.id.rating1) as TextView
-            2 -> view = findViewById<TextView>(R.id.rating2) as TextView
-            3 -> view = findViewById<TextView>(R.id.rating3) as TextView
+            1 -> view = findViewById(R.id.rating1)
+            2 -> view = findViewById(R.id.rating2)
+            3 -> view = findViewById(R.id.rating3)
         }
         return view
     }
@@ -268,15 +266,15 @@ class ResultsActivity : AppCompatActivity() {
 
     // Converts rating to string of stars based on value
     private
-    fun ratingConversion(rating : Int) : String {
-        var res = ""
+    fun ratingConversion(rating : Int) : Int {
+        var res : Int
         when (rating) {
-            1 -> res = "1/5"
-            2 -> res = "2/5"
-            3 -> res = "3/5"
-            4 -> res = "4/5"
-            5 -> res = "5/5"
-            else -> res = ""
+            1 -> res = R.drawable.star_1
+            2 -> res = R.drawable.star_2
+            3 -> res = R.drawable.star_3
+            4 -> res = R.drawable.star_4
+            5 -> res = R.drawable.star_5
+            else -> res = R.drawable.default_star
         }
         return res
     }
