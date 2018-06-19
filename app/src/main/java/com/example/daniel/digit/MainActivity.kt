@@ -24,30 +24,31 @@ import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.*
 import java.io.StringReader
 import java.lang.RuntimeException
-import java.lang.Thread.sleep
 import java.net.URL
 
+// Constants
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
 const val EXTRA_LIST_SIZE = "com.example.daniel.digit.PLACESLISTSIZE"
-var style:String = "Random"
-var price:Int = -1
-var lat:Double = 0.0
-var lng:Double = 0.0
 
 class MainActivity : AppCompatActivity() {
 
+    // Spinner options
     val styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast", "Fast Food")
     val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
+    // Variables
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private val locationRequestCode = 101
     var placesList = ArrayList<Place>()
+    var style:String = "Random"
+    var price:Int = -1
+    var lat:Double = 0.0
+    var lng:Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
-
 
 
         //test places ******************************************************************************************************
@@ -81,7 +82,6 @@ class MainActivity : AppCompatActivity() {
         placesList.add(place3)
         placesList.add(place4)
         // *****************************************************************************************************************
-
 
 
         // Setup spinners
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
             // Alerts user of location selected
             alert("You have selected " + placesList[0].name + " click OK to open Google Maps") {
-                title = "I'm Feeling Lucky!"
+                title = "I'm Feeling Lucky"
                 yesButton { placesList[0].openWebPage(this@MainActivity) }
                 noButton { }
             }.show()
