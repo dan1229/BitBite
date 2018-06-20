@@ -12,41 +12,24 @@ import kotlinx.android.parcel.Parcelize
  */
 
 @Parcelize
-class Place (var name:String) : Parcelable {
+class Place (var name:String, var placeID:String, var description:String,var photoRef:String,
+             var price:Int, var rating:Int, var location:DoubleArray) : Parcelable {
 
-    var placeID = ""
-    var description = "N/A"
-    var photoRef = "DEFAULT"
-    var price = 0
-    var rating = 0
-    var location = DoubleArray(2)
-    var googleURL = ""
-    var card = 0
+    var googleMapsUrl : String? = null
 
-    // Secondary Constructor
-    constructor( name:String, placeID:String, description:String, photoRef:String,
-                 price:Int, rating:Int, location:DoubleArray) : this(name) {
-        this.placeID = placeID
-        this.description = description
-        this.photoRef = photoRef
-        this.price = price
-        this.rating = rating
-        this.location = location
-    }
-
-    // Methods--------------------------------------------------------------------------------
+    // =============================================================================================
+    // Methods
 
     //***** openWebPage *****//
     // Opens web page for Google Maps
     fun openWebPage( mContext : Context) {
         val uris = Uri.parse(makeGoogleMapsURL())
         val intents = Intent(Intent.ACTION_VIEW, uris)
-        val b = Bundle()
-        b.putBoolean("new_window", true)
-        intents.putExtras(b)
+        val bundle = Bundle()
+        bundle.putBoolean("new_window", true)
+        intents.putExtras(bundle)
         mContext.startActivity(intents)
     }
-
 
     //***** makeGoogleMapsURL *****//
     // Creates and returns maps URL to direct users to location
@@ -56,11 +39,14 @@ class Place (var name:String) : Parcelable {
         // Param
         // &query = lat + lng
         // &query_place_id = placeID
-        var url =  "https://www.google.com/maps/search/?api=1&" +
-                "&query=" + location[0] + "," + location[1] +
-                "&query_place_id=" + placeID
+        var url = this.googleMapsUrl
+        if(url == null) {
+            url = "https://www.google.com/maps/search/?api=1&" +
+                    "&query=" + location[0] + "," + location[1] +
+                    "&query_place_id=" + placeID
+            this.googleMapsUrl = url
+        }
         return url
     }
-
 
 } // END CLASS PLACE

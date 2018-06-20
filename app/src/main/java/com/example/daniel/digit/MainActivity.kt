@@ -24,11 +24,11 @@ import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.*
 import java.io.StringReader
 import java.lang.RuntimeException
+import java.lang.Thread.sleep
 import java.net.URL
 
 // Constants
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
-const val EXTRA_LIST_SIZE = "com.example.daniel.digit.PLACESLISTSIZE"
 
 class MainActivity : AppCompatActivity() {
 
@@ -112,15 +112,14 @@ class MainActivity : AppCompatActivity() {
 //                }
 //            }
 
-
-            val intent = Intent(this@MainActivity, ResultsActivity::class.java).apply {
-//                putExtra(EXTRA_PLACES_LIST, placesList)
-//                putExtra(EXTRA_LIST_SIZE, placesList.size)
-            }
+            val intent = Intent(this@MainActivity, ResultsActivity::class.java)
+            var bundle = Bundle()
+            bundle.putParcelableArrayList(EXTRA_PLACES_LIST, placesList)
+            intent.putExtra("myBundle",bundle)
             startActivity(intent)
         }
 
-        //set on click listener for submitButton
+        //set on click listener for I'm feeling lucky button
         feelingLuckyButton.setOnClickListener {
 //            doAsync {
 //                try {
@@ -365,6 +364,15 @@ class MainActivity : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
         // TEST DIALOG
+    }
+
+    // Print Place objects - again for testing
+    private
+    fun printPlace(place : Place) {
+        testDialog("name: " + place.name +
+                "\nrating: " + place.rating +
+                "\nprice: " + place.price +
+                "\ndesc: " + place.description)
     }
 
     // Check if location permission is granted already
