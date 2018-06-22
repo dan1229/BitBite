@@ -1,5 +1,7 @@
 package com.example.daniel.digit
 
+import android.graphics.drawable.Drawable
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -7,8 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-
 import kotlinx.android.synthetic.main.activity_results.*
+import org.jetbrains.anko.image
 import org.jetbrains.anko.toast
 
 class ResultsActivity : AppCompatActivity() {
@@ -33,7 +35,7 @@ class ResultsActivity : AppCompatActivity() {
         // ArrayList index
         var index = 0
 
-        // Update all three cards for the first time
+        // Initial card update
         var card = 1
         while((index < listSize) && (card <= 3)) {
             updateCard(card, index)
@@ -55,14 +57,14 @@ class ResultsActivity : AppCompatActivity() {
 
         // Set on click listener for "Go back" button
         displayPrev3.setOnClickListener {
-            if (index < 3) { // Can't go back, display error
-                toast("Beginning of list - can't go back further")
-            }
-            else { // Display prev page
+            if (index >= 3) { // Display prev page
                 for (i in 3 downTo 1) {
                     index = prevIndex(index)
                     updateCard(i, index)
                 }
+            }
+            else { // Can't go back, display error
+                toast("Beginning of list - can't go back further")
             }
         }
 
@@ -125,7 +127,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updatePhoto(card : Int, index : Int) {
         val view = getPhotoView(card)
         if(index >= 0){ // In bounds
-            placePhotoCall(places[index].photoRef, view)
+            placePhotoCall(places[index].photoRef, view, index)
         } else{ // Out of bounds, default photo
             view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
         }
@@ -147,7 +149,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateDescription(card : Int, index : Int) {
         val textView = getDescriptionView(card)
         if(index >= 0){ // In bounds
-            textView.setText(places[index].description.capitalize())
+            textView.text = places[index].description.capitalize()
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_description)
         }
@@ -222,8 +224,18 @@ class ResultsActivity : AppCompatActivity() {
 
     // Calls Place Photo API and returns image
     private
-    fun placePhotoCall(ref : String, view : ImageView) {
-        Glide.with(this).load(createRequestURL(ref)).into(view)
+    fun placePhotoCall(ref : String, view : ImageView, index : Int) {
+        if(!ref.equals("DEFAULT")) {// If image ref exists, get it
+            if(places[index].image == null) { // Image not already in object, download it
+                Glide.with(this).load(createRequestURL(ref)).into(view)
+                places[index].image = view.image
+            }
+            else { // Image already in object, use that
+                view.setImageDrawable(places[index].image)
+            }
+        }
+        // Else, upload default image
+        view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
     }
 
     // Creates URL for Place Photo API request
@@ -238,15 +250,13 @@ class ResultsActivity : AppCompatActivity() {
     // Increments index variable
     private
     fun nextIndex(n : Int) : Int{
-        var i = n
-        return ++i
+        return (n + 1)
     }
 
     // Decrements index variable
     private
     fun prevIndex(n : Int) : Int{
-        var i = n
-        return --i
+        return (n - 1)
     }
 
     // Test dialog - ya know for testing stuff
