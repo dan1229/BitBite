@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import java.lang.RuntimeException
 import java.net.URL
+import java.util.*
 
 // Constants
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
@@ -29,7 +30,7 @@ const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
 class MainActivity : AppCompatActivity() {
 
     // Spinner options
-    val styles = arrayOf("Random", "American", "Hispanic", "Italian", "Asian", "Breakfast", "Fast Food")
+    val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Indian", "Breakfast", "Fast Food")
     val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
     // Variables
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
 
+//
+
         // Setup spinners
         spinnerSetup()
 
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             try{
                 asyncCall(1)
             } catch (e : RuntimeException) {
-                // Deal with exception
+                errorAlert(e)
             }
         }
 
@@ -68,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 try {
                     asyncCall(2)
                 } catch (e : RuntimeException){
-                    // Deal with exception
+                    errorAlert(e)
                 }
             }
             else{
@@ -84,19 +87,15 @@ class MainActivity : AppCompatActivity() {
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
-                "&type=food" +
-                "&radius=25000" + // 25000m ~ 13mi
+                "&type=restaurant" +
+                "&radius=250000" +
                 "&opennow=true" +
+                "&keyrword=" + style +
                 "&rank_by=distance"
         if(price == 0){ // User selected any price
             price = 5
         }
         url += "&maxprice=" + price
-
-        if(style.compareTo("Random") == 1) { // User selected not random style
-            url += "&keyword=" + style
-        }
-
         url += "&key=" + getString(R.string.google_api_key) // Add API key
         return url
     }
@@ -148,30 +147,46 @@ class MainActivity : AppCompatActivity() {
         }.show()
     }
 
-    class Response(val results:List<Results>, val status:String)
+    private
+    fun errorAlert(e : RuntimeException) {
+        alert(e.toString() + ". Please try again.") {
+            title = "Uh Oh!"
+        }.show()
+    }
 
-    class Results(val geometry:Geometry, val name:String, val photos:List<Photos>, val place_id:String,
-                  val price_level:Int, val rating:Double, val types:Array<String>)
+    class Response(val next_page_token:String = "EMPTY", val results:List<Results>, val status:String)
+
+    class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>, val place_id:String="",
+                  val price_level:Int=0, val rating:Double=0.0, val types:Array<String>)
 
     class Geometry(val location:LocationObj)
 
     class LocationObj(val lat:Double, val lng:Double)
 
-    class Photos(val photo_reference:String)
+    class Photos(val photo_reference:String="DEFAULT")
 
     // Streams and parses JSON response from Places API
     private
     fun streamJSON() : ArrayList<Place> {
         var res = ArrayList<Place>()
+        Log.d("STREAM", searchUrlBuilder())
+        Log.d("STREAM", URL(searchUrlBuilder()).readText())
         var response = Klaxon().parse<Response>(URL(searchUrlBuilder()).readText())
         if(response!!.status != "OK"){
-            if(response!!.status == "ZERO_RESULTS")
+            if((response!!.status == "ZERO_RESULTS") || (response!!.results.isEmpty())) {
+                Log.d("STREAM", "zero-res")
                 throw RuntimeException("No Results")
-            else
+            }
+            else {
+                Log.d("STREAM", "invalid")
                 throw RuntimeException("Invalid Request")
+            }
         }
-        for(i in 0 until (response.results.size - 1)){
-            res.add(convertToPlace(response.results[i]))
+        Log.d("STREAM", response.results.size.toString())
+
+        for(i in 0 until (response.results.size)){
+            var place = convertToPlace(response.results[i])
+            res.add(place)
         }
 
         return res
@@ -246,8 +261,10 @@ class MainActivity : AppCompatActivity() {
         styleSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                style = styles[p2]
-                // Update changed flag
+                var i = p2
+                if(i == 0)
+                   i = (0..styles.size).random()
+                style = styles[i]
                 changed = true
             }
         }
@@ -259,7 +276,6 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 price = p2
-                // Update changed flag
                 changed = true
             }
         }
@@ -342,7 +358,9 @@ class MainActivity : AppCompatActivity() {
 //        }
 //    }
 
-
+    // Random Number Generator
+    fun ClosedRange<Int>.random() =
+            Random().nextInt(endInclusive - start) +  start
 
     // Test dialog - ya know for testing stuff
     private
@@ -404,6 +422,7 @@ class MainActivity : AppCompatActivity() {
 //        placesList.add(place2)
 //        placesList.add(place3)
 //        placesList.add(place4)
-    // *****************************************************************************************************************
+//        // *****************************************************************************************************************
+
 
 }  // END CLASS MainActivity.kt

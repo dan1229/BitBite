@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ class ResultsActivity : AppCompatActivity() {
     var cardIndeces = IntArray(4)
     var places = ArrayList<Place>()
     var listSize = 0
+    var lastButton = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +35,13 @@ class ResultsActivity : AppCompatActivity() {
         listSize = places.size
 
         // ArrayList index
-        var index = 0
+        var index = -1
 
         // Initial card update
         var card = 1
         while((index < listSize) && (card <= 3)) {
-            updateCard(card, index)
             index = nextIndex(index)
+            updateCard(card, index)
             ++card
         }
 
@@ -47,8 +49,8 @@ class ResultsActivity : AppCompatActivity() {
         displayNext3.setOnClickListener {
             if (index < listSize) { // Display next page
                 for (i in 1..3) {
-                    updateCard(i, index)
                     index = nextIndex(index)
+                    updateCard(i, index)
                 }
             } else { // Can't go forward, display error
                 toast("End of list - can't go further")
@@ -126,7 +128,7 @@ class ResultsActivity : AppCompatActivity() {
     private
     fun updatePhoto(card : Int, index : Int) {
         val view = getPhotoView(card)
-        if(index >= 0){ // In bounds
+        if((index >= 0) && (index < listSize)){ // In bounds
             placePhotoCall(places[index].photoRef, view, index)
         } else{ // Out of bounds, default photo
             view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
@@ -231,11 +233,12 @@ class ResultsActivity : AppCompatActivity() {
                 places[index].image = view.image
             }
             else { // Image already in object, use that
+                Log.d("PIC PIC PIC", "UPLOADING PIC FOR: " + index)
                 view.setImageDrawable(places[index].image)
             }
+        } else { // Else, upload default image
+            view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
         }
-        // Else, upload default image
-        view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
     }
 
     // Creates URL for Place Photo API request
@@ -250,13 +253,21 @@ class ResultsActivity : AppCompatActivity() {
     // Increments index variable
     private
     fun nextIndex(n : Int) : Int{
-        return (n + 1)
+        var i = 1
+        if (lastButton == 2)
+            i = 3
+        lastButton = 1
+        return (n + i)
     }
 
     // Decrements index variable
     private
     fun prevIndex(n : Int) : Int{
-        return (n - 1)
+        var i = 1
+        if (lastButton == 1)
+            i = 3
+        lastButton = 2
+        return (n - i)
     }
 
     // Test dialog - ya know for testing stuff

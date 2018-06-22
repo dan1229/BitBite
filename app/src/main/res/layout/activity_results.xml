@@ -97,14 +97,16 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:gravity="start"
+                        android:maxLength="20"
+                        android:ellipsize="end"
                         android:text="@string/default_name" />
                     <ImageView
                         android:id="@+id/rating1"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="4dp"
-                        android:gravity="start"
-                        android:scaleType="fitStart"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
                         app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
                 <LinearLayout
@@ -177,14 +179,16 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:gravity="start"
+                        android:maxLength="20"
+                        android:ellipsize="end"
                         android:text="@string/default_name" />
                     <ImageView
                         android:id="@+id/rating2"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="4dp"
-                        android:gravity="start"
-                        android:scaleType="fitStart"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
                         app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
                 <LinearLayout
@@ -257,14 +261,16 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:gravity="start"
+                        android:maxLength="20"
+                        android:ellipsize="end"
                         android:text="@string/default_name" />
                     <ImageView
                         android:id="@+id/rating3"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:padding="4dp"
-                        android:gravity="start"
-                        android:scaleType="fitStart"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
                         app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
                 <LinearLayout

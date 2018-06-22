@@ -98,7 +98,7 @@
         <Button
             android:id="@+id/submitButton"
             android:background="@color/colorAccent"
-            android:textColor="@color/colorBackground"
+            android:textColor="@color/black"
             android:layout_width="@dimen/main_button_width"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -106,8 +106,8 @@
 
         <Button
             android:id="@+id/feelingLuckyButton"
-            android:background="@color/colorAccent"
-            android:textColor="@color/colorBackground"
+            android:background="@color/white"
+            android:textColor="@color/black"
             android:layout_width="@dimen/main_button_width"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
