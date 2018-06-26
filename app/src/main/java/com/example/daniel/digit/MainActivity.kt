@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
 
-//
 
         // Setup spinners
         spinnerSetup()
@@ -170,19 +169,15 @@ class MainActivity : AppCompatActivity() {
     fun streamJSON() : ArrayList<Place> {
         var res = ArrayList<Place>()
         Log.d("STREAM", searchUrlBuilder())
-        Log.d("STREAM", URL(searchUrlBuilder()).readText())
         var response = Klaxon().parse<Response>(URL(searchUrlBuilder()).readText())
         if(response!!.status != "OK"){
             if((response!!.status == "ZERO_RESULTS") || (response!!.results.isEmpty())) {
-                Log.d("STREAM", "zero-res")
                 throw RuntimeException("No Results")
             }
             else {
-                Log.d("STREAM", "invalid")
                 throw RuntimeException("Invalid Request")
             }
         }
-        Log.d("STREAM", response.results.size.toString())
 
         for(i in 0 until (response.results.size)){
             var place = convertToPlace(response.results[i])
