@@ -1,8 +1,7 @@
 package com.example.daniel.digit
 
-import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -11,12 +10,9 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
 import kotlinx.android.synthetic.main.activity_results.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.image
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+
 
 class ResultsActivity : AppCompatActivity() {
 
@@ -31,7 +27,7 @@ class ResultsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_results)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Get places ArrayList and size from MainActivity
+        // Get bundle
         val bundle = intent.getBundleExtra("myBundle")
         places = bundle.getParcelableArrayList<Place>(EXTRA_PLACES_LIST) as ArrayList<Place>
         listSize = places.size
@@ -43,25 +39,20 @@ class ResultsActivity : AppCompatActivity() {
 
         // Set on click listener for "Next 3" button
         displayNext3.setOnClickListener {
-//            doAsync {
-//                // Pre load next 3 photos
-//                for(i in 0..2) {
-//                    var view = findViewById(R.id.invisibleView) as ImageView
-//                    Glide.with(this@ResultsActivity).load(createRequestURL(places[page * 3 + 3 + i].photoRef)).into(view)
-//                    places[page * 3 + 3 + i].image = view.image
+//            if ((3 * page) < listSize) { // Display next page
+//                ++page
+//                for (i in 0..2) { // Load next 3 cards
+//                    updateCard(i + 1, 3 * page + i)
 //                }
-//
-//                uiThread {
-//                    if ((3 * page) < listSize) { // Display next page
-//                        for (i in 0..2) {
-//                            Log.d("INDEX", "card: $i, index: " + (3 * page + i))
-//                            updateCard(i + 1, 3 * page + i)
-//                        }
-//                    }
-//                    else { // Can't go forward, display error
-//                        toast("End of list - can't go further")
+//                for (i in 0..2) { // Pre load next 3 photos
+//                    if((page * 3 + 3 + i) < listSize) {
+//                        val index = page * 3 + 3 + i
+//                        val view = findViewById<ImageView>(R.id.invisibleView)
+//                        placePhotoCall(places[index].photoRef, view, index)
 //                    }
 //                }
+//            } else { // Can't go forward, display error
+//                toast("End of list - can't go further")
 //            }
             if ((3 * page) < listSize) { // Display next page
                 ++page
@@ -89,20 +80,30 @@ class ResultsActivity : AppCompatActivity() {
             }
         }
 
+
         // Set on click listeners for cards to send to Google Maps
         card1.setOnClickListener {
-            if ((3 * page) < listSize)
-                places[3 * page].openWebPage(this)
+            if ((3 * page) < listSize) {
+                val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
+                intent.putExtra("location", places[3 * page])
+                startActivity(intent)
+            }
         }
 
         card2.setOnClickListener {
-            if ((3 * page + 1) < listSize)
-                places[3 * page + 1].openWebPage(this)
+            if ((3 * page + 1) < listSize) {
+                val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
+                intent.putExtra("location", places[3 * page + 1])
+                startActivity(intent)
+            }
         }
 
         card3.setOnClickListener {
-            if ((3 * page + 2) < listSize)
-                places[3 * page + 2].openWebPage(this)
+            if ((3 * page + 2) < listSize) {
+                val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
+                intent.putExtra("location", places[3 * page + 2])
+                startActivity(intent)
+            }
         }
     }
 
@@ -138,7 +139,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updatePrice(card : Int, index : Int) {
         val textView = getPriceView(card)
         if(index >= 0){ // In bounds
-            textView.text = priceConversion(places[index].price)
+            textView.text = places[index].priceConversion()
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_price)
         }
@@ -148,7 +149,7 @@ class ResultsActivity : AppCompatActivity() {
     private
     fun updatePhoto(card : Int, index : Int) {
         val view = getPhotoView(card)
-        if((index >= 0) && (index < listSize)){ // In bounds
+        if(((index >= 0) && (index < listSize)) || (places[index].photoRef != "DEFAULT")){ // In bounds
             placePhotoCall(places[index].photoRef, view, index)
         } else{ // Out of bounds, default photo
             view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
@@ -160,7 +161,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateRating(card : Int, index : Int) {
         val view = getRatingView(card)
         if(index >= 0){ // In bounds
-            view.setImageDrawable(ContextCompat.getDrawable(this, ratingConversion(places[index].rating)))
+            view.setImageDrawable(ContextCompat.getDrawable(this, places[index].ratingConversion()))
         } else{ // Out of bounds, default photo
             view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_star))
         }
@@ -180,10 +181,10 @@ class ResultsActivity : AppCompatActivity() {
     // Gets TextView for name view based on card number
     private
     fun getNameView(card : Int) = when(card) {
-            1 -> findViewById(R.id.name1) as TextView
-            2 -> findViewById(R.id.name2) as TextView
-            3 -> findViewById(R.id.name3) as TextView
-            else -> findViewById(R.id.name1) as TextView
+            1 -> findViewById(R.id.name1)
+            2 -> findViewById(R.id.name2)
+            3 -> findViewById(R.id.name3)
+            else -> findViewById<TextView>(R.id.name1)
     }
 
     // Gets TextView for price view based on card number
@@ -222,74 +223,27 @@ class ResultsActivity : AppCompatActivity() {
             else -> findViewById(R.id.description1) as TextView
     }
 
-    // Converts price to string of "$" based on value
-    private
-    fun priceConversion(price : Int) = when(price) {
-            1 -> "$"
-            2 -> "$$"
-            3 -> "$$$"
-            4 -> "$$$$"
-            5 -> "$$$$$"
-            else -> getString(R.string.default_price)
-    }
-
-    // Converts rating to string of stars based on value
-    private
-    fun ratingConversion(rating : Int) = when (rating) {
-            1 -> R.drawable.star_1
-            2 -> R.drawable.star_2
-            3 -> R.drawable.star_3
-            4 -> R.drawable.star_4
-            5 -> R.drawable.star_5
-            else -> R.drawable.default_star
-    }
-
     // Calls Place Photo API and returns image
     private
     fun placePhotoCall(ref : String, view : ImageView, index : Int) {
-        if(!ref.equals("DEFAULT")) {// If image ref exists, get it
-            if(places[index].image == null) { // Image not already in object, download it
-                Glide.with(this).load(createRequestURL(ref)).into(view)
-                places[index].image = view.drawable
-            }
-            else { // Image already in object, use that
-                Log.d("PIC", "Using object image")
-                view.setImageDrawable(places[index].image)
-            }
-            //Glide.with(this).load(createRequestURL(ref)).into(view)
-        } else { // Else, upload default image
-            view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
+        if(places[index].image == null) { // Image not already in object, download it
+            Glide.with(this).load(createPhotosRequestURL(ref)).into(view)
+            places[index].image = view.drawable
+            Log.d("PIC", "index: $index, image: " + places[index].image)
+        }
+        else { // Image already in object, use that
+            view.setImageDrawable(places[index].image)
         }
     }
 
     // Creates URL for Place Photo API request
     private
-    fun createRequestURL(ref : String) : String {
+    fun createPhotosRequestURL(ref : String) : String {
         return  "https://maps.googleapis.com/maps/api/place/photo?" +
                 "maxwidth=1000" +
                 "&photoreference=" + ref +
                 "&key=" + getString(R.string.google_api_key)
     }
-//
-//    // Increments index variable
-//    private
-//    fun nextIndex(n : Int) : Int{
-//        var i = 1
-//        if (lastButton == 2)
-//            i = 3
-//        lastButton = 1
-//        return (n + i)
-//    }
-//
-//    // Decrements index variable
-//    private
-//    fun prevIndex(n : Int) : Int{
-//        var i = 1
-//        if (lastButton == 1)
-//            i = 3
-//        lastButton = 2
-//        return (n - i)
-//    }
 
     // Test dialog - ya know for testing stuff
     private

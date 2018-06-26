@@ -33,6 +33,26 @@ class Place (var name:String, var placeID:String, var description:String, var ph
         mContext.startActivity(intents)
     }
 
+    // Converts price to string of "$" based on value
+    fun priceConversion() = when(this.price) {
+        1 -> "$"
+        2 -> "$$"
+        3 -> "$$$"
+        4 -> "$$$$"
+        5 -> "$$$$$"
+        else -> ""
+    }
+
+    // Converts rating to string of stars based on value
+    fun ratingConversion() = when (this.rating) {
+        1 -> R.drawable.star_1
+        2 -> R.drawable.star_2
+        3 -> R.drawable.star_3
+        4 -> R.drawable.star_4
+        5 -> R.drawable.star_5
+        else -> R.drawable.default_star
+    }
+
     //***** makeGoogleMapsURL *****//
     // Creates and returns maps URL to direct users to location
     private

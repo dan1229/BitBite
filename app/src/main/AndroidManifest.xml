@@ -51,6 +51,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.daniel.digit.MainActivity" />
         </activity>
+        <activity android:name=".LocationActivity"></activity>
     </application>
 
 </manifest>

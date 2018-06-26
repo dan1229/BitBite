@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 "&type=restaurant" +
                 "&radius=250000" +
                 "&opennow=true" +
-                "&keyrword=" + style +
+                "&keyword=" + style +
                 "&rank_by=distance"
         if(price == 0){ // User selected any price
             price = 5
