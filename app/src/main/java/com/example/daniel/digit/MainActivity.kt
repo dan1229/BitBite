@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -246,30 +245,12 @@ class MainActivity : AppCompatActivity() {
                         == PackageManager.PERMISSION_GRANTED) { // PERMISSION GRANTED - use sensors to get lat/lng
                     setupPermissions()
                 } else { // PERMISSION DENIED - prompt user for location
-//                    var valid = 0
-//                    while(valid == 0){
-//                        valid = geocode()
-//                    }
                     geocodeGetLocationDialog()
                 }
                 return
             }
         }
     }
-
-    // Geocode async call
-    private
-    fun geocode() : Int {
-        //try{
-            geocodeGetLocationDialog()
-            return 1
-
-        //} catch(e : RuntimeException){
-            //toast(e.toString())
-            //return 0
-        //}
-    }
-
 
     // Parse geocode JSON response
     private
@@ -289,7 +270,7 @@ class MainActivity : AppCompatActivity() {
     // Alert dialog for entering location
     private
     fun geocodeGetLocationDialog() {
-        val view = layoutInflater.inflate(R.layout.custom_dialog, null)
+        val view = layoutInflater.inflate(R.layout.dialog_location, null)
         val locationEditText = view.findViewById(R.id.locationEditText) as EditText
 
         val builder = AlertDialog.Builder(this)
@@ -336,7 +317,7 @@ class MainActivity : AppCompatActivity() {
     // Confirms location returned from geocodeGetLocationDialog
     private
     fun confirmLocationDialog(response : String) {
-        val view = layoutInflater.inflate(R.layout.confirmation_dialog, null)
+        val view = layoutInflater.inflate(R.layout.dialog_confirmation, null)
         val textView = view.findViewById(R.id.confirmationTextView) as TextView
         textView.text = response
 
@@ -474,7 +455,7 @@ class MainActivity : AppCompatActivity() {
 //    fun locationAlertDialog() : String {
 //        val dialogBuilder = AlertDialog.Builder(this)
 //        val inflater = this.layoutInflater
-//        val dialogView = inflater.inflate(R.layout.custom_dialog, null)
+//        val dialogView = inflater.inflate(R.layout.dialog_location, null)
 //        dialogBuilder.setView(dialogView)
 //
 //        val editText = dialogView.findViewById<View>(R.id.editTextName) as EditText
