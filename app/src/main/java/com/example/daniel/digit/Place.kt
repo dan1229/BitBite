@@ -2,6 +2,7 @@ package com.example.daniel.digit
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +18,6 @@ class Place (var name:String, var placeID:String, var description:String, var ph
              var price:Int, var rating:Int, var location:DoubleArray) : Parcelable {
 
     var googleMapsUrl : String? = null
-    var image : Drawable? = null
 
     // =============================================================================================
     // Methods

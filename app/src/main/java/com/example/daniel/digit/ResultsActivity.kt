@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_results.*
+import org.jetbrains.anko.image
+import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.toast
 
 
@@ -54,10 +56,9 @@ class ResultsActivity : AppCompatActivity() {
 //            } else { // Can't go forward, display error
 //                toast("End of list - can't go further")
 //            }
-            if ((3 * page) < listSize) { // Display next page
+            if ((3 * (page + 1)) < listSize) { // Display next page
                 ++page
                 for (i in 0..2) {
-                    //Log.d("UPDATE", "index: " + (3*page+i) + ", name: " + places[3*page+i].name)
                     updateCard(i + 1, 3 * page + i)
                 }
             }
@@ -74,7 +75,6 @@ class ResultsActivity : AppCompatActivity() {
             else { // Display prev page
                 --page
                 for (i in 0..2) {
-                    //Log.d("UPDATE", "index: " + (3*page+i) + ", name: " + places[3*page+i].name)
                     updateCard(i + 1, 3 * page + i)
                 }
             }
@@ -110,8 +110,6 @@ class ResultsActivity : AppCompatActivity() {
     // Calls update function for each segment of card
     private
     fun updateCard(card : Int, index : Int) {
-        //Log.d("UPDATE", "index: " + index + ", name: " + places[index].name + ", page: $page")
-
         var i = index
         if(i >= listSize) { // Check if index is in bounds
             i = -1
@@ -149,8 +147,8 @@ class ResultsActivity : AppCompatActivity() {
     private
     fun updatePhoto(card : Int, index : Int) {
         val view = getPhotoView(card)
-        if(((index >= 0) && (index < listSize)) || (places[index].photoRef != "DEFAULT")){ // In bounds
-            placePhotoCall(places[index].photoRef, view, index)
+        if((index >= 0) && (places[index].photoRef != "DEFAULT")){ // In bounds
+            placePhotoCall(places[index].photoRef, view)
         } else{ // Out of bounds, default photo
             view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
         }
@@ -172,7 +170,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateDescription(card : Int, index : Int) {
         val textView = getDescriptionView(card)
         if(index >= 0){ // In bounds
-            textView.text = places[index].description.capitalize().replace("_", "")
+            textView.text = places[index].description.capitalize().replace("_", " ")
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_description)
         }
@@ -225,15 +223,8 @@ class ResultsActivity : AppCompatActivity() {
 
     // Calls Place Photo API and returns image
     private
-    fun placePhotoCall(ref : String, view : ImageView, index : Int) {
-        if(places[index].image == null) { // Image not already in object, download it
-            Glide.with(this).load(createPhotosRequestURL(ref)).into(view)
-            places[index].image = view.drawable
-            Log.d("PIC", "index: $index, image: " + places[index].image)
-        }
-        else { // Image already in object, use that
-            view.setImageDrawable(places[index].image)
-        }
+    fun placePhotoCall(ref : String, view : ImageView) {
+        Glide.with(this).load(createPhotosRequestURL(ref)).into(view)
     }
 
     // Creates URL for Place Photo API request

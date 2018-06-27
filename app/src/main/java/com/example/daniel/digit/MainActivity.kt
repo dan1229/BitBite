@@ -11,18 +11,20 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.Menu
+import android.view.KeyEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.TextView
 import com.beust.klaxon.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
-import java.lang.RuntimeException
 import java.net.URL
 import java.util.*
+import kotlin.RuntimeException
 
 // Constants
 const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             else{
-                feelingLuckyAlert()
+                feelingLucky()
             }
         }
     }
@@ -87,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=restaurant" +
-                "&radius=250000" +
+                "&radius=25000" +
                 "&opennow=true" +
                 "&keyword=" + style +
                 "&rank_by=distance"
@@ -95,14 +97,25 @@ class MainActivity : AppCompatActivity() {
             price = 5
         }
         url += "&maxprice=" + price
-        url += "&key=" + getString(R.string.google_api_key) // Add API key
+        url += "&key=" + getString(R.string.google_api_key)
         return url
     }
 
-    // Calls Places API in Async thread, returns ArrayList<Place> for placesList
-    // @Param
-    // 1 = submit button
-    // 2 = feeling lucky button
+    // Creates URL for Geocoding API call
+    private
+    fun geocodingUrlBuilder(input : String) : String {
+        var url = "https://maps.googleapis.com/maps/api/geocode/json?" +
+                "address=" + input +
+                "&key=" + getString(R.string.google_api_key)
+        return url
+    }
+
+    class geocodeResponse(val results:List<geocodeResults>, val status:String)
+
+    class geocodeResults(val geometry:Geometry, val formatted_address:String)
+
+
+    // Calls Places API in Async thread and goes to another activity based on input
     private
     fun asyncCall(n : Int) {
         doAsync {
@@ -120,13 +133,13 @@ class MainActivity : AppCompatActivity() {
                     goToResults()
                 }
                 else if (n == 2) { // Feeling lucky button - alert
-                    feelingLuckyAlert()
+                    feelingLucky()
                 }
             }
         }
     }
 
-    // Creates intent for ResultsActivity, includes placesList in bundle, starts Activity
+    // Go to ResultsActivity.kt, pass placesList
     private
     fun goToResults() {
         val intent = Intent(this@MainActivity, ResultsActivity::class.java)
@@ -136,14 +149,12 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    // Alerts user of location selected and opens Google Maps link
+    // Go to LocationActivity.kt, pass placesList[0]
     private
-    fun feelingLuckyAlert() {
-        alert("You have selected " + placesList[0].name + " click OK to open Google Maps") {
-            title = "I'm Feeling Lucky"
-            yesButton { placesList[0].openWebPage(this@MainActivity) }
-            noButton { }
-        }.show()
+    fun feelingLucky() {
+        val intent = Intent(this@MainActivity, LocationActivity::class.java)
+        intent.putExtra("location", placesList[0])
+        startActivity(intent)
     }
 
     private
@@ -153,9 +164,9 @@ class MainActivity : AppCompatActivity() {
         }.show()
     }
 
-    class Response(val next_page_token:String = "EMPTY", val results:List<Results>, val status:String)
+    class Response(val results:List<Results>, val status:String)
 
-    class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>, val place_id:String="",
+    class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null, val place_id:String="",
                   val price_level:Int=0, val rating:Double=0.0, val types:Array<String>)
 
     class Geometry(val location:LocationObj)
@@ -187,12 +198,13 @@ class MainActivity : AppCompatActivity() {
         return res
     }
 
+    // Convert Response object to Place
     private
     fun convertToPlace(results : Results) :  Place {
+        val photoRef = if (results.photos != null) results.photos[0].photo_reference else "DEFAULT"
         val name = results.name
         val placeID = results.place_id
         val description = results.types[0]
-        val photoRef = results.photos[0].photo_reference
         val price = results.price_level
         val rating = results.rating.toInt()
         val location = DoubleArray(2)
@@ -234,17 +246,118 @@ class MainActivity : AppCompatActivity() {
                         == PackageManager.PERMISSION_GRANTED) { // PERMISSION GRANTED - use sensors to get lat/lng
                     setupPermissions()
                 } else { // PERMISSION DENIED - prompt user for location
-                    // TODO: IMPLEMENT GOOGLE PLACE SEARCH BOX FOR PEOPLE WHO DENY THE LOCATION PERMISSION
-                    // CHECK PLACES AUTOCOMPLETE API
-                    var res = 0
-                    while(res == 0){
-                        res = 1
-                        // res = getUserInputLocation()
-                    }
+//                    var valid = 0
+//                    while(valid == 0){
+//                        valid = geocode()
+//                    }
+                    geocodeGetLocationDialog()
                 }
                 return
             }
         }
+    }
+
+    // Geocode async call
+    private
+    fun geocode() : Int {
+        //try{
+            geocodeGetLocationDialog()
+            return 1
+
+        //} catch(e : RuntimeException){
+            //toast(e.toString())
+            //return 0
+        //}
+    }
+
+
+    // Parse geocode JSON response
+    private
+    fun parseGeocodeResponse(input : String) : String {
+        var address = ""
+        var response = Klaxon().parse<geocodeResponse>(URL(geocodingUrlBuilder(input)).readText())
+        if (response!!.status != "OK") {
+            address = "INVALID"
+        } else {
+            lat = response.results[0].geometry.location.lat
+            lng = response.results[0].geometry.location.lng
+            address = response.results[0].formatted_address
+        }
+        return address
+    }
+
+    // Alert dialog for entering location
+    private
+    fun geocodeGetLocationDialog() {
+        val view = layoutInflater.inflate(R.layout.custom_dialog, null)
+        val locationEditText = view.findViewById(R.id.locationEditText) as EditText
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.location_dialog))
+                .setMessage("Please enter your location")
+                .setCancelable(false)
+                .setView(view)
+
+        // Okay button listener
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            submitLocation(locationEditText)
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
+    // Goes through Async call for Geocoding API and checks response
+    private
+    fun submitLocation(locationEditText : EditText) {
+        val newCategory = locationEditText.text
+        var isValid = true
+        if (newCategory.isBlank()) {
+            locationEditText.error = "Location"
+            isValid = false
+        }
+        // Call API in another thread
+        if(isValid) {
+            doAsync {
+                var response = parseGeocodeResponse(newCategory.toString())
+                uiThread {
+                    if(response != "INVALID"){
+                        confirmLocationDialog(response)
+                    }
+                    else{
+                        toast("Invalid input. Please try again.")
+                        geocodeGetLocationDialog()
+                    }
+                }
+            }
+        }
+    }
+
+    // Confirms location returned from geocodeGetLocationDialog
+    private
+    fun confirmLocationDialog(response : String) {
+        val view = layoutInflater.inflate(R.layout.confirmation_dialog, null)
+        val textView = view.findViewById(R.id.confirmationTextView) as TextView
+        textView.text = response
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.location_dialog))
+                .setMessage("Is the location below correct?")
+                .setCancelable(false)
+                .setView(view)
+
+        // Yes button listener
+        builder.setPositiveButton("Yes") { dialog, p1 ->
+            dialog.dismiss()
+        }
+
+        // No button listener
+        builder.setNegativeButton("No") { dialog, p1 ->
+            dialog.dismiss()
+            geocodeGetLocationDialog()
+        }
+
+        builder.show()
     }
 
     // Setup spinners and listeners in MainActivity
@@ -258,8 +371,8 @@ class MainActivity : AppCompatActivity() {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 var i = p2
                 if(i == 0)
-                   i = (0..styles.size).random()
-                style = styles[i]
+                   i = (1..styles.size).random()
+                style = styles[i].replace(" ", "")
                 changed = true
             }
         }
@@ -357,6 +470,26 @@ class MainActivity : AppCompatActivity() {
     fun ClosedRange<Int>.random() =
             Random().nextInt(endInclusive - start) +  start
 
+//    // ALert dialog for entering location
+//    fun locationAlertDialog() : String {
+//        val dialogBuilder = AlertDialog.Builder(this)
+//        val inflater = this.layoutInflater
+//        val dialogView = inflater.inflate(R.layout.custom_dialog, null)
+//        dialogBuilder.setView(dialogView)
+//
+//        val editText = dialogView.findViewById<View>(R.id.editTextName) as EditText
+//        var res = "EMPTY"
+//        dialogBuilder.setTitle("Locator")
+//        dialogBuilder.setMessage("Please enter your address/zip code below.")
+//        dialogBuilder.setPositiveButton("Search", { dialog, whichButton ->
+//            res = editText.text.toString()
+//        })
+//        val b = dialogBuilder.create()
+//        b.show()
+//        return res
+//    }
+
+
     // Test dialog - ya know for testing stuff
     private
     fun testDialog(s : String) {
@@ -385,39 +518,5 @@ class MainActivity : AppCompatActivity() {
                 "\nprice: " + place.price +
                 "\ndesc: " + place.description
     }
-
-
-    //test places ******************************************************************************************************
-//        var arr1 = DoubleArray(2)
-//        arr1[0] = 26.3523517
-//        arr1[1] = -80.1568702
-//        var place1 = Place("Sweet Tomatoes", "e5922636c1c678cec92268ce9e03907613f258e6", "Restaurant",
-//                "CmRaAAAAoawTX5603PlBx7KE3H0OhaD6FkyHRyeqwj_MopXLvtYirZWrvvqrYzpbk2sPzhnEkq-aiXKeozAMshBbPgZSuHpMLTcAtB8aeynfpZ__-o2lJPMrPI-VjYgkySWLwH7dEhAbX5XTWMN6So_5ABc80CRiGhTR3N0t8tOjcAUwpmHRbt77gf9h9w",
-//                1, 4, arr1)
-//        var arr2 = DoubleArray(2)
-//        arr2[0] = 26.362137
-//        arr2[1] = -80.15299999999999
-//        var place2 = Place("Bonefish Grill", "3411a36e4d6b0c1c87adab1cd73c3ae0314cebe1", "bar",
-//                "CmRaAAAAxTcFWTCAoMk0OwYncPFV6J6imuUGTA3B-uX2twxcoFw6Dv9SRpRtZNqVqIW73BqRzwzy9D9jCJxAl0CT-j34kBUB7WzrkVz3s1BuHMZYMt6hzGJycFPe57qgsPLM8MFwEhBfLdBuMYPx6FVjlc9X1yKlGhTnHmkyfRPVRiaTb8RcRSTS-ybBlQ",
-//                2, 4, arr2)
-//        var arr3 = DoubleArray(2)
-//        arr3[0] = 26.4618978
-//        arr3[1] = -80.07089839999999
-//        var place3 = Place("The Office Delray", "a53bd95ae1f5779b7a415ec1cddfb6af928b0189", "bar",
-//                "CmRaAAAAepicIBIE9K8v5awRAUFBgF_FCVGA7j4wJOjvABr2GhgUjxpb361h9MST6OcjGxQ_yImMq2O2QcvWv21_dbuMhPHMLXbZoWzpIEQPG2h8GaNcO_qyVuCGO0j7Z6BNE2TEEhBpbGXT2rrM3Bm4EMbkA70UGhSD5HPWwLdrAZ6qoiMUMdPtX7ilUw",
-//                2, 4, arr3)
-//        var arr4 = DoubleArray(2)
-//        arr3[0] = 26.365652
-//        arr3[1] = -80.12607299999999
-//        var place4 = Place("Hooters", "fd78a0c66e03b22525d004c666be633869c827cc", "bar",
-//                "CmRaAAAAmHecV-otAdP1vBPhCFs3BvEFvLFZHwZ82vvxuD7-wt_6tfSED7AyxjdE5ivAAAGKkjpWEytVSDsHgO7W86ZhPIWBuwfHtd0tKyeu2Dzc40aAmKM6x-6gE1wcRc4CdktPEhBbIYPCE09h5U0vqiXJvc7tGhRmAgR83YO54Bgg7sa9scOeHm0S2g",
-//                2, 3, arr4)
-//
-//        placesList.add(place1)
-//        placesList.add(place2)
-//        placesList.add(place3)
-//        placesList.add(place4)
-//        // *****************************************************************************************************************
-
 
 }  // END CLASS MainActivity.kt

@@ -16,4 +16,6 @@
     <string name="default_price"></string>
     <string name="default_rating"></string>
     <string name="default_description">N/A</string>
+    <string name="location_dialog">Help Us Locate You!</string>
+    <string name="location_edit_text">Address/Zip Code"</string>
 </resources>
