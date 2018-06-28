@@ -53,12 +53,17 @@ class Place (var name:String, var placeID:String, var description:String, var ph
         else -> R.drawable.default_star
     }
 
+    // Removes underscores nad capitalizes descriptions
+    fun fixDescription() : String {
+        return this.description.capitalize().replace("_", " ")
+    }
+
     //***** makeGoogleMapsURL *****//
     // Creates and returns maps URL to direct users to location
     private
     fun makeGoogleMapsURL(): String{
         // https://www.google.com/maps/search/?api=1&parameters
-        // Param
+        // @Param
         // &query = lat + lng
         // &query_place_id = placeID
         var url = this.googleMapsUrl

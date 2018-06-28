@@ -33,24 +33,23 @@ const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
 class MainActivity : AppCompatActivity() {
 
     // Spinner options
-    val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Indian", "Breakfast", "Fast Food")
+    val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Health", "Breakfast", "Fast Food")
     val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
     // Variables
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private val locationRequestCode = 101
-    var changed = false
     var placesList = ArrayList<Place>()
-    var style:String = "Random"
-    var price:Int = -1
-    var lat:Double = 0.0
-    var lng:Double = 0.0
+    var style = "Random"
+    var changed = false
+    var price = -1
+    var lat = 0.0
+    var lng = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
-
 
         // Setup spinners
         spinnerSetup()
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         //set on click listener for submitButton
         submitButton.setOnClickListener{
             try{
-                asyncCall(1)
+                placesAsyncCall(1)
             } catch (e : RuntimeException) {
                 errorAlert(e)
             }
@@ -71,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         feelingLuckyButton.setOnClickListener {
             if(placesList.isEmpty()) {
                 try {
-                    asyncCall(2)
+                    placesAsyncCall(2)
                 } catch (e : RuntimeException){
                     errorAlert(e)
                 }
@@ -86,13 +85,23 @@ class MainActivity : AppCompatActivity() {
     private
     fun searchUrlBuilder() : String {
         // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
+        // @Param
+        // location = lat + lng
+        // type = restaurant
+        // *radius = dist. in m
+        // *oppenow = true or false
+        // *rankby = dist. or prom.
+        // style = style spinner
+        // price = price spinner
+        // key = API key
+        // * - choose in settings
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=restaurant" +
                 "&radius=25000" +
                 "&opennow=true" +
-                "&rank_by=distance"
+                "&rankby=distance"
         if(!style.equals("Random")){ // Random restaurant not selected
             url += "&keyword=" + style
         }
@@ -106,9 +115,11 @@ class MainActivity : AppCompatActivity() {
 
     // Creates URL for Geocoding API call
     private
-    fun geocodingUrlBuilder(input : String) = "https://maps.googleapis.com/maps/api/geocode/json?" +
+    fun geocodingUrlBuilder(input : String) : String {
+        return "https://maps.googleapis.com/maps/api/geocode/json?" +
                 "address=" + input +
                 "&key=" + getString(R.string.google_api_key)
+    }
 
     class geocodeResponse(val results:List<geocodeResults>, val status:String)
 
@@ -117,7 +128,7 @@ class MainActivity : AppCompatActivity() {
 
     // Calls Places API in Async thread and goes to another activity based on input
     private
-    fun asyncCall(n : Int) {
+    fun placesAsyncCall(n : Int) {
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
                 placesList.clear()
@@ -132,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                 if(n == 1) { // Submit button - go to ResultsActivity
                     goToResults()
                 }
-                else if (n == 2) { // Feeling lucky button - alert
+                else if (n == 2) { // Feeling lucky button - go to LocationActivity
                     feelingLucky()
                 }
             }
@@ -331,12 +342,12 @@ class MainActivity : AppCompatActivity() {
                 .setView(view)
 
         // Yes button listener
-        builder.setPositiveButton("Yes") { dialog, p1 ->
+        builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
         }
 
         // No button listener
-        builder.setNegativeButton("No") { dialog, p1 ->
+        builder.setNegativeButton("No") { dialog, _ ->
             dialog.dismiss()
             geocodeGetLocationDialog()
         }
@@ -349,6 +360,7 @@ class MainActivity : AppCompatActivity() {
     fun spinnerSetup(){
         // Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
+
         // Item selected listener for styleSpinner
         styleSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -360,6 +372,7 @@ class MainActivity : AppCompatActivity() {
 
         //Adapter for priceSpinner
         priceSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, prices)
+
         //item selected listener for priceSpinner
         priceSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -370,7 +383,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     // Create options menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -378,15 +390,23 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // Create
+    // "On click listener" for options menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
 
-        if (id == R.id.action_settings) {
-            return true
+        when(id) {
+            R.id.action_settings -> { // Selected settings
+
+            }
+            R.id.action_about_us -> { // About us selected
+
+            }
+            R.id.action_rate_us -> { // About us selected
+
+            }
         }
 
         return super.onOptionsItemSelected(item)

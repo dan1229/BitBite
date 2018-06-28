@@ -34,14 +34,14 @@ class LocationActivity : AppCompatActivity() {
     fun updateLocation(place : Place) {
         // Update Photo
         if(place.photoRef != "DEFAULT")
-            placePhotoCall(place.photoRef, findViewById(R.id.locationImage))
+            placePhotoCall(place.photoRef, findViewById(R.id.locationImage)) // Fetch image
         else
-            findViewById<ImageView>(R.id.locationImage).setImageDrawable(ContextCompat.getDrawable(
+            findViewById<ImageView>(R.id.locationImage).setImageDrawable(ContextCompat.getDrawable( // Set default image
                     this, R.drawable.default_place_image))
 
         findViewById<TextView>(R.id.locationName).text = place.name
         findViewById<TextView>(R.id.locationPrice).text = place.priceConversion()
-        findViewById<TextView>(R.id.locationDescription).text = place.description.capitalize().replace("_", " ")
+        findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
     }
 

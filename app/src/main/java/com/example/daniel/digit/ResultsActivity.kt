@@ -170,7 +170,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateDescription(card : Int, index : Int) {
         val textView = getDescriptionView(card)
         if(index >= 0){ // In bounds
-            textView.text = places[index].description.capitalize().replace("_", " ")
+            textView.text = places[index].fixDescription()
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_description)
         }
