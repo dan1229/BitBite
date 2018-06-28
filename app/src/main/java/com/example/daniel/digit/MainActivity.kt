@@ -194,13 +194,15 @@ class MainActivity : AppCompatActivity() {
     class Response(val results:List<Results>, val status:String)
 
     class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null, val place_id:String="",
-                  val price_level:Int=0, val rating:Double=0.0, val types:Array<String>)
+                  val price_level:Int=0, val rating:Double=0.0, val opening_hours:Times, val types:Array<String>)
 
     class Geometry(val location:LocationObj)
 
     class LocationObj(val lat:Double, val lng:Double)
 
     class Photos(val photo_reference:String="DEFAULT")
+
+    class Times(val open_now:Boolean)
 
     // Streams and parses JSON response from Places API
     private
@@ -234,10 +236,11 @@ class MainActivity : AppCompatActivity() {
         val description = results.types[0]
         val price = results.price_level
         val rating = results.rating.toInt()
+        val openNow = results.opening_hours.open_now
         val location = DoubleArray(2)
         location[0] = results.geometry.location.lat
         location[1] = results.geometry.location.lng
-        return Place(name, placeID, description, photoRef, price, rating, location)
+        return Place(name, placeID, description, photoRef, price, rating, openNow, location)
     }
 
     // Check if location permission is granted already

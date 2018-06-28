@@ -16,7 +16,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class Place (var name:String, var placeID:String, var description:String, var photoRef:String,
-             var price:Int, var rating:Int, var location:DoubleArray) : Parcelable {
+             var price:Int, var rating:Int, var openNow:Boolean, var location:DoubleArray) : Parcelable {
 
     @IgnoredOnParcel var googleMapsUrl : String? = null
 
