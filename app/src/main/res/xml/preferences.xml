@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sample="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Basic Settings">
+        <SwitchPreference
+            android:key="switchOpenNow"
+            android:summary="Only display places that are open"
+            android:title="Open Now"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="switchDarkMode"
+            android:summary="Switch to dark mode"
+            android:title="Dark Mode"
+            android:defaultValue="false"/>
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:key="seekbarRadius"
+            android:title="Radius"
+            android:enabled="true"
+            android:defaultValue="25"
+            sample:msbp_minValue="5"
+            sample:msbp_maxValue="50"
+            sample:msbp_interval="1"
+            sample:msbp_measurementUnit="mi"
+            sample:msbp_dialogEnabled="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Advanced Settings">
+        <ListPreference
+            android:key="listSortBy"
+            android:summary="Click to choose what to sort by"
+            android:title="Sort By"
+            android:dialogTitle="Sort By"
+            android:entries= "@array/sort_by_titles"
+            android:entryValues="@array/sort_by_titles" />
+        <EditTextPreference
+            android:dialogTitle="Default Location"
+            android:key="text"
+            android:summary="Click to enter a default location"
+            android:title="Default Location"
+            android:inputType="text"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -46,13 +47,24 @@ class MainActivity : AppCompatActivity() {
     var lat = 0.0
     var lng = 0.0
 
+    // Settings variables
+    var opennow = "true"
+    var radius = "40233"
+    var rankby = "distance"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
 
+        // Get settings
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        radius = (prefs.getInt("seekbarRadius", 40233) / 0.00062137).toString()
+        opennow = prefs.getBoolean("switchOpenNow", true).toString()
+        rankby = prefs.getString("listSortBy", "distance")
+
         // Setup spinners
-        spinnerSetup()
+        setupSpinners()
 
         // Request location permission
         setupPermissions()
@@ -83,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
     // Creates URL for Place Search API call
     private
-    fun searchUrlBuilder() : String {
+    fun placeSearchUrlBuilder() : String {
         // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
         // @Param
         // location = lat + lng
@@ -99,9 +111,13 @@ class MainActivity : AppCompatActivity() {
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=restaurant" +
-                "&radius=25000" +
-                "&opennow=true" +
-                "&rankby=distance"
+                "&opennow=" + opennow
+
+        if(rankby.equals("distance")) { // Rank by distance
+            url += "&rankby=" + rankby
+        } else{ // Use radius
+            url += "&radius=" + radius
+        }
         if(!style.equals("Random")){ // Random restaurant not selected
             url += "&keyword=" + style
         }
@@ -190,8 +206,8 @@ class MainActivity : AppCompatActivity() {
     private
     fun streamJSON() : ArrayList<Place> {
         var res = ArrayList<Place>()
-        Log.d("STREAM", searchUrlBuilder())
-        var response = Klaxon().parse<Response>(URL(searchUrlBuilder()).readText())
+        Log.d("STREAM", placeSearchUrlBuilder())
+        var response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
         if(response!!.status != "OK"){
             if((response.status == "ZERO_RESULTS") || (response.results.isEmpty())) {
                 throw RuntimeException("No Results")
@@ -337,7 +353,7 @@ class MainActivity : AppCompatActivity() {
         // Build dialog box
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.location_dialog))
-                .setMessage("@string/confirmation_message")
+                .setMessage(getString(R.string.confirmation_text))
                 .setCancelable(false)
                 .setView(view)
 
@@ -357,7 +373,7 @@ class MainActivity : AppCompatActivity() {
 
     // Setup spinners and listeners in MainActivity
     private
-    fun spinnerSetup(){
+    fun setupSpinners(){
         // Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
 
@@ -385,27 +401,24 @@ class MainActivity : AppCompatActivity() {
 
     // Create options menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.options_menu, menu)
         return true
     }
 
     // "On click listener" for options menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
 
         when(id) {
             R.id.action_settings -> { // Selected settings
-
+                val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+                startActivity(intent)
             }
             R.id.action_about_us -> { // About us selected
-
+                // Go to About activity
             }
-            R.id.action_rate_us -> { // About us selected
-
+            R.id.action_rate_us -> { // Rate us selected
+                // Go to Google Play store
             }
         }
 

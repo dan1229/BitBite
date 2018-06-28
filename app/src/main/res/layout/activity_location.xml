@@ -18,24 +18,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="5"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:weightSum="5"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/locationImage"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
+                android:layout_weight="5"
                 android:scaleType="centerCrop"
-                android:layout_weight="2"
                 app:srcCompat="@drawable/default_place_image" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/gray_bar_margin"
+                android:layout_marginTop="@dimen/gray_bar_margin"
+                android:background="@android:color/darker_gray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/locationName"
@@ -45,12 +50,12 @@
                     android:layout_marginBottom="4dp"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:gravity="start"
                     android:maxLength="25"
+                    android:gravity="start"
                     android:text="@string/default_name"/>
                 <ImageView
                     android:id="@+id/locationRating"
-                    android:layout_width="164dp"
+                    android:layout_width="96dp"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:layout_marginBottom="4dp"
@@ -74,7 +79,266 @@
                     android:gravity="start"
                     android:text="@string/default_description" />
             </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/gray_bar_margin"
+                android:layout_marginTop="@dimen/gray_bar_margin"
+                android:background="@android:color/darker_gray"/>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/locationReviews"
+                    android:layout_marginBottom="4dp"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:maxLength="50"
+                    android:gravity="start"
+                    android:text="@string/default_review" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:id="@+id/locationReviewAuthor"
+                        android:textSize="20sp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:maxLength="20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/default_review_author" />
+                    <ImageView
+                        android:id="@+id/reviewRating"
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/default_star" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/buttonPrev"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="12dp"
+                        android:padding="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:background="@color/colorAccent"
+                        app:srcCompat="?android:attr/actionModeCloseDrawable" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <ImageButton
+                        android:id="@+id/buttonNext"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:padding="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleX="-1"
+                        android:layout_gravity="end"
+                        android:background="@color/colorAccent"
+                        app:srcCompat="?android:attr/actionModeCloseDrawable" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/gray_bar_margin"
+                android:layout_marginTop="@dimen/gray_bar_margin"
+                android:background="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/locationWebsiteTitle"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/default_website_title" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/locationWebsite"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="20"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:gravity="end"
+                        android:text="@string/default_website" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/locationPhoneTitle"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/default_phone_title" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/locationPhone"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="20"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:gravity="end"
+                        android:text="@string/default_phone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/locationOpenTitle"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/default_open_title" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/locationOpen"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="20"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:gravity="end"
+                        android:text="@string/default_open" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/gray_bar_margin"
+                android:layout_marginTop="@dimen/gray_bar_margin"
+                android:background="@android:color/darker_gray"/>
+
+
+            <LinearLayout
+                android:id="@+id/bottomButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/buttonFave"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent"
+                    android:padding="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal" >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:adjustViewBounds="true"
+                        android:layout_margin="2dp"
+                        android:maxHeight="20dp"
+                        android:maxWidth="20dp"
+                        android:scaleType="fitCenter"
+                        android:src="@android:drawable/btn_star" />
+                    <TextView
+                        android:id="@+id/tvSearchCaption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:textSize="20sp"
+                        android:gravity="start"
+                        android:text="Favorite" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:id="@+id/buttonDirections"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorAccent"
+                    android:padding="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_gravity="end"
+                    android:orientation="horizontal" >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:adjustViewBounds="true"
+                        android:layout_margin="2dp"
+                        android:maxHeight="20dp"
+                        android:maxWidth="20dp"
+                        android:scaleType="fitCenter"
+                        android:src="@android:drawable/ic_menu_directions" />
+                    <TextView
+                        android:id="@+id/search2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20sp"
+                        android:gravity="end"
+                        android:text="Directions" />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
-
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_results.*
 import org.jetbrains.anko.image
 import org.jetbrains.anko.imageBitmap
@@ -234,26 +235,6 @@ class ResultsActivity : AppCompatActivity() {
                 "maxwidth=1000" +
                 "&photoreference=" + ref +
                 "&key=" + getString(R.string.google_api_key)
-    }
-
-    // Test dialog - ya know for testing stuff
-    private
-    fun testDialog(s : String) {
-        // TEST DIALOG
-        val builder = AlertDialog.Builder(this@ResultsActivity)
-        builder.setMessage(s)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-        // TEST DIALOG
-    }
-
-    // Print Place objects - again for testing
-    private
-    fun printPlace(place : Place) {
-        testDialog("name: " + place.name +
-                    "\nrating: " + place.rating +
-                    "\nprice: " + place.price +
-                    "\ndesc: " + place.description)
     }
 
 } // END CLASS ResultsActivity.kt
