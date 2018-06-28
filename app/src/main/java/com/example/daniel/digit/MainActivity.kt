@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("STREAM", searchUrlBuilder())
         var response = Klaxon().parse<Response>(URL(searchUrlBuilder()).readText())
         if(response!!.status != "OK"){
-            if((response!!.status == "ZERO_RESULTS") || (response!!.results.isEmpty())) {
+            if((response.status == "ZERO_RESULTS") || (response.results.isEmpty())) {
                 throw RuntimeException("No Results")
             }
             else {
@@ -293,7 +293,7 @@ class MainActivity : AppCompatActivity() {
                 .setView(view)
 
         // Okay button listener
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
             geocodeInput(locationEditText)
             dialog.dismiss()
         }

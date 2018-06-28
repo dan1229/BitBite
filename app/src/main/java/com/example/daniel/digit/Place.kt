@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -17,7 +18,7 @@ import kotlinx.android.parcel.Parcelize
 class Place (var name:String, var placeID:String, var description:String, var photoRef:String,
              var price:Int, var rating:Int, var location:DoubleArray) : Parcelable {
 
-    var googleMapsUrl : String? = null
+    @IgnoredOnParcel var googleMapsUrl : String? = null
 
     // =============================================================================================
     // Methods
