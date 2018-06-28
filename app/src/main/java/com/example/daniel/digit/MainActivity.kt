@@ -251,9 +251,14 @@ class MainActivity : AppCompatActivity() {
 
         if (permission == PackageManager.PERMISSION_GRANTED) { // PERMISSION GRANTED - use sensors to get lat/lng
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location ->
-                lat = location.latitude
-                lng = location.longitude
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if(location == null) {
+                    geocodeGetLocationDialog()
+                }
+                else {
+                    lat = location!!.latitude
+                    lng = location!!.longitude
+                }
             }
         } else { // PERMISSION DENIED - prompt user for location
             makeRequest()
