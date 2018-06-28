@@ -11,6 +11,8 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -90,24 +92,23 @@ class MainActivity : AppCompatActivity() {
                 "&type=restaurant" +
                 "&radius=25000" +
                 "&opennow=true" +
-                "&keyword=" + style +
                 "&rank_by=distance"
-        if(price == 0){ // User selected any price
-            price = 5
+        if(!style.equals("Random")){ // Random restaurant not selected
+            url += "&keyword=" + style
         }
-        url += "&maxprice=" + price
+        if(price != 0){ // User did not select any price
+            url += "&maxprice=" + price
+        }
         url += "&key=" + getString(R.string.google_api_key)
+
         return url
     }
 
     // Creates URL for Geocoding API call
     private
-    fun geocodingUrlBuilder(input : String) : String {
-        var url = "https://maps.googleapis.com/maps/api/geocode/json?" +
+    fun geocodingUrlBuilder(input : String) = "https://maps.googleapis.com/maps/api/geocode/json?" +
                 "address=" + input +
                 "&key=" + getString(R.string.google_api_key)
-        return url
-    }
 
     class geocodeResponse(val results:List<geocodeResults>, val status:String)
 
@@ -254,8 +255,8 @@ class MainActivity : AppCompatActivity() {
 
     // Parse geocode JSON response
     private
-    fun parseGeocodeResponse(input : String) : String {
-        var address = ""
+    fun parseGeocodeJson(input : String) : String {
+        var address:String
         var response = Klaxon().parse<geocodeResponse>(URL(geocodingUrlBuilder(input)).readText())
         if (response!!.status != "OK") {
             address = "INVALID"
@@ -273,6 +274,7 @@ class MainActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.dialog_location, null)
         val locationEditText = view.findViewById(R.id.locationEditText) as EditText
 
+        // Build dialog box
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.location_dialog))
                 .setMessage("Please enter your location")
@@ -281,7 +283,7 @@ class MainActivity : AppCompatActivity() {
 
         // Okay button listener
         builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
-            submitLocation(locationEditText)
+            geocodeInput(locationEditText)
             dialog.dismiss()
         }
 
@@ -290,17 +292,17 @@ class MainActivity : AppCompatActivity() {
 
     // Goes through Async call for Geocoding API and checks response
     private
-    fun submitLocation(locationEditText : EditText) {
-        val newCategory = locationEditText.text
+    fun geocodeInput(locationEditText : EditText) {
+        val text = locationEditText.text
         var isValid = true
-        if (newCategory.isBlank()) {
+        if (text.isBlank()) {
             locationEditText.error = "Location"
             isValid = false
         }
         // Call API in another thread
         if(isValid) {
             doAsync {
-                var response = parseGeocodeResponse(newCategory.toString())
+                var response = parseGeocodeJson(text.toString())
                 uiThread {
                     if(response != "INVALID"){
                         confirmLocationDialog(response)
@@ -321,9 +323,10 @@ class MainActivity : AppCompatActivity() {
         val textView = view.findViewById(R.id.confirmationTextView) as TextView
         textView.text = response
 
+        // Build dialog box
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.location_dialog))
-                .setMessage("Is the location below correct?")
+                .setMessage("@string/confirmation_message")
                 .setCancelable(false)
                 .setView(view)
 
@@ -350,10 +353,7 @@ class MainActivity : AppCompatActivity() {
         styleSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                var i = p2
-                if(i == 0)
-                   i = (1..styles.size).random()
-                style = styles[i].replace(" ", "")
+                style = styles[p2].replace(" ", "")
                 changed = true
             }
         }
@@ -371,26 +371,26 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // Create options menu
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
+    // Create
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        val id = item.itemId
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        val id = item.itemId
-//
-//        if (id == R.id.action_settings) {
-//            return true
-//        }
-//
-//        return super.onOptionsItemSelected(item)
-//    }
+        if (id == R.id.action_settings) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
 
 
@@ -447,28 +447,6 @@ class MainActivity : AppCompatActivity() {
 //        }
 //    }
 
-    // Random Number Generator
-    fun ClosedRange<Int>.random() =
-            Random().nextInt(endInclusive - start) +  start
-
-//    // ALert dialog for entering location
-//    fun locationAlertDialog() : String {
-//        val dialogBuilder = AlertDialog.Builder(this)
-//        val inflater = this.layoutInflater
-//        val dialogView = inflater.inflate(R.layout.dialog_location, null)
-//        dialogBuilder.setView(dialogView)
-//
-//        val editText = dialogView.findViewById<View>(R.id.editTextName) as EditText
-//        var res = "EMPTY"
-//        dialogBuilder.setTitle("Locator")
-//        dialogBuilder.setMessage("Please enter your address/zip code below.")
-//        dialogBuilder.setPositiveButton("Search", { dialog, whichButton ->
-//            res = editText.text.toString()
-//        })
-//        val b = dialogBuilder.create()
-//        b.show()
-//        return res
-//    }
 
 
     // Test dialog - ya know for testing stuff

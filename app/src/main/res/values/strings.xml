@@ -2,6 +2,8 @@
     <string name="google_api_key">AIzaSyDBAq8NetYqGh9h1rq2QeKOZgW_VPIF6JE</string>
     <string name="app_name">DigIt</string>
     <string name="action_settings">Settings</string>
+    <string name="action_about_us">About Us</string>
+    <string name="action_rate_us">Rate Us</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="main_activity_logo">Logo for main activity</string>
@@ -16,6 +18,7 @@
     <string name="default_price"></string>
     <string name="default_rating"></string>
     <string name="default_description">N/A</string>
-    <string name="location_dialog">Help Us Locate You!</string>
-    <string name="location_edit_text">Address/Zip Code"</string>
+    <string name="location_dialog">Help Us Locate You</string>
+    <string name="location_edit_text">Address/Zip Code</string>
+    <string name="confirmation_text">Is the location below correct?</string>
 </resources>
