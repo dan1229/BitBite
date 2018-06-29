@@ -6,12 +6,14 @@ import android.media.Image
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.beust.klaxon.Klaxon
 import com.bumptech.glide.Glide
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
@@ -25,40 +27,46 @@ class LocationActivity : AppCompatActivity() {
 
     // Variables
     lateinit var place:Place
-    lateinit var response:DetailsResponse?
+    var reviews = ArrayList<Reviews>(5)
+    var website = ""
+    var phone = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
 
         // Get place
-        place = intent.getParcelableExtra<Place>("location")
+        place = intent.getParcelableExtra("location")
 
         // Async call
         doAsync {
             // Call Place Details API
-            response = callDetailsAPI(place)
+            var response = callDetailsAPI(place)
 
             uiThread {
-                // Set data
+                // Populate card
                 updateLocation(response)
             }
         }
 
         // Set on click listener for Directions Button
         buttonDirections.setOnClickListener{
-
+            place.openWebPage(this)
         }
 
         // Set on click listener for Reviews Layout
-        layoutReviews.setOnClickListener{
-
+        layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
+            val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
+            var bundle = Bundle()
+            bundle.putParcelableArrayList("review_list", reviews)
+            intent.putExtra("myBundle",bundle)
+            startActivity(intent)
         }
 
         // Set on click listener for Website
         layoutWebsite.setOnClickListener {
-            if(response != null) { // Open website in browser
-                val uris = Uri.parse(response!!.results.website)
+            if(website != "") { // Open website in browser
+                val uris = Uri.parse(website)
                 val intents = Intent(Intent.ACTION_VIEW, uris)
                 val bundle = Bundle()
                 bundle.putBoolean("new_window", true)
@@ -69,8 +77,8 @@ class LocationActivity : AppCompatActivity() {
 
         // Set on click listener for Phone Number
         layoutPhone.setOnClickListener {
-            if(response != null) // Opens dialer with phone number
-                makeCall(response!!.results.formatted_phone_number)
+            if(phone != "") // Opens dialer with phone number
+                makeCall(phone)
         }
     }
 
@@ -111,6 +119,7 @@ class LocationActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.locationReviewAuthor).text = input.author_name
             findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
                 .getDrawable(this, ratingConversion(input.rating)))
+            copyReviews(response.results.reviews)
         }
         else { // Reviews array empty
             findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
@@ -129,6 +138,7 @@ class LocationActivity : AppCompatActivity() {
         else
             view.text = resources.getString(R.string.default_website)
         view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        website = input
     }
 
     // Updates phone section
@@ -140,6 +150,7 @@ class LocationActivity : AppCompatActivity() {
         else
             view.text = resources.getString(R.string.default_phone)
         view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        phone = input
     }
 
     // Updates review section
@@ -158,6 +169,13 @@ class LocationActivity : AppCompatActivity() {
 //            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
 //                    .getDrawable(this, R.drawable.default_star))
 //        }
+    }
+
+    // Copies reviews array to store locally
+    private
+    fun copyReviews(input : List<Reviews>?) {
+        for(i in 0..(input!!.size))
+            reviews.add(input[i])
     }
 
     // Calls Place Photo API and returns image
@@ -180,7 +198,8 @@ class LocationActivity : AppCompatActivity() {
     class DetailsResults(var formatted_phone_number:String = "",
                          var reviews:List<Reviews>? = null, var website:String = "")
 
-    class Reviews(var author_name:String = "", var text:String = "", var rating:Int = 0)
+    @Parcelize
+    class Reviews(var author_name:String = "", var text:String = "", var rating:Int = 0) : Parcelable
 
     // Builds URL for Place Details API call
     private

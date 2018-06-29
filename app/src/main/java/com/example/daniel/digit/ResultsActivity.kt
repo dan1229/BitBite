@@ -30,7 +30,7 @@ class ResultsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_results)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Get bundle
+        // Get places ArrayList
         val bundle = intent.getBundleExtra("myBundle")
         places = bundle.getParcelableArrayList<Place>(EXTRA_PLACES_LIST) as ArrayList<Place>
         listSize = places.size
