@@ -1,10 +1,13 @@
 package com.example.daniel.digit
 
+import android.content.Intent
 import android.graphics.Color
 import android.media.Image
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.beust.klaxon.Klaxon
@@ -13,6 +16,7 @@ import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
 import java.net.URL
@@ -21,6 +25,7 @@ class LocationActivity : AppCompatActivity() {
 
     // Variables
     lateinit var place:Place
+    lateinit var response:DetailsResponse?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +37,7 @@ class LocationActivity : AppCompatActivity() {
         // Async call
         doAsync {
             // Call Place Details API
-            var response = callDetailsAPI(place)
+            response = callDetailsAPI(place)
 
             uiThread {
                 // Set data
@@ -45,14 +50,27 @@ class LocationActivity : AppCompatActivity() {
 
         }
 
-        // Set on click listener for Fave Button
-        buttonFave.setOnClickListener{
+        // Set on click listener for Reviews Layout
+        layoutReviews.setOnClickListener{
 
         }
 
-        // Set on click listener for Reviews Layout
-        reviewsLayout.setOnClickListener{
+        // Set on click listener for Website
+        layoutWebsite.setOnClickListener {
+            if(response != null) { // Open website in browser
+                val uris = Uri.parse(response!!.results.website)
+                val intents = Intent(Intent.ACTION_VIEW, uris)
+                val bundle = Bundle()
+                bundle.putBoolean("new_window", true)
+                intents.putExtras(bundle)
+                this.startActivity(intents)
+            }
+        }
 
+        // Set on click listener for Phone Number
+        layoutPhone.setOnClickListener {
+            if(response != null) // Opens dialer with phone number
+                makeCall(response!!.results.formatted_phone_number)
         }
     }
 
@@ -60,7 +78,7 @@ class LocationActivity : AppCompatActivity() {
     private
     fun updateLocation(response : DetailsResponse?) {
 
-        // Place info updates
+        // Place photo update
         if(place.photoRef != "DEFAULT")
             placePhotoCall(place.photoRef, findViewById(R.id.locationImage)) // Fetch image
         else
@@ -82,10 +100,24 @@ class LocationActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
 
-
+        // Update website and phone
         updateWebsite(response!!.results.website)
         updatePhone(response.results.formatted_phone_number)
-        updateReview(response.results.reviews)
+
+        // Update reviews
+        if(response.results.reviews != null) { // Reviews array is not empty
+            var input = response.results.reviews!![0]
+            findViewById<TextView>(R.id.locationReviews).text = input.text
+            findViewById<TextView>(R.id.locationReviewAuthor).text = input.author_name
+            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
+                .getDrawable(this, ratingConversion(input.rating)))
+        }
+        else { // Reviews array empty
+            findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
+            findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
+            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
+                    .getDrawable(this, R.drawable.default_star))
+        }
     }
 
     // Updates website section
@@ -112,20 +144,20 @@ class LocationActivity : AppCompatActivity() {
 
     // Updates review section
     private
-    fun updateReview(input : List<Reviews>){
-        // Update reviews
-        if(!input.isEmpty()) { // Reviews array is not empty
-            findViewById<TextView>(R.id.locationReviews).text = input[0].text
-            findViewById<TextView>(R.id.locationReviewAuthor).text = input[0].author_name
+    fun updateReview(input : Reviews){
+//        // Update reviews
+//        if(!input.isEmpty()) { // Reviews array is not empty
+            findViewById<TextView>(R.id.locationReviews).text = input.text
+            findViewById<TextView>(R.id.locationReviewAuthor).text = input.author_name
             findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                    .getDrawable(this, ratingConversion(input[0].rating)))
-        }
-        else { // Reviews array empty
-            findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
-            findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
-            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                    .getDrawable(this, R.drawable.default_star))
-        }
+                    .getDrawable(this, ratingConversion(input.rating)))
+//        }
+//        else { // Reviews array empty
+//            findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
+//            findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
+//            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
+//                    .getDrawable(this, R.drawable.default_star))
+//        }
     }
 
     // Calls Place Photo API and returns image
@@ -143,12 +175,12 @@ class LocationActivity : AppCompatActivity() {
                 "&key=" + getString(R.string.google_api_key)
     }
 
-    class DetailsResponse(val results:DetailsResults, val status:String)
+    class DetailsResponse(var results:DetailsResults, var status:String="ERROR")
 
-    class DetailsResults(val formatted_phone_number:String = "",
-                         val reviews:List<Reviews>, val website:String = "")
+    class DetailsResults(var formatted_phone_number:String = "",
+                         var reviews:List<Reviews>? = null, var website:String = "")
 
-    class Reviews(val author_name:String = "", val text:String = "", val rating:Int)
+    class Reviews(var author_name:String = "", var text:String = "", var rating:Int = 0)
 
     // Builds URL for Place Details API call
     private
@@ -161,6 +193,8 @@ class LocationActivity : AppCompatActivity() {
     // Calls Place Details API
     private
     fun callDetailsAPI(place : Place) : DetailsResponse? {
+        Log.d("STREAM", detailsSearchUrlBuilder())
+        Log.d("STREAM", URL(detailsSearchUrlBuilder()).readText())
         var response = Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder()).readText())
         return response
         // handle error

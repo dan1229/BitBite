@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:visibility="visible"
-        card_view:cardCornerRadius="16dp"
+        card_view:cardCornerRadius="12dp"
         card_view:cardElevation="8dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,12 +33,6 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/default_place_image" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/gray_bar_margin"
-                android:layout_marginTop="@dimen/gray_bar_margin"
-                android:background="@android:color/darker_gray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,7 +85,7 @@
 
 
             <LinearLayout
-                android:id="@+id/reviewsLayout"
+                android:id="@+id/layoutReviews"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -144,7 +138,9 @@
                 android:orientation="vertical"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp">
+
                 <LinearLayout
+                    android:id="@+id/layoutWebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -173,6 +169,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layoutPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -238,77 +235,34 @@
                 android:layout_marginTop="@dimen/gray_bar_margin"
                 android:background="@android:color/darker_gray"/>
 
-
             <LinearLayout
-                android:id="@+id/bottomButtons"
+                android:id="@+id/buttonDirections"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/buttonFave"
-                    android:layout_width="fill_parent"
+                android:background="@color/colorAccent"
+                android:padding="6dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_gravity="center"
+                android:orientation="horizontal" >
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:padding="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:orientation="horizontal" >
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:adjustViewBounds="true"
-                        android:layout_margin="2dp"
-                        android:maxHeight="20dp"
-                        android:maxWidth="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@android:drawable/btn_star" />
-                    <TextView
-                        android:id="@+id/tvSearchCaption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start"
-                        android:textSize="20sp"
-                        android:gravity="start"
-                        android:text="Favorite" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:id="@+id/buttonDirections"
-                    android:layout_width="fill_parent"
+                    android:layout_gravity="center_vertical"
+                    android:adjustViewBounds="true"
+                    android:layout_margin="2dp"
+                    android:maxHeight="30dp"
+                    android:maxWidth="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@android:drawable/ic_menu_directions" />
+                <TextView
+                    android:id="@+id/search2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:padding="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:layout_gravity="end"
-                    android:orientation="horizontal" >
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:adjustViewBounds="true"
-                        android:layout_margin="2dp"
-                        android:maxHeight="20dp"
-                        android:maxWidth="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@android:drawable/ic_menu_directions" />
-                    <TextView
-                        android:id="@+id/search2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="20sp"
-                        android:gravity="end"
-                        android:text="Directions" />
-                </LinearLayout>
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:gravity="end"
+                    android:text="Directions" />
             </LinearLayout>
 
         </LinearLayout>
