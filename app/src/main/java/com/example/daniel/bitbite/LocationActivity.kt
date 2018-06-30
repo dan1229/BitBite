@@ -1,8 +1,7 @@
-package com.example.daniel.digit
+package com.example.daniel.bitbite
 
 import android.content.Intent
 import android.graphics.Color
-import android.media.Image
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,13 +13,11 @@ import android.widget.TextView
 import com.beust.klaxon.Klaxon
 import com.bumptech.glide.Glide
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.abc_activity_chooser_view.view.*
 import kotlinx.android.synthetic.main.activity_location.*
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.makeCall
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import org.w3c.dom.Text
 import java.net.URL
 
 class LocationActivity : AppCompatActivity() {
@@ -41,7 +38,7 @@ class LocationActivity : AppCompatActivity() {
         // Async call
         doAsync {
             // Call Place Details API
-            var response = callDetailsAPI(place)
+            var response = callDetailsAPI()
 
             uiThread {
                 // Populate card
@@ -56,11 +53,16 @@ class LocationActivity : AppCompatActivity() {
 
         // Set on click listener for Reviews Layout
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
-            val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
-            var bundle = Bundle()
-            bundle.putParcelableArrayList("review_list", reviews)
-            intent.putExtra("myBundle",bundle)
-            startActivity(intent)
+            if(reviews.size != 0) {
+                val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
+                var bundle = Bundle()
+                bundle.putParcelableArrayList("review_list", reviews)
+                intent.putExtra("myBundle", bundle)
+                startActivity(intent)
+            }
+            else {
+                toast("No reviews available.")
+            }
         }
 
         // Set on click listener for Website
@@ -153,24 +155,6 @@ class LocationActivity : AppCompatActivity() {
         phone = input
     }
 
-    // Updates review section
-    private
-    fun updateReview(input : Reviews){
-//        // Update reviews
-//        if(!input.isEmpty()) { // Reviews array is not empty
-            findViewById<TextView>(R.id.locationReviews).text = input.text
-            findViewById<TextView>(R.id.locationReviewAuthor).text = input.author_name
-            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                    .getDrawable(this, ratingConversion(input.rating)))
-//        }
-//        else { // Reviews array empty
-//            findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
-//            findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
-//            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-//                    .getDrawable(this, R.drawable.default_star))
-//        }
-    }
-
     // Copies reviews array to store locally
     private
     fun copyReviews(input : List<Reviews>?) {
@@ -193,13 +177,17 @@ class LocationActivity : AppCompatActivity() {
                 "&key=" + getString(R.string.google_api_key)
     }
 
-    class DetailsResponse(var results:DetailsResults, var status:String="ERROR")
+    data class DetailsResponse(val results:DetailsResults,
+                               val status:String)
 
-    class DetailsResults(var formatted_phone_number:String = "",
-                         var reviews:List<Reviews>? = null, var website:String = "")
+    data class DetailsResults(val formatted_phone_number:String = "",
+                              val reviews:List<Reviews>? = null,
+                              val website:String = "")
 
     @Parcelize
-    class Reviews(var author_name:String = "", var text:String = "", var rating:Int = 0) : Parcelable
+    data class Reviews(var author_name:String = "",
+                       var text:String = "",
+                       var rating:Int = 0) : Parcelable
 
     // Builds URL for Place Details API call
     private
@@ -211,15 +199,13 @@ class LocationActivity : AppCompatActivity() {
 
     // Calls Place Details API
     private
-    fun callDetailsAPI(place : Place) : DetailsResponse? {
+    fun callDetailsAPI() : DetailsResponse? {
         Log.d("STREAM", detailsSearchUrlBuilder())
-        Log.d("STREAM", URL(detailsSearchUrlBuilder()).readText())
-        var response = Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder()).readText())
-        return response
-        // handle error
+        return Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder()).readText())
     }
 
-    // Converts rating to string of stars based on value
+    // Converts rating to drawable of stars based on value
+    private
     fun ratingConversion(rating : Int) = when (rating) {
         1 -> R.drawable.star_1
         2 -> R.drawable.star_2

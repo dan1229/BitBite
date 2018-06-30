@@ -16,6 +16,7 @@
     <string name="price_spinner_header">Price of food</string>
     <string name="title_activity_results">ResultsActivity</string>
 
+    <string name="default_location"></string>
     <string name="default_name">Not Available</string>
     <string name="default_price"></string>
     <string name="default_rating"></string>
@@ -33,6 +34,7 @@
     <string name="location_dialog">Help Us Locate You</string>
     <string name="location_edit_text">Address/Zip Code</string>
     <string name="confirmation_text">Is the location below correct?</string>
+    <string name="confirmation_checkbox">Use this as my default location?</string>
 
 
     <!-- Strings related to Settings -->

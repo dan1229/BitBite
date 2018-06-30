@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.daniel.digit">
+    package="com.example.daniel.bitbite">
 
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.example.daniel.bitbite.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.daniel.bitbite.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -44,19 +44,19 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".ResultsActivity"
+            android:name="com.example.daniel.bitbite.ResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.example.daniel.bitbite.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.daniel.digit.MainActivity" />
+                android:value="com.example.daniel.bitbite.MainActivity" />
         </activity>
-        <activity android:name=".LocationActivity" />
+        <activity android:name="com.example.daniel.bitbite.LocationActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.daniel.bitbite.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".ReviewActivity"></activity>
+        <activity android:name="com.example.daniel.bitbite.ReviewActivity"></activity>
     </application>
 
 </manifest>

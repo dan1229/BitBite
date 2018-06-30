@@ -1,19 +1,13 @@
-package com.example.daniel.digit
+package com.example.daniel.bitbite
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_results.*
-import org.jetbrains.anko.image
-import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.toast
 
 
@@ -42,21 +36,6 @@ class ResultsActivity : AppCompatActivity() {
 
         // Set on click listener for "Next 3" button
         displayNext3.setOnClickListener {
-//            if ((3 * page) < listSize) { // Display next page
-//                ++page
-//                for (i in 0..2) { // Load next 3 cards
-//                    updateCard(i + 1, 3 * page + i)
-//                }
-//                for (i in 0..2) { // Pre load next 3 photos
-//                    if((page * 3 + 3 + i) < listSize) {
-//                        val index = page * 3 + 3 + i
-//                        val view = findViewById<ImageView>(R.id.invisibleView)
-//                        placePhotoCall(places[index].photoRef, view, index)
-//                    }
-//                }
-//            } else { // Can't go forward, display error
-//                toast("End of list - can't go further")
-//            }
             if ((3 * (page + 1)) < listSize) { // Display next page
                 ++page
                 for (i in 0..2) {

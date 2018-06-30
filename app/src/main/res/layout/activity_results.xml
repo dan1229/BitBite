@@ -57,7 +57,7 @@
             android:layout_marginTop="6dp"
             android:visibility="visible"
             android:layout_weight="1"
-            card_view:cardCornerRadius="16dp"
+            card_view:cardCornerRadius="@dimen/card_radius"
             card_view:cardElevation="@dimen/card_elevation">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -140,7 +140,7 @@
             android:layout_marginBottom="6dp"
             android:visibility="visible"
             android:layout_weight="1"
-            card_view:cardCornerRadius="16dp"
+            card_view:cardCornerRadius="@dimen/card_radius"
             card_view:cardElevation="@dimen/card_elevation">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -223,7 +223,7 @@
             android:layout_marginBottom="6dp"
             android:visibility="visible"
             android:layout_weight="1"
-            card_view:cardCornerRadius="16dp"
+            card_view:cardCornerRadius="@dimen/card_radius"
             card_view:cardElevation="@dimen/card_elevation">
             <LinearLayout
                 android:layout_width="match_parent"

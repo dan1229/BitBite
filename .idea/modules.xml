@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DigIt.iml" filepath="$PROJECT_DIR$/DigIt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BitBite.iml" filepath="$PROJECT_DIR$/BitBite.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

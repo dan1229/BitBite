@@ -1,4 +1,4 @@
-package com.example.daniel.digit
+package com.example.daniel.bitbite
 
 import android.Manifest
 import android.content.Intent
@@ -15,10 +15,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import com.beust.klaxon.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -29,7 +26,7 @@ import java.util.*
 import kotlin.RuntimeException
 
 // Constants
-const val EXTRA_PLACES_LIST = "com.example.daniel.digit.PLACESLIST"
+const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,14 +40,17 @@ class MainActivity : AppCompatActivity() {
     var placesList = ArrayList<Place>()
     var style = "Random"
     var changed = false
+    var valid = false
     var price = -1
     var lat = 0.0
     var lng = 0.0
 
     // Settings variables
-    var opennow = "true"
-    var radius = "40233"
-    var rankby = "distance"
+    var OPENNOW = "true"
+    var RADIUS = "40233"
+    var RANKBY = "distance"
+    var DEFAULTLOCATION = ""
+    var EMPTY = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,33 +59,31 @@ class MainActivity : AppCompatActivity() {
 
         // Get settings
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        radius = (prefs.getInt("seekbarRadius", 40233) / 0.00062137).toString()
-        opennow = prefs.getBoolean("switchOpenNow", true).toString()
-        rankby = prefs.getString("listSortBy", "distance")
+        RADIUS = (prefs.getInt("radius", 40233) / 0.00062137).toString()
+        OPENNOW = prefs.getBoolean("opennow", true).toString()
+        RANKBY = prefs.getString("sortby", "distance")
+        DEFAULTLOCATION = prefs.getString("defaultlocation", "")
+
+        // Get location
+        setupLocation()
 
         // Setup spinners
         setupSpinners()
 
-        // Request location permission
-        setupPermissions()
-
         //set on click listener for submitButton
         submitButton.setOnClickListener{
-            try{
+            if(placesList.isEmpty() || changed) {
                 placesAsyncCall(1)
-            } catch (e : RuntimeException) {
-                errorAlert(e)
+            }
+            else{
+                goToResults()
             }
         }
 
         //set on click listener for I'm feeling lucky button
         feelingLuckyButton.setOnClickListener {
-            if(placesList.isEmpty()) {
-                try {
-                    placesAsyncCall(2)
-                } catch (e : RuntimeException){
-                    errorAlert(e)
-                }
+            if(placesList.isEmpty() || changed) {
+                placesAsyncCall(2)
             }
             else{
                 feelingLucky()
@@ -100,9 +98,9 @@ class MainActivity : AppCompatActivity() {
         // @Param
         // location = lat + lng
         // type = restaurant
-        // *radius = dist. in m
+        // *RADIUS = dist. in m
         // *oppenow = true or false
-        // *rankby = dist. or prom.
+        // *RANKBY = dist. or prom.
         // style = style spinner
         // price = price spinner
         // key = API key
@@ -111,12 +109,12 @@ class MainActivity : AppCompatActivity() {
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=restaurant" +
-                "&opennow=" + opennow
+                "&OPENNOW=" + OPENNOW
 
-        if(rankby.equals("distance")) { // Rank by distance
-            url += "&rankby=" + rankby
-        } else{ // Use radius
-            url += "&radius=" + radius
+        if(RANKBY.equals("distance")) { // Rank by distance
+            url += "&RANKBY=" + RANKBY
+        } else{ // Use RADIUS
+            url += "&RADIUS=" + RADIUS
         }
         if(!style.equals("Random")){ // Random restaurant not selected
             url += "&keyword=" + style
@@ -150,10 +148,12 @@ class MainActivity : AppCompatActivity() {
                 placesList.clear()
                 try {
                     placesList = streamJSON()
-                    changed = false
-                } catch (e: java.lang.RuntimeException) {
-                    throw (e)
+                } catch(e : RuntimeException){
+                    uiThread {
+                        errorAlert(e.toString().replace("java.lang.RuntimeException: ", ""))
+                    }
                 }
+                changed = false
             }
             uiThread {
                 if(n == 1) { // Submit button - go to ResultsActivity
@@ -169,25 +169,29 @@ class MainActivity : AppCompatActivity() {
     // Go to ResultsActivity.kt, pass placesList
     private
     fun goToResults() {
-        val intent = Intent(this@MainActivity, ResultsActivity::class.java)
-        var bundle = Bundle()
-        bundle.putParcelableArrayList(EXTRA_PLACES_LIST, placesList)
-        intent.putExtra("myBundle",bundle)
-        startActivity(intent)
+        if(valid) {
+            val intent = Intent(this@MainActivity, ResultsActivity::class.java)
+            var bundle = Bundle()
+            bundle.putParcelableArrayList(EXTRA_PLACES_LIST, placesList)
+            intent.putExtra("myBundle", bundle)
+            startActivity(intent)
+        }
     }
 
     // Go to LocationActivity.kt, pass placesList[0]
     private
     fun feelingLucky() {
-        val intent = Intent(this@MainActivity, LocationActivity::class.java)
-        intent.putExtra("location", placesList[0])
-        startActivity(intent)
+        if(valid) {
+            val intent = Intent(this@MainActivity, LocationActivity::class.java)
+            intent.putExtra("location", placesList[0])
+            startActivity(intent)
+        }
     }
 
     private
-    fun errorAlert(e : RuntimeException) {
-        alert(e.toString() + ". Please try again.") {
-            title = "Uh Oh!"
+    fun errorAlert(input : String) {
+        alert(input, "Uh Oh") {
+            okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
 
@@ -210,13 +214,16 @@ class MainActivity : AppCompatActivity() {
         var res = ArrayList<Place>()
         Log.d("STREAM", placeSearchUrlBuilder())
         var response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
-        if(response!!.status != "OK"){
-            if((response.status == "ZERO_RESULTS") || (response.results.isEmpty())) {
-                throw RuntimeException("No Results")
+        if(response!!.status != "OK"){ // Response invalid
+            valid = false
+            if(response.status.equals("ZERO_RESULTS")) { // No results
+                throw RuntimeException("No results. Please try again.")
             }
-            else {
-                throw RuntimeException("Invalid Request")
+            else { // Other issue
+                throw RuntimeException("Error. Please try again.")
             }
+        } else {
+            valid = true
         }
 
         for(i in 0 until (response.results.size)){
@@ -227,7 +234,7 @@ class MainActivity : AppCompatActivity() {
         return res
     }
 
-    // Convert Response object to Place
+    // Convert Response object to Place object
     private
     fun convertToPlace(results : Results) :  Place {
         val photoRef = if (results.photos != null) results.photos[0].photo_reference else "DEFAULT"
@@ -256,8 +263,8 @@ class MainActivity : AppCompatActivity() {
                     geocodeGetLocationDialog()
                 }
                 else {
-                    lat = location!!.latitude
-                    lng = location!!.longitude
+                    lat = location.latitude
+                    lng = location.longitude
                 }
             }
         } else { // PERMISSION DENIED - prompt user for location
@@ -330,12 +337,12 @@ class MainActivity : AppCompatActivity() {
     fun geocodeInput(locationEditText : EditText) {
         val text = locationEditText.text
         var isValid = true
-        if (text.isBlank()) {
+        if (text.isBlank()) { // Blank submission - try again
             locationEditText.error = "Location"
             isValid = false
+            geocodeGetLocationDialog()
         }
-        // Call API in another thread
-        if(isValid) {
+        if(isValid) { // Valid submission - call API in another thread
             doAsync {
                 var response = parseGeocodeJson(text.toString())
                 uiThread {
@@ -356,6 +363,7 @@ class MainActivity : AppCompatActivity() {
     fun confirmLocationDialog(response : String) {
         val view = layoutInflater.inflate(R.layout.dialog_confirmation, null)
         val textView = view.findViewById(R.id.confirmationTextView) as TextView
+        var checkbox = false
         textView.text = response
 
         // Build dialog box
@@ -368,6 +376,9 @@ class MainActivity : AppCompatActivity() {
         // Yes button listener
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
+            if(checkbox) { // If default location checkbox is checked, update settings
+                updateDefaultLocation(response)
+            }
         }
 
         // No button listener
@@ -376,12 +387,40 @@ class MainActivity : AppCompatActivity() {
             geocodeGetLocationDialog()
         }
 
+        val checkboxView = view.findViewById(R.id.confirmationCheckbox) as CheckBox
+        checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->
+            checkbox = isChecked
+        }
+
         builder.show()
+    }
+
+    // Updates default location when specified in confirmationDialog
+    private
+    fun updateDefaultLocation(input : String) {
+        Log.d("LOCATION", "updating default with $input")
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = prefs.edit()
+        editor.putString(DEFAULTLOCATION, input)
+        editor.apply()
+        Log.d("LOCATION", "default location is " + getString(R.string.default_location))
+    }
+
+    // Checks default location exists, if not, get it
+    private
+    fun setupLocation() {
+        if(DEFAULTLOCATION != "") { // Default exists
+            doAsync{
+                parseGeocodeJson(DEFAULTLOCATION)
+            }
+        } else { // Request permission or get location from user
+            setupPermissions()
+        }
     }
 
     // Setup spinners and listeners in MainActivity
     private
-    fun setupSpinners(){
+    fun setupSpinners() {
         // Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
 

@@ -15,7 +15,7 @@ androidExtensions {
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.daniel.digit"
+        applicationId "com.example.daniel.bitbite"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1

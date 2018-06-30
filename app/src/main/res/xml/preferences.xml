@@ -4,17 +4,17 @@
 
     <PreferenceCategory android:title="Basic Settings">
         <SwitchPreference
-            android:key="switchOpenNow"
-            android:summary="Only display places that are open"
+            android:key="opennow"
             android:title="Open Now"
+            android:summary="Only display places that are open"
             android:defaultValue="true"/>
         <SwitchPreference
-            android:key="switchDarkMode"
-            android:summary="Switch to dark mode"
+            android:key="darkmode"
             android:title="Dark Mode"
+            android:summary="Switch to dark mode"
             android:defaultValue="false"/>
         <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:key="seekbarRadius"
+            android:key="radius"
             android:title="Radius"
             android:enabled="true"
             android:defaultValue="15"
@@ -27,18 +27,20 @@
 
     <PreferenceCategory android:title="Advanced Settings">
         <ListPreference
-            android:key="listSortBy"
+            android:key="sortby"
             android:summary="Click to choose what to sort by"
             android:title="Sort By"
             android:dialogTitle="Sort By"
             android:entries= "@array/sort_by_titles"
             android:entryValues="@array/sort_by_titles" />
         <EditTextPreference
-            android:dialogTitle="Default Location"
-            android:key="text"
+            android:key="defaultlocation"
+            android:id="@+id/settingsEditText"
+            android:dialogTitle="Set Default Location"
             android:summary="Click to enter a default location"
             android:title="Default Location"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:defaultValue="@string/default_location"/>
     </PreferenceCategory>
 
 

@@ -1,4 +1,4 @@
-package com.example.daniel.digit
+package com.example.daniel.bitbite
 
 import org.junit.Test
 

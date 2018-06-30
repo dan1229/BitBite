@@ -1,10 +1,8 @@
-package com.example.daniel.digit
+package com.example.daniel.bitbite
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-
-import com.example.daniel.digit.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
