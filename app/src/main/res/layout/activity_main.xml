@@ -100,9 +100,9 @@
             style="@style/AppTheme.RoundedCornerMaterialButton"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:padding="16sp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp"
             android:textSize="22sp"
-            android:layout_marginBottom="12sp"
             android:text="@string/submit_button" />
 
         <Button
@@ -110,7 +110,7 @@
             style="@style/AppTheme.RoundedCornerMaterialButton"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:padding="16sp"
+            android:padding="16dp"
             android:text="@string/feeling_lucky_button" />
 
     </LinearLayout>
