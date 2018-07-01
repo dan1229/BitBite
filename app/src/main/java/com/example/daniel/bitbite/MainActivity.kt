@@ -98,9 +98,9 @@ class MainActivity : AppCompatActivity() {
         // @Param
         // location = lat + lng
         // type = restaurant
-        // *RADIUS = dist. in m
+        // *radius = dist. in m
         // *oppenow = true or false
-        // *RANKBY = dist. or prom.
+        // *rankby = dist. or prom.
         // style = style spinner
         // price = price spinner
         // key = API key
@@ -109,12 +109,12 @@ class MainActivity : AppCompatActivity() {
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=restaurant" +
-                "&OPENNOW=" + OPENNOW
+                "&oppennow=" + OPENNOW
 
         if(RANKBY.equals("distance")) { // Rank by distance
-            url += "&RANKBY=" + RANKBY
-        } else{ // Use RADIUS
-            url += "&RADIUS=" + RADIUS
+            url += "&rankby=" + RANKBY
+        } else{ // Rank by prominence (use radius)
+            url += "&radius=" + RADIUS
         }
         if(!style.equals("Random")){ // Random restaurant not selected
             url += "&keyword=" + style
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity() {
 
     private
     fun errorAlert(input : String) {
-        alert(input, "Uh Oh") {
+        alert(input, "Uh Oh!") {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
@@ -220,7 +220,7 @@ class MainActivity : AppCompatActivity() {
                 throw RuntimeException("No results. Please try again.")
             }
             else { // Other issue
-                throw RuntimeException("Error. Please try again.")
+                throw RuntimeException("Technical error. Please try again.")
             }
         } else {
             valid = true
@@ -256,7 +256,7 @@ class MainActivity : AppCompatActivity() {
         val permission = ContextCompat.checkSelfPermission(this, // Check if permission is granted
                 Manifest.permission.ACCESS_FINE_LOCATION)
 
-        if (permission == PackageManager.PERMISSION_GRANTED) { // PERMISSION GRANTED - use sensors to get lat/lng
+        if (permission == PackageManager.PERMISSION_GRANTED) { // PERMISSION ALREADY GRANTED - use sensors to get lat/lng
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if(location == null) {
@@ -267,7 +267,7 @@ class MainActivity : AppCompatActivity() {
                     lng = location.longitude
                 }
             }
-        } else { // PERMISSION DENIED - prompt user for location
+        } else { // PERMISSION NOT YET ASKED - prompt user for permission
             makeRequest()
         }
     }
