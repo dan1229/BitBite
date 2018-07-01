@@ -106,7 +106,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateName(card : Int, index : Int) {
         val textView = getNameView(card)
         if(index >= 0){ // In bounds
-            textView.text = places[index].name
+            textView.text = ellipsizeText(places[index].name)
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_name)
         }
@@ -214,6 +214,19 @@ class ResultsActivity : AppCompatActivity() {
                 "maxwidth=1000" +
                 "&photoreference=" + ref +
                 "&key=" + getString(R.string.google_api_key)
+    }
+
+    // Ellipsizes text
+    private
+    fun ellipsizeText(input : String) : String {
+        val MAX_LENGTH = 20
+        var size = input.length
+        var res = input
+
+        if (size > MAX_LENGTH)
+            res = input.substring(0, MAX_LENGTH) + "..."
+
+        return res
     }
 
 } // END CLASS ResultsActivity.kt

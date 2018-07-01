@@ -93,9 +93,6 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:gravity="start"
-                        android:maxLength="20"
-                        android:ellipsize="end"
-                        android:singleLine="true"
                         android:text="@string/default_name" />
                     <ImageView
                         android:id="@+id/rating1"
@@ -176,9 +173,6 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:gravity="start"
-                        android:maxLength="20"
-                        android:ellipsize="end"
-                        android:singleLine="true"
                         android:text="@string/default_name" />
                     <ImageView
                         android:id="@+id/rating2"
@@ -259,9 +253,6 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:gravity="start"
-                        android:maxLength="20"
-                        android:ellipsize="end"
-                        android:singleLine="true"
                         android:text="@string/default_name" />
                     <ImageView
                         android:id="@+id/rating3"

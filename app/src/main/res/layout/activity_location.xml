@@ -43,8 +43,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
                     android:ellipsize="end"
-                    android:maxLength="25"
                     android:gravity="start"
                     android:text="@string/default_name"/>
                 <ImageView
