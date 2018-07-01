@@ -97,20 +97,20 @@
 
         <Button
             android:id="@+id/submitButton"
-            android:background="@color/colorAccent"
-            android:textColor="@color/black"
-            android:layout_width="@dimen/main_button_width"
+            style="@style/AppTheme.RoundedCornerMaterialButton"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_width="wrap_content"
+            android:padding="16sp"
+            android:textSize="22sp"
+            android:layout_marginBottom="12sp"
             android:text="@string/submit_button" />
 
         <Button
             android:id="@+id/feelingLuckyButton"
-            android:background="@color/white"
-            android:textColor="@color/black"
-            android:layout_width="@dimen/main_button_width"
+            style="@style/AppTheme.RoundedCornerMaterialButton"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_width="wrap_content"
+            android:padding="16sp"
             android:text="@string/feeling_lucky_button" />
 
     </LinearLayout>

@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ResultsActivity">
@@ -297,31 +298,23 @@
 
             <ImageButton
                 android:id="@+id/displayPrev3"
-                android:layout_marginLeft="12dp"
-                android:layout_marginStart="12dp"
-                android:padding="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:background="@color/colorAccent"
-                app:srcCompat="?android:attr/actionModeCloseDrawable"
-                app:layout_anchorGravity="bottom|start" />
+                style="@style/AppTheme.CircleButton"
+                android:layout_width="@dimen/circle_button_diameter"
+                android:layout_height="@dimen/circle_button_diameter"
+                android:scaleType="fitCenter"
+                android:scaleX="-1"
+                app:srcCompat="@drawable/arrow" />
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
             <ImageButton
                 android:id="@+id/displayNext3"
-                android:layout_marginRight="12dp"
-                android:layout_marginEnd="12dp"
-                android:padding="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleX="-1"
-                android:layout_gravity="end"
-                android:background="@color/colorAccent"
-                app:srcCompat="?android:attr/actionModeCloseDrawable"
-                app:layout_anchorGravity="bottom|end"/>
+                style="@style/AppTheme.CircleButton"
+                android:layout_width="@dimen/circle_button_diameter"
+                android:layout_height="@dimen/circle_button_diameter"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/arrow"/>
 
         </LinearLayout>
 
