@@ -41,25 +41,25 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:layout_marginBottom="48dp"
+            android:layout_marginTop="32dp"
+            android:adjustViewBounds="true"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:layout_constraintTop_toTopOf="@id/constraintLayoutMain"
             app:layout_constraintBottom_toBottomOf="@+id/style_spinner_title"
+            app:layout_constraintTop_toTopOf="@id/constraintLayoutMain"
             app:srcCompat="@drawable/main_activity_logo" />
 
         <TextView
             android:id="@+id/style_spinner_title"
-            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            android:text="@string/style_spinner_header"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="@+id/styleSpinner"
-            android:text="@string/style_spinner_header" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <Spinner
             android:id="@+id/styleSpinner"
@@ -68,20 +68,20 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/style_spinner_title"
             app:layout_constraintBottom_toTopOf="@id/price_spinner_title"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/style_spinner_title" />
 
         <TextView
             android:id="@+id/price_spinner_title"
-            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            app:layout_constraintTop_toBottomOf="@+id/styleSpinner"
+            android:text="@string/price_spinner_header"
+            android:textSize="22sp"
             app:layout_constraintBottom_toTopOf="@id/priceSpinner"
-            android:text="@string/price_spinner_header" />
+            app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
 
         <Spinner
             android:id="@+id/priceSpinner"
@@ -90,40 +90,40 @@
             android:layout_marginBottom="12dp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/price_spinner_title"
             app:layout_constraintBottom_toTopOf="@id/submitButton"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/price_spinner_title" />
 
         <Button
             android:id="@+id/submitButton"
             style="@style/AppTheme.RoundedCornerMaterialButton"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:paddingRight="32dp"
-            android:paddingLeft="32dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:layout_height="wrap_content"
             android:layout_margin="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingTop="12dp"
+            android:text="@string/submit_button"
             android:textSize="26sp"
-            app:layout_constraintTop_toBottomOf="@+id/priceSpinner"
             app:layout_constraintBottom_toTopOf="@id/feelingLuckyButton"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/submit_button" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceSpinner" />
 
         <Button
             android:id="@+id/feelingLuckyButton"
             style="@style/AppTheme.RoundedCornerMaterialButton"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:padding="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/submitButton"
+            android:padding="16dp"
+            android:text="@string/feeling_lucky_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@string/feeling_lucky_button" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/submitButton" />
 
     </android.support.constraint.ConstraintLayout>
 

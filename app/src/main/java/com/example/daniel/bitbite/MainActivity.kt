@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private val locationRequestCode = 101
     var placesList = ArrayList<Place>()
-    var style = "Random"
     var changed = false
     var valid = false
+    var style = "Random"
     var price = -1
     var lat = 0.0
     var lng = 0.0
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         RADIUS = (prefs.getInt("radius", 40233) / 0.00062137).toString()
         OPENNOW = prefs.getBoolean("opennow", true).toString()
         RANKBY = prefs.getString("sortby", "distance")
-        DEFAULTLOCATION = prefs.getString("defaultlocation", "")
+        // DEFAULTLOCATION = prefs.getString("defaultlocation", "")
 
         // Get location
         setupLocation()
@@ -109,19 +109,22 @@ class MainActivity : AppCompatActivity() {
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=" + lat + "," + lng +
                 "&type=restaurant" +
-                "&oppennow=" + OPENNOW
+                "&opennow=" + OPENNOW
 
         if(RANKBY.equals("distance")) { // Rank by distance
             url += "&rankby=" + RANKBY
         } else{ // Rank by prominence (use radius)
             url += "&radius=" + RADIUS
         }
-        if(!style.equals("Random")){ // Random restaurant not selected
+
+        if(!style.equals("Random")){ // Add style if not "random"
             url += "&keyword=" + style
         }
-        if(price != 0){ // User did not select any price
+
+        if(price != 0){ // Add max price if not "any price"
             url += "&maxprice=" + price
         }
+
         url += "&key=" + getString(R.string.google_api_key)
 
         return url
@@ -135,9 +138,9 @@ class MainActivity : AppCompatActivity() {
                 "&key=" + getString(R.string.google_api_key)
     }
 
-    class geocodeResponse(val results:List<geocodeResults>, val status:String)
+    class GeocodeResponse(val results:List<GeocodeResults>, val status:String)
 
-    class geocodeResults(val geometry:Geometry, val formatted_address:String)
+    class GeocodeResults(val geometry:Geometry, val formatted_address:String)
 
 
     // Calls Places API in Async thread and goes to another activity based on input
@@ -197,8 +200,9 @@ class MainActivity : AppCompatActivity() {
 
     class Response(val results:List<Results>, val status:String)
 
-    class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null, val place_id:String="",
-                  val price_level:Int=0, val rating:Double=0.0, val opening_hours:Times, val types:Array<String>)
+    class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null,
+                  val place_id:String="", val price_level:Int=0, val rating:Double=0.0,
+                  val opening_hours:Times, val types:Array<String>)
 
     class Geometry(val location:LocationObj)
 
@@ -206,7 +210,7 @@ class MainActivity : AppCompatActivity() {
 
     class Photos(val photo_reference:String="DEFAULT")
 
-    class Times(val open_now:Boolean)
+    class Times(val open_now:Boolean = true)
 
     // Streams and parses JSON response from Places API
     private
@@ -227,7 +231,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         for(i in 0 until (response.results.size)){
-            var place = convertToPlace(response.results[i])
+            val place = convertToPlace(response.results[i])
             res.add(place)
         }
 
@@ -299,7 +303,7 @@ class MainActivity : AppCompatActivity() {
     private
     fun parseGeocodeJson(input : String) : String {
         var address:String
-        var response = Klaxon().parse<geocodeResponse>(URL(geocodingUrlBuilder(input)).readText())
+        var response = Klaxon().parse<GeocodeResponse>(URL(geocodingUrlBuilder(input)).readText())
         if (response!!.status != "OK") {
             address = "INVALID"
         } else {

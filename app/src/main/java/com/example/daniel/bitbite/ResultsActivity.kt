@@ -1,14 +1,20 @@
 package com.example.daniel.bitbite
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_results.*
 import org.jetbrains.anko.toast
+import com.example.daniel.bitbite.R.id.toolbar
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import org.w3c.dom.Text
 
 
 class ResultsActivity : AppCompatActivity() {
@@ -64,24 +70,31 @@ class ResultsActivity : AppCompatActivity() {
         // Set on click listeners for cards to send to Google Maps
         card1.setOnClickListener {
             if ((3 * page) < listSize) {
-                val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
-                intent.putExtra("location", places[3 * page])
-                startActivity(intent)
+                goToLocation(3 * page)
             }
         }
 
         card2.setOnClickListener {
             if ((3 * page + 1) < listSize) {
-                val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
-                intent.putExtra("location", places[3 * page + 1])
-                startActivity(intent)
+                goToLocation(3 * page + 1)
             }
         }
 
         card3.setOnClickListener {
             if ((3 * page + 2) < listSize) {
+                goToLocation(3 * page + 2)
+            }
+        }
+    }
+
+    // Goes to LocationActivity, calls Place Details API
+    private
+    fun goToLocation(index : Int) {
+        doAsync {
+
+            uiThread {
                 val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
-                intent.putExtra("location", places[3 * page + 2])
+                intent.putExtra("location", places[index])
                 startActivity(intent)
             }
         }
@@ -168,19 +181,19 @@ class ResultsActivity : AppCompatActivity() {
     // Gets TextView for price view based on card number
     private
     fun getPriceView(card : Int) = when(card) {
-            1 -> findViewById(R.id.price1) as TextView
-            2 -> findViewById(R.id.price2) as TextView
-            3 -> findViewById(R.id.price3) as TextView
-            else -> findViewById(R.id.price1) as TextView
+            1 -> findViewById(R.id.price1)
+            2 -> findViewById(R.id.price2)
+            3 -> findViewById(R.id.price3)
+            else -> findViewById<TextView>(R.id.price1)
     }
 
     // Gets ImageView for photo view based on card number
     private
     fun getPhotoView(card : Int) = when(card) {
-            1 -> findViewById(R.id.image1) as ImageView
-            2 -> findViewById(R.id.image2) as ImageView
-            3 -> findViewById(R.id.image3) as ImageView
-            else -> findViewById(R.id.image1) as ImageView
+            1 -> findViewById(R.id.image1)
+            2 -> findViewById(R.id.image2)
+            3 -> findViewById(R.id.image3)
+            else -> findViewById<ImageView>(R.id.image1)
     }
 
     // Gets TextView for rating view based on card number

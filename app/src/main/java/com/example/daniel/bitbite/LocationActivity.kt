@@ -55,7 +55,7 @@ class LocationActivity : AppCompatActivity() {
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
             if(reviews.size != 0) {
                 val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
-                var bundle = Bundle()
+                val bundle = Bundle()
                 bundle.putParcelableArrayList("review_list", reviews)
                 intent.putExtra("myBundle", bundle)
                 startActivity(intent)
@@ -97,15 +97,15 @@ class LocationActivity : AppCompatActivity() {
 
         // Open Now update
         if(place.openNow){
-            findViewById<TextView>(R.id.locationOpen).text = "Yes"
+            findViewById<TextView>(R.id.locationOpen).text = getString(R.string.yes)
             findViewById<TextView>(R.id.locationOpen).setTextColor(Color.GREEN)
         } else {
-            findViewById<TextView>(R.id.locationOpen).text = "No"
+            findViewById<TextView>(R.id.locationOpen).text = getString(R.string.no)
             findViewById<TextView>(R.id.locationOpen).setTextColor(Color.RED)
         }
 
         // Name, price, description, rating
-        findViewById<TextView>(R.id.locationName).text = place.name
+        findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name)
         findViewById<TextView>(R.id.locationPrice).text = place.priceConversion()
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
@@ -116,9 +116,9 @@ class LocationActivity : AppCompatActivity() {
 
         // Update reviews
         if(response.results.reviews != null) { // Reviews array is not empty
-            var input = response.results.reviews!![0]
+            val input = response.results.reviews[0]
             findViewById<TextView>(R.id.locationReviews).text = input.text
-            findViewById<TextView>(R.id.locationReviewAuthor).text = input.author_name
+            findViewById<TextView>(R.id.locationReviewAuthor).text = ellipsizeText(input.author_name)
             findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
                 .getDrawable(this, ratingConversion(input.rating)))
             copyReviews(response.results.reviews)
@@ -177,17 +177,14 @@ class LocationActivity : AppCompatActivity() {
                 "&key=" + getString(R.string.google_api_key)
     }
 
-    data class DetailsResponse(val results:DetailsResults,
-                               val status:String)
+    class DetailsResponse(val results:DetailsResults, val status:String)
 
-    data class DetailsResults(val formatted_phone_number:String = "",
-                              val reviews:List<Reviews>? = null,
-                              val website:String = "")
+    class DetailsResults(val formatted_phone_number:String = "",
+                         val reviews:List<Reviews>, val website:String = "")
 
     @Parcelize
-    data class Reviews(var author_name:String = "",
-                       var text:String = "",
-                       var rating:Int = 0) : Parcelable
+    class Reviews(val author_name:String = "", val text:String = "",
+                  val rating:Int = 0) : Parcelable
 
     // Builds URL for Place Details API call
     private
@@ -213,5 +210,18 @@ class LocationActivity : AppCompatActivity() {
         4 -> R.drawable.star_4
         5 -> R.drawable.star_5
         else -> R.drawable.default_star
+    }
+
+    // Ellipsizes text
+    private
+    fun ellipsizeText(input : String) : String {
+        val MAX_LENGTH = 25
+        val size = input.length
+        var res = input
+
+        if (size > MAX_LENGTH)
+            res = input.substring(0, MAX_LENGTH) + "..."
+
+        return res
     }
 }
