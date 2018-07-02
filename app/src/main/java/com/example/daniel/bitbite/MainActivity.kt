@@ -107,22 +107,22 @@ class MainActivity : AppCompatActivity() {
         // * - choose in settings
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-                "?location=" + lat + "," + lng +
+                "?location=$lat,$lng" +
                 "&type=restaurant" +
                 "&opennow=" + OPENNOW
 
         if(RANKBY.equals("distance")) { // Rank by distance
-            url += "&rankby=" + RANKBY
+            url += "&rankby=$RANKBY"
         } else{ // Rank by prominence (use radius)
-            url += "&radius=" + RADIUS
+            url += "&radius=$RADIUS"
         }
 
         if(!style.equals("Random")){ // Add style if not "random"
-            url += "&keyword=" + style
+            url += "&keyword=$style"
         }
 
         if(price != 0){ // Add max price if not "any price"
-            url += "&maxprice=" + price
+            url += "&maxprice=" + price.toString()
         }
 
         url += "&key=" + getString(R.string.google_api_key)
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity() {
     fun goToResults() {
         if(valid) {
             val intent = Intent(this@MainActivity, ResultsActivity::class.java)
-            var bundle = Bundle()
+            val bundle = Bundle()
             bundle.putParcelableArrayList(EXTRA_PLACES_LIST, placesList)
             intent.putExtra("myBundle", bundle)
             startActivity(intent)

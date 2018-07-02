@@ -263,7 +263,7 @@
                     android:textSize="20sp"
                     android:paddingRight="2dp"
                     android:gravity="end"
-                    android:text="Directions" />
+                    android:text="@string/button_directions" />
             </LinearLayout>
 
         </LinearLayout>

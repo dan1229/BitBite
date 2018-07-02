@@ -14,6 +14,7 @@
 
     <string name="main_activity_logo">Logo for main activity</string>
     <string name="submit_button">Search</string>
+    <string name="button_directions">Directions</string>
     <string name="feeling_lucky_button">I\'m Feeling Lucky</string>'
     <string name="style_spinner_header">Style of food</string>
     <string name="price_spinner_header">Price of food</string>

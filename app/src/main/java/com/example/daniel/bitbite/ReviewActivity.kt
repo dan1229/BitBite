@@ -3,6 +3,7 @@ package com.example.daniel.bitbite
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_review.*
@@ -17,17 +18,19 @@ class ReviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
 
-
         // Get reviews ArrayList
         val bundle = intent.getBundleExtra("myBundle")
         reviews = bundle.getParcelableArrayList<ResultsActivity.Reviews>("review_list")
-                //as ArrayList<LocationActivity.Reviews>
+
+        // Initial update reviews list
+        updateReview(index)
+        ++index
 
         // Set on click listener for next button
         reviewNext.setOnClickListener {
-            if(index <= reviews.size) { // Can go forward
-                ++index
+            if(index < reviews.size) { // Can go forward
                 updateReview(index)
+                ++index
             } else { // Can't go forward
                 toast("End of list - can't go further")
             }
@@ -55,21 +58,23 @@ class ReviewActivity : AppCompatActivity() {
     // Updates review text
     private
     fun updateText(index : Int) {
-        var view = findViewById<TextView>(R.id.reviewReview)
-        view.text = reviews[index].text
+        val view = findViewById<TextView>(R.id.reviewReview)
+        val s = """"""" + reviews[index].text + """""""
+        view.text = s
     }
 
     // Updates review author
     private
     fun updateAuthor(index : Int) {
-        var view = findViewById<TextView>(R.id.reviewAuthor)
-        view.text = reviews[index].author_name
+        val view = findViewById<TextView>(R.id.reviewAuthor)
+        val s = "- ${reviews[index].author_name}"
+        view.text = s
     }
 
     // Updates review rating
     private
     fun updateRating(index : Int) {
-        var view = findViewById<ImageView>(R.id.reviewRating)
+        val view = findViewById<ImageView>(R.id.reviewRating)
         view.setImageDrawable(ContextCompat.getDrawable(this, reviewRatingConversion(reviews[index].rating)))
     }
 

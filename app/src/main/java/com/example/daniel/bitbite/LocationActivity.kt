@@ -83,10 +83,10 @@ class LocationActivity : AppCompatActivity() {
         // Photo and Opennow
         updatePhoto(place.photoRef)
         updateOpennow(place.openNow)
+        updatePrice(place)
 
         // Name, price, description, rating
         findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name)
-        findViewById<TextView>(R.id.locationPrice).text = place.priceConversion()
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
 
@@ -118,6 +118,14 @@ class LocationActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.locationOpen).setTextColor(
                     ContextCompat.getColor(this, R.color.red))
         }
+    }
+
+    // Update price
+    private
+    fun updatePrice(place : Place) {
+        val view = findViewById<TextView>(R.id.locationPrice)
+        val s = "- (${place.priceConversion()})"
+        view.text = s
     }
 
     // Updates website section
