@@ -220,8 +220,8 @@ class MainActivity : AppCompatActivity() {
         var response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
         if(response!!.status != "OK"){ // Response invalid
             valid = false
-            if(response.status.equals("ZERO_RESULTS")) { // No results
-                throw RuntimeException("No results. Please try again.")
+            if(response.status.equals("ZERO_RESULTS")) { // No result
+                throw RuntimeException("No result. Please try again.")
             }
             else { // Other issue
                 throw RuntimeException("Technical error. Please try again.")

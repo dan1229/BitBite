@@ -3,18 +3,23 @@ package com.example.daniel.bitbite
 import android.content.Intent
 import android.media.Image
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.beust.klaxon.Klaxon
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_results.*
 import org.jetbrains.anko.toast
 import com.example.daniel.bitbite.R.id.toolbar
+import kotlinx.android.parcel.Parcelize
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
+import java.net.URL
 
 
 class ResultsActivity : AppCompatActivity() {
@@ -91,14 +96,44 @@ class ResultsActivity : AppCompatActivity() {
     private
     fun goToLocation(index : Int) {
         doAsync {
+            var response = callDetailsAPI(index)
 
             uiThread {
                 val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
-                intent.putExtra("location", places[index])
+                intent.putExtra("place", places[index])
+                intent.putExtra("details_response", response)
                 startActivity(intent)
             }
         }
     }
+
+
+    // Builds URL for Place Details API call
+    private
+    fun detailsSearchUrlBuilder(id : String) : String {
+        return "https://maps.googleapis.com/maps/api/place/details/json?" +
+                "placeid=" + id +
+                "&key=" + getString(R.string.google_api_key)
+    }
+
+    // Calls Place Details API
+    private
+    fun callDetailsAPI(index : Int) : DetailsResponse? {
+        Log.d("STREAM", detailsSearchUrlBuilder(places[index].placeID))
+        return Klaxon().parse<DetailsResponse>(URL(
+                detailsSearchUrlBuilder(places[index].placeID)).readText())
+    }
+
+    @Parcelize
+    class DetailsResponse(val result:DetailsResults, val status:String) : Parcelable
+
+    @Parcelize
+    class DetailsResults(val formatted_phone_number:String = "",
+                         val reviews:List<Reviews>, val website:String = "") : Parcelable
+
+    @Parcelize
+    class Reviews(val author_name:String = "", val text:String = "",
+                  val rating:Int = 0) : Parcelable
 
     // Calls update function for each segment of card
     private

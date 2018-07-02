@@ -10,7 +10,7 @@ import org.jetbrains.anko.toast
 
 class ReviewActivity : AppCompatActivity() {
 
-    var reviews = ArrayList<LocationActivity.Reviews>(5)
+    var reviews = ArrayList<ResultsActivity.Reviews>(5)
     var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class ReviewActivity : AppCompatActivity() {
 
         // Get reviews ArrayList
         val bundle = intent.getBundleExtra("myBundle")
-        reviews = bundle.getParcelableArrayList<LocationActivity.Reviews>("review_list")
+        reviews = bundle.getParcelableArrayList<ResultsActivity.Reviews>("review_list")
                 //as ArrayList<LocationActivity.Reviews>
 
         // Set on click listener for next button
@@ -70,13 +70,12 @@ class ReviewActivity : AppCompatActivity() {
     private
     fun updateRating(index : Int) {
         var view = findViewById<ImageView>(R.id.reviewRating)
-        findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(
-                this, ratingConversion(reviews[index].rating)))
+        view.setImageDrawable(ContextCompat.getDrawable(this, reviewRatingConversion(reviews[index].rating)))
     }
 
     // Converts rating to drawable of stars based on value
     private
-    fun ratingConversion(rating : Int) = when (rating) {
+    fun reviewRatingConversion(rating : Int) = when (rating) {
         1 -> R.drawable.star_1
         2 -> R.drawable.star_2
         3 -> R.drawable.star_3
