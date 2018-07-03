@@ -42,7 +42,7 @@
                 android:ellipsize="end"
                 android:gravity="start"
                 android:text="@string/default_review"
-                android:textSize="22sp" />
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:id="@+id/reviewAuthor"
@@ -52,7 +52,7 @@
                 android:gravity="start"
                 android:singleLine="true"
                 android:text="@string/default_review_author"
-                android:textSize="28sp" />
+                android:textSize="@dimen/text_large" />
 
             <ImageView
                 android:id="@+id/reviewRating"
@@ -73,38 +73,33 @@
         android:layout_weight="1" />
 
     <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp"
-        android:gravity="bottom"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        app:layout_constraintVertical_weight="1.4">
         <ImageButton
             android:id="@+id/reviewPrev"
             style="@style/AppTheme.CircleButton"
             android:layout_width="@dimen/circle_button_diameter"
             android:layout_height="@dimen/circle_button_diameter"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
             android:scaleType="fitCenter"
             android:scaleX="-1"
+            android:padding="1dp"
+            android:layout_gravity="bottom"
             app:srcCompat="@drawable/arrow" />
-
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
         <ImageButton
             android:id="@+id/reviewNext"
             style="@style/AppTheme.CircleButton"
             android:layout_width="@dimen/circle_button_diameter"
             android:layout_height="@dimen/circle_button_diameter"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
             android:scaleType="fitCenter"
+            android:padding="1dp"
+            android:layout_gravity="bottom"
             app:srcCompat="@drawable/arrow" />
     </LinearLayout>
 </LinearLayout>
