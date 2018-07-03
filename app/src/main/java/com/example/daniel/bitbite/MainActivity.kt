@@ -8,15 +8,19 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.CircularProgressDrawable
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.beust.klaxon.*
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
@@ -189,6 +193,8 @@ class MainActivity : AppCompatActivity() {
                 val response = callDetailsAPI(this@MainActivity, placesList[0])
 
                 uiThread {
+                    var view = findViewById<ProgressBar>(R.id.progress_bar_main)
+                    view.setVisibility(View.VISIBLE)
                     val intent = Intent(this@MainActivity, LocationActivity::class.java)
                     intent.putExtra("place", placesList[0])
                     intent.putExtra("details_response", response)
@@ -342,6 +348,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         builder.show()
+
+        // Enter key listener
+        locationEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                Log.d("ENTER", "ENTER ENTER ENTER ENTER")
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
     // Goes through Async call for Geocoding API and checks response

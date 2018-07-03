@@ -1,7 +1,6 @@
 package com.example.daniel.bitbite
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_location.*
-import org.jetbrains.anko.makeCall
 import org.jetbrains.anko.toast
 
 class LocationActivity : AppCompatActivity() {
@@ -37,7 +35,7 @@ class LocationActivity : AppCompatActivity() {
 
         // Set on click listener for Directions Button
         buttonDirections.setOnClickListener{
-            place.openWebPage(this)
+            place.openMapsPage(this)
         }
 
         // Set on click listener for Reviews Layout
@@ -93,7 +91,7 @@ class LocationActivity : AppCompatActivity() {
         // Update website, phone and review
         updateWebsite(response!!.result.website)
         updatePhone(response.result.formatted_phone_number)
-        updateReviws(response.result.reviews)
+        updateReviews(response.result.reviews)
     }
 
     // Update photo
@@ -154,7 +152,7 @@ class LocationActivity : AppCompatActivity() {
 
     // Update reviews
     private
-    fun updateReviws(reviews : List<Reviews>) {
+    fun updateReviews(reviews : List<Reviews>) {
         val input = reviews[0]
 
         if(!reviews.isEmpty()) { // Reviews array is not empty

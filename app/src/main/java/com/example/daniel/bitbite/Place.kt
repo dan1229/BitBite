@@ -24,9 +24,9 @@ class Place (var name:String, var placeID:String, var description:String, var ph
     // =============================================================================================
     // Methods
 
-    //***** openWebPage *****//
+    //***** openMapsPage *****//
     // Opens web page for Google Maps
-    fun openWebPage( mContext : Context) {
+    fun openMapsPage(mContext : Context) {
         val uris = Uri.parse(makeGoogleMapsURL())
         val intents = Intent(Intent.ACTION_VIEW, uris)
         val bundle = Bundle()
