@@ -1,6 +1,7 @@
 package com.example.daniel.bitbite
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -347,17 +348,17 @@ class MainActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        builder.show()
-
         // Enter key listener
-        locationEditText.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        builder.setOnKeyListener(DialogInterface.OnKeyListener { dialog, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                //Perform Code
-                Log.d("ENTER", "ENTER ENTER ENTER ENTER")
+                geocodeInput(locationEditText)
+                dialog.dismiss()
                 return@OnKeyListener true
             }
             false
         })
+
+        builder.show()
     }
 
     // Goes through Async call for Geocoding API and checks response
