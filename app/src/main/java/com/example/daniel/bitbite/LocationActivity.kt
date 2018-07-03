@@ -17,8 +17,8 @@ class LocationActivity : AppCompatActivity() {
 
     // Variables
     lateinit var place:Place
-    lateinit var response:ResultsActivity.DetailsResponse
-    var reviews = ArrayList<ResultsActivity.Reviews>(5)
+    lateinit var response:DetailsResponse
+    var reviews = ArrayList<Reviews>(5)
     var website = ""
     var phone = ""
 
@@ -78,7 +78,7 @@ class LocationActivity : AppCompatActivity() {
 
     // Updates information displayed
     private
-    fun updateLocation(response : ResultsActivity.DetailsResponse?) {
+    fun updateLocation(response : DetailsResponse?) {
 
         // Photo and Opennow
         updatePhoto(place.photoRef)
@@ -86,7 +86,7 @@ class LocationActivity : AppCompatActivity() {
         updatePrice(place)
 
         // Name, price, description, rating
-        findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name, 25)
+        findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name)
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
 
@@ -154,7 +154,7 @@ class LocationActivity : AppCompatActivity() {
 
     // Update reviews
     private
-    fun updateReviws(reviews : List<ResultsActivity.Reviews>) {
+    fun updateReviws(reviews : List<Reviews>) {
         val input = reviews[0]
 
         if(!reviews.isEmpty()) { // Reviews array is not empty
@@ -174,7 +174,7 @@ class LocationActivity : AppCompatActivity() {
 
     // Copies reviews array to store locally
     private
-    fun copyReviews(input : List<ResultsActivity.Reviews>?) {
+    fun copyReviews(input : List<Reviews>?) {
         for(i in 0..(input!!.size - 1))
             reviews.add(input[i])
     }

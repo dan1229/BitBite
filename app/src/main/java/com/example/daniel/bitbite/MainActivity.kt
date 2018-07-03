@@ -181,13 +181,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Go to LocationActivity.kt, pass placesList[0]
+    // Go to LocationActivity.kt, call PlaceDetails API
     private
     fun feelingLucky() {
         if(valid) {
-            val intent = Intent(this@MainActivity, LocationActivity::class.java)
-            intent.putExtra("location", placesList[0])
-            startActivity(intent)
+            doAsync {
+                val response = callDetailsAPI(this@MainActivity, placesList[0])
+
+                uiThread {
+                    val intent = Intent(this@MainActivity, LocationActivity::class.java)
+                    intent.putExtra("place", placesList[0])
+                    intent.putExtra("details_response", response)
+                    startActivity(intent)
+                }
+            }
         }
     }
 

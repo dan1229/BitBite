@@ -11,7 +11,7 @@ import org.jetbrains.anko.toast
 
 class ReviewActivity : AppCompatActivity() {
 
-    var reviews = ArrayList<ResultsActivity.Reviews>(5)
+    var reviews = ArrayList<Reviews>(5)
     var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class ReviewActivity : AppCompatActivity() {
 
         // Get reviews ArrayList
         val bundle = intent.getBundleExtra("myBundle")
-        reviews = bundle.getParcelableArrayList<ResultsActivity.Reviews>("review_list")
+        reviews = bundle.getParcelableArrayList<Reviews>("review_list")
 
         // Initial update reviews list
         updateReview(index)

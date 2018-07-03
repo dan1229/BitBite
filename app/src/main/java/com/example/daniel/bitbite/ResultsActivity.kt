@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_results.*
 import org.jetbrains.anko.toast
 import com.example.daniel.bitbite.R.id.toolbar
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.content_results.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
@@ -31,7 +32,6 @@ class ResultsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_results)
-        toolbar_results.title = "Results"
         setSupportActionBar(toolbar_results)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -75,54 +75,37 @@ class ResultsActivity : AppCompatActivity() {
         // Set on click listeners for cards to send to Google Maps
         card1.setOnClickListener {
             if ((3 * page) < listSize) {
-                goToLocation(3 * page)
+                goToLocation(places[3 * page])
             }
         }
 
         card2.setOnClickListener {
             if ((3 * page + 1) < listSize) {
-                goToLocation(3 * page + 1)
+                goToLocation(places[3 * page + 1])
             }
         }
 
         card3.setOnClickListener {
             if ((3 * page + 2) < listSize) {
-                goToLocation(3 * page + 2)
+                goToLocation(places[3 * page + 2])
             }
         }
     }
 
     // Goes to LocationActivity, calls Place Details API
     private
-    fun goToLocation(index : Int) {
+    fun goToLocation(place : Place) {
         doAsync {
-            val response = callDetailsAPI(index)
+            val response = callDetailsAPI(this@ResultsActivity, place)
 
             uiThread {
                 val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
-                intent.putExtra("place", places[index])
+                intent.putExtra("place", place)
                 intent.putExtra("details_response", response)
                 startActivity(intent)
             }
         }
     }
-
-    // Calls Place Details API
-    private
-    fun callDetailsAPI(index : Int) : DetailsResponse? {
-        return Klaxon().parse<DetailsResponse>(URL(places[index].detailsSearchUrlBuilder()).readText())
-    }
-
-    @Parcelize
-    class DetailsResponse(val result:DetailsResults, val status:String) : Parcelable
-
-    @Parcelize
-    class DetailsResults(val formatted_phone_number:String = "",
-                         val reviews:List<Reviews>, val website:String = "") : Parcelable
-
-    @Parcelize
-    class Reviews(val author_name:String = "", val text:String = "",
-                  val rating:Int = 0) : Parcelable
 
     // Calls update function for each segment of card
     private
