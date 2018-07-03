@@ -96,7 +96,7 @@ class ResultsActivity : AppCompatActivity() {
     private
     fun goToLocation(index : Int) {
         doAsync {
-            var response = callDetailsAPI(index)
+            val response = callDetailsAPI(index)
 
             uiThread {
                 val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
@@ -107,21 +107,10 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
-
-    // Builds URL for Place Details API call
-    private
-    fun detailsSearchUrlBuilder(id : String) : String {
-        return "https://maps.googleapis.com/maps/api/place/details/json?" +
-                "placeid=" + id +
-                "&key=" + getString(R.string.google_api_key)
-    }
-
     // Calls Place Details API
     private
     fun callDetailsAPI(index : Int) : DetailsResponse? {
-        Log.d("STREAM", detailsSearchUrlBuilder(places[index].placeID))
-        return Klaxon().parse<DetailsResponse>(URL(
-                detailsSearchUrlBuilder(places[index].placeID)).readText())
+        return Klaxon().parse<DetailsResponse>(URL(places[index].detailsSearchUrlBuilder()).readText())
     }
 
     @Parcelize
@@ -176,7 +165,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updatePhoto(card : Int, index : Int) {
         val view = getPhotoView(card)
         if((index >= 0) && (places[index].photoRef != "DEFAULT")){ // In bounds
-            placePhotoCall(places[index].photoRef, view)
+            places[index].placePhotoCall(this, view)
         } else{ // Out of bounds, default photo
             view.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_place_image))
         }
@@ -249,30 +238,14 @@ class ResultsActivity : AppCompatActivity() {
             else -> findViewById(R.id.description1) as TextView
     }
 
-    // Calls Place Photo API and returns image
-    private
-    fun placePhotoCall(ref : String, view : ImageView) {
-        Glide.with(this).load(createPhotosRequestURL(ref)).into(view)
-    }
-
-    // Creates URL for Place Photo API request
-    private
-    fun createPhotosRequestURL(ref : String) : String {
-        return  "https://maps.googleapis.com/maps/api/place/photo?" +
-                "maxwidth=1000" +
-                "&photoreference=" + ref +
-                "&key=" + getString(R.string.google_api_key)
-    }
-
     // Ellipsizes text
     private
-    fun ellipsizeText(input : String) : String {
-        val MAX_LENGTH = 20
-        var size = input.length
+    fun ellipsizeText(input : String, max : Int = 20) : String {
+        val size = input.length
         var res = input
 
-        if (size > MAX_LENGTH)
-            res = input.substring(0, MAX_LENGTH) + "..."
+        if (size > max)
+            res = input.substring(0, max - 3) + "..."
 
         return res
     }

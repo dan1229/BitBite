@@ -86,7 +86,7 @@ class LocationActivity : AppCompatActivity() {
         updatePrice(place)
 
         // Name, price, description, rating
-        findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name)
+        findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name, 25)
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
 
@@ -207,13 +207,12 @@ class LocationActivity : AppCompatActivity() {
 
     // Ellipsizes text
     private
-    fun ellipsizeText(input : String) : String {
-        val MAX_LENGTH = 25
+    fun ellipsizeText(input : String, max : Int = 20) : String {
         val size = input.length
         var res = input
 
-        if (size > MAX_LENGTH)
-            res = input.substring(0, MAX_LENGTH - 3) + "..."
+        if (size > max)
+            res = input.substring(0, max - 3) + "..."
 
         return res
     }

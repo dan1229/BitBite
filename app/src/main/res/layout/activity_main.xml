@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:text="@string/style_spinner_header"
-            android:textSize="22sp"
+            android:textSize="@dimen/text_large"
             app:layout_constraintBottom_toBottomOf="@+id/styleSpinner"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:text="@string/price_spinner_header"
-            android:textSize="22sp"
+            android:textSize="@dimen/text_large"
             app:layout_constraintBottom_toTopOf="@id/priceSpinner"
             app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
 
@@ -106,7 +106,7 @@
             android:paddingRight="32dp"
             android:paddingTop="12dp"
             android:text="@string/submit_button"
-            android:textSize="26sp"
+            android:textSize="@dimen/text_large"
             app:layout_constraintBottom_toTopOf="@id/feelingLuckyButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -120,6 +120,7 @@
             android:layout_marginBottom="24dp"
             android:padding="16dp"
             android:text="@string/feeling_lucky_button"
+            android:textSize="@dimen/text_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

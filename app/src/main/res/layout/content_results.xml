@@ -1,11 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutResults"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    app:layout_constraintVertical_chainStyle="spread_inside"
+    android:orientation="vertical"
     tools:context=".ResultsActivity"
-    tools:showIn="@layout/activity_results">
+    tools:showIn="@layout/activity_results" >
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintBottom_toTopOf="@id/card2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="3"
+        card_view:cardBackgroundColor="@color/card_light"
+        card_view:cardCornerRadius="@dimen/card_radius"
+        card_view:cardElevation="@dimen/card_elevation">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3">
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/default_place_image" />
+            </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/name1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/default_name"
+                    android:textSize="@dimen/text_large" />
+                <ImageView
+                    android:id="@+id/rating1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:scaleType="fitEnd"
+                    app:srcCompat="@drawable/default_star" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/description1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/default_description" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/price1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/default_price" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintBottom_toTopOf="@id/card3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card1"
+        app:layout_constraintVertical_weight="3"
+        card_view:cardBackgroundColor="@color/card_light"
+        card_view:cardCornerRadius="@dimen/card_radius"
+        card_view:cardElevation="@dimen/card_elevation">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3">
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/default_place_image" />
+            </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/default_name"
+                    android:textSize="@dimen/text_large" />
+                <ImageView
+                    android:id="@+id/rating2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:scaleType="fitEnd"
+                    app:srcCompat="@drawable/default_star" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/description2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/default_description" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/price2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/default_price" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintBottom_toTopOf="@id/buttons"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card2"
+        app:layout_constraintVertical_weight="3"
+        card_view:cardBackgroundColor="@color/card_light"
+        card_view:cardCornerRadius="@dimen/card_radius"
+        card_view:cardElevation="@dimen/card_elevation">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3">
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/default_place_image" />
+            </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/name3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="@string/default_name"
+                    android:textSize="@dimen/text_large" />
+                <ImageView
+                    android:id="@+id/rating3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="end"
+                    android:padding="4dp"
+                    android:scaleType="fitEnd"
+                    app:srcCompat="@drawable/default_star" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/description3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/default_description" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/price3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/default_price" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card3"
+        app:layout_constraintVertical_weight="1.4">
+        <ImageButton
+            android:id="@+id/displayPrev3"
+            style="@style/AppTheme.CircleButton"
+            android:layout_width="@dimen/circle_button_diameter"
+            android:layout_height="@dimen/circle_button_diameter"
+            android:scaleType="fitCenter"
+            android:scaleX="-1"
+            android:padding="1dp"
+            android:layout_gravity="bottom"
+            app:srcCompat="@drawable/arrow" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <ImageButton
+            android:id="@+id/displayNext3"
+            style="@style/AppTheme.CircleButton"
+            android:layout_width="@dimen/circle_button_diameter"
+            android:layout_height="@dimen/circle_button_diameter"
+            android:scaleType="fitCenter"
+            android:padding="1dp"
+            android:layout_gravity="bottom"
+            app:srcCompat="@drawable/arrow" />
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

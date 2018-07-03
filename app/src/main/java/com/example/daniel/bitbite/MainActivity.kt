@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     // Settings variables
     var OPENNOW = "true"
-    var RADIUS = "40233"
+    var RADIUS = "15"
     var RANKBY = "distance"
     var DEFAULTLOCATION = ""
     var EMPTY = ""
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
         // Get settings
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        RADIUS = (prefs.getInt("radius", 40233) / 0.00062137).toString()
+        RADIUS = (prefs.getInt("radius", 15) / 0.00062137).toString()
         OPENNOW = prefs.getBoolean("opennow", true).toString()
         RANKBY = prefs.getString("sortby", "distance")
         // DEFAULTLOCATION = prefs.getString("defaultlocation", "")
@@ -191,6 +191,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Error dialog for exceptions
     private
     fun errorAlert(input : String) {
         alert(input, "Uh Oh!") {
@@ -215,9 +216,9 @@ class MainActivity : AppCompatActivity() {
     // Streams and parses JSON response from Places API
     private
     fun streamJSON() : ArrayList<Place> {
-        var res = ArrayList<Place>()
+        val res = ArrayList<Place>()
         Log.d("STREAM", placeSearchUrlBuilder())
-        var response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
+        val response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
         if(response!!.status != "OK"){ // Response invalid
             valid = false
             if(response.status.equals("ZERO_RESULTS")) { // No result
@@ -474,92 +475,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-
-
-
-//
-//    /**
-//     * A [FragmentPagerAdapter] that returns a fragment corresponding to
-//     * one of the sections/tabs/pages.
-//     */
-//    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-//
-//        override fun getItem(position: Int): Fragment {
-//            // getItem is called to instantiate the fragment for the given page.
-//            // Return a PlaceholderFragment (defined as a static inner class below).
-//            return PlaceholderFragment.newInstance(position + 1)
-//        }
-//
-//        override fun getCount(): Int {
-//            // Show 3 total pages.
-//            return 3
-//        }
-//    }
-//
-//    /**
-//     * A placeholder fragment containing a simple view.
-//     */
-//    class PlaceholderFragment : Fragment() {
-//
-//        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-//                                  savedInstanceState: Bundle?): View? {
-//            val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-//            rootView.section_label.text = getString(R.string.section_format, arguments.getInt(ARG_SECTION_NUMBER))
-//            return rootView
-//        }
-//
-//        companion object {
-//            /**
-//             * The fragment argument representing the section number for this
-//             * fragment.
-//             */
-//            private val ARG_SECTION_NUMBER = "section_number"
-//
-//            /**
-//             * Returns a new instance of this fragment for the given section
-//             * number.
-//             */
-//            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-//                val fragment = PlaceholderFragment()
-//                val args = Bundle()
-//                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-//                fragment.arguments = args
-//                return fragment
-//            }
-//        }
-//    }
-
-
-
-    // Test dialog - ya know for testing stuff
-    private
-    fun testDialog(s : String) {
-        // TEST DIALOG
-        val builder = AlertDialog.Builder(this@MainActivity)
-        builder.setMessage(s)
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-        // TEST DIALOG
-    }
-
-    // Print Place objects - again for testing
-    private
-    fun printPlace(place : Place) {
-        testDialog("name: " + place.name +
-                "\nrating: " + place.rating +
-                "\nprice: " + place.price +
-                "\ndesc: " + place.description)
-    }
-
-    // Return string of place info - again for testing
-    private
-    fun placeString(place : Place) : String {
-        return "name: " + place.name +
-                "\nrating: " + place.rating +
-                "\nprice: " + place.price +
-                "\ndesc: " + place.description
     }
 
 }  // END CLASS MainActivity.kt

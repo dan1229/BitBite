@@ -2,9 +2,12 @@ package com.example.daniel.bitbite
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
@@ -73,6 +76,28 @@ class Place (var name:String, var placeID:String, var description:String, var ph
             this.googleMapsUrl = url
         }
         return url
+    }
+
+
+    // Calls Place Photo API and returns image
+    fun placePhotoCall(context : Context, view : ImageView) {
+        Glide.with(context).load(photoCallUrlBuilder(this.photoRef)).into(view)
+    }
+
+    // Builds URL for Place Photo API call
+    private
+    fun photoCallUrlBuilder(ref : String) : String {
+        return  "https://maps.googleapis.com/maps/api/place/photo?" +
+                "maxwidth=1000" +
+                "&photoreference=" + ref +
+                "&key=" + Resources.getSystem().getString(R.string.google_api_key)
+    }
+
+    // Builds URL for Place Details API call
+    fun detailsSearchUrlBuilder() : String {
+        return "https://maps.googleapis.com/maps/api/place/details/json?" +
+                "placeid=" + this.placeID +
+                "&key=" + Resources.getSystem().getString(R.string.google_api_key)
     }
 
 } // END CLASS PLACE
