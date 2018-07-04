@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     var changed = false
     var valid = false
     var style = "Random"
-    var price = -1
+    var price = 0
     var lat = 0.0
     var lng = 0.0
 
@@ -203,14 +203,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    // Error dialog for exceptions
-    private
-    fun errorAlert(input : String) {
-        alert(input, "Uh Oh!") {
-            okButton { dialog -> dialog.dismiss()  }
-        }.show()
     }
 
     class Response(val results:List<Results>, val status:String)
@@ -497,8 +489,15 @@ class MainActivity : AppCompatActivity() {
                 // Go to Google Play store
             }
         }
-
         return super.onOptionsItemSelected(item)
+    }
+
+    // Error dialog for exceptions
+    private
+    fun errorAlert(input : String) {
+        alert(input, "Uh Oh!") {
+            okButton { dialog -> dialog.dismiss()  }
+        }.show()
     }
 
 }  // END CLASS MainActivity.kt

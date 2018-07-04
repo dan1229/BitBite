@@ -38,11 +38,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="6dp"
-                    android:orientation="horizontal">
                     <TextView
                         android:id="@+id/locationName"
                         android:textSize="@dimen/text_x_large"
@@ -51,16 +46,6 @@
                         android:gravity="start"
                         android:singleLine="true"
                         android:text="@string/default_name"/>
-                    <TextView
-                        android:id="@+id/locationPrice"
-                        android:textSize="@dimen/text_x_large"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="6dp"
-                        android:paddingLeft="6dp"
-                        android:gravity="end"
-                        android:text="" />
-                </LinearLayout>
                 <ImageView
                     android:id="@+id/locationRating"
                     android:layout_width="96dp"
@@ -70,14 +55,32 @@
                     android:gravity="start"
                     android:scaleType="fitStart"
                     app:srcCompat="@drawable/default_star" />
-                <TextView
-                    android:id="@+id/locationDescription"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="@dimen/text_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/default_description" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/locationDescription"
+                        android:layout_marginBottom="4dp"
+                        android:textSize="@dimen/text_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/default_description" />
+                    <TextView
+                        android:id="@+id/locationDot1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:text="@string/dot"/>
+                    <TextView
+                        android:id="@+id/locationPrice"
+                        android:textSize="@dimen/text_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="@string/default_price" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -110,7 +113,7 @@
                     android:layout_marginBottom="4dp">
                     <TextView
                         android:id="@+id/locationReviewAuthor"
-                        android:textSize="@dimen/text_large"
+                        android:textSize="@dimen/text_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -160,7 +163,7 @@
                         android:layout_weight="1" />
                     <TextView
                         android:id="@+id/locationWebsite"
-                        android:textSize="@dimen/text_large"
+                        android:textSize="@dimen/text_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
@@ -187,7 +190,7 @@
                         android:layout_weight="1" />
                     <TextView
                         android:id="@+id/locationPhone"
-                        android:textSize="@dimen/text_large"
+                        android:textSize="@dimen/text_normal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLength="20"
@@ -227,7 +230,6 @@
 
             </LinearLayout>
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -236,30 +238,47 @@
                 android:background="@android:color/darker_gray"/>
 
             <LinearLayout
-                android:id="@+id/buttonDirections"
-                style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_gravity="center"
-                android:orientation="horizontal" >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxHeight="30dp"
-                    android:maxWidth="30dp"
-                    android:scaleType="fitStart"
-                    android:src="@android:drawable/ic_menu_directions" />
+                android:layout_height="wrap_content" >
                 <TextView
-                    android:id="@+id/search2"
+                    android:id="@+id/moreInfoTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:textSize="@dimen/text_large"
-                    android:text="@string/button_directions" />
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@color/colorPrimary"
+                    android:text="More Info"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+                <LinearLayout
+                    android:id="@+id/buttonDirections"
+                    style="@style/AppTheme.RoundedCornerMaterialButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal" >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="30dp"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitStart"
+                        android:src="@android:drawable/ic_menu_directions" />
+                    <TextView
+                        android:id="@+id/search2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:textSize="@dimen/text_large"
+                        android:text="@string/button_directions" />
+                </LinearLayout>
             </LinearLayout>
+
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

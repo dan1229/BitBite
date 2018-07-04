@@ -122,8 +122,7 @@ class LocationActivity : AppCompatActivity() {
     private
     fun updatePrice(place : Place) {
         val view = findViewById<TextView>(R.id.locationPrice)
-        val s = "- (${place.priceConversion()})"
-        view.text = s
+        view.text = place.priceConversion()
     }
 
     // Updates website section
@@ -131,7 +130,7 @@ class LocationActivity : AppCompatActivity() {
     fun updateWebsite(input : String) {
         val view = findViewById<TextView>(R.id.locationWebsite)
         if(!input.equals(""))
-            view.text = ellipsizeText(input)
+            view.text = ellipsizeText(input, 30)
         else
             view.text = resources.getString(R.string.default_website)
         view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -156,8 +155,10 @@ class LocationActivity : AppCompatActivity() {
         val input = reviews[0]
 
         if(!reviews.isEmpty()) { // Reviews array is not empty
-            findViewById<TextView>(R.id.locationReviews).text = input.text
-            findViewById<TextView>(R.id.locationReviewAuthor).text = ellipsizeText(input.author_name)
+            var s = """"""" + input.text + """""""
+            findViewById<TextView>(R.id.locationReviews).text = s
+            s = "- " + ellipsizeText(input.author_name)
+            findViewById<TextView>(R.id.locationReviewAuthor).text = s
             findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
                     .getDrawable(this, ratingConversion(input.rating)))
             copyReviews(reviews)

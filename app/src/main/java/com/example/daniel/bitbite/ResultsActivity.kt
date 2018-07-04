@@ -74,21 +74,18 @@ class ResultsActivity : AppCompatActivity() {
 
         // Set on click listeners for cards to send to Google Maps
         card1.setOnClickListener {
-            if ((3 * page) < listSize) {
+            if ((3 * page) < listSize)
                 goToLocation(places[3 * page])
-            }
         }
 
         card2.setOnClickListener {
-            if ((3 * page + 1) < listSize) {
+            if ((3 * page + 1) < listSize)
                 goToLocation(places[3 * page + 1])
-            }
         }
 
         card3.setOnClickListener {
-            if ((3 * page + 2) < listSize) {
+            if ((3 * page + 2) < listSize)
                 goToLocation(places[3 * page + 2])
-            }
         }
     }
 

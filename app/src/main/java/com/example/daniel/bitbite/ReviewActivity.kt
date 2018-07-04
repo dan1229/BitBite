@@ -135,4 +135,5 @@ class ReviewActivity : AppCompatActivity() {
 
         return res
     }
-}
+
+} // END CLASS ReviewActivity.kt

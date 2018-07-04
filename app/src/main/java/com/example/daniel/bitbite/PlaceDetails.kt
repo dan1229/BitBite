@@ -10,7 +10,14 @@ import java.net.URL
 
 // Calls Place Details API
 fun callDetailsAPI(context : Context, place : Place) : DetailsResponse? {
-    return Klaxon().parse<DetailsResponse>(URL(place.detailsSearchUrlBuilder(context)).readText())
+    return Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder(context, place.placeID)).readText())
+}
+
+// Builds URL for Place Details API call
+fun detailsSearchUrlBuilder(context : Context, id : String) : String {
+    return "https://maps.googleapis.com/maps/api/place/details/json?" +
+            "placeid=" + id +
+            "&key=" + context.getString(R.string.google_api_key)
 }
 
 @Parcelize
