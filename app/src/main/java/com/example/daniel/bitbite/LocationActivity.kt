@@ -31,6 +31,9 @@ class LocationActivity : AppCompatActivity() {
         // Get place
         place = intent.getParcelableExtra("place")
 
+        // Update photo
+        updatePhoto(place.photoRef)
+
         // Place Details call
         doAsync {
             response = callDetailsAPI(this@LocationActivity, place) as DetailsResponse
