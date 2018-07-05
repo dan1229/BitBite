@@ -45,6 +45,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:singleLine="true"
+                        android:ellipsize="end"
                         android:text="@string/default_name"/>
                 <ImageView
                     android:id="@+id/locationRating"

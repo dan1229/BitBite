@@ -24,19 +24,12 @@
             android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            app:title="@string/app_name" >
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <ProgressBar
-        android:id="@+id/progress_bar_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:indeterminateDrawable="@drawable/circular_spinner"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayoutMain"

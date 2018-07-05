@@ -84,7 +84,7 @@ class LocationActivity : AppCompatActivity() {
         updatePrice(place)
 
         // Name, price, description, rating
-        findViewById<TextView>(R.id.locationName).text = ellipsizeText(place.name)
+        findViewById<TextView>(R.id.locationName).text = place.name
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
 

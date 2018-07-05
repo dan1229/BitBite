@@ -8,18 +8,10 @@ import com.beust.klaxon.Klaxon
 import kotlinx.android.parcel.Parcelize
 import java.net.URL
 
-// Calls Place Details API
-fun callDetailsAPI(context : Context, place : Place) : DetailsResponse? {
-    return Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder(context, place.placeID)).readText())
-}
+/**====================================================================================================**/
+/** Place Details API **/
 
-// Builds URL for Place Details API call
-fun detailsSearchUrlBuilder(context : Context, id : String) : String {
-    return "https://maps.googleapis.com/maps/api/place/details/json?" +
-            "placeid=" + id +
-            "&key=" + context.getString(R.string.google_api_key)
-}
-
+// JSON Class Representations
 @Parcelize
 class DetailsResponse(val result:DetailsResults, val status:String) : Parcelable
 
@@ -30,3 +22,20 @@ class DetailsResults(val formatted_phone_number:String = "",
 @Parcelize
 class Reviews(val author_name:String = "", val text:String = "",
               val rating:Int = 0) : Parcelable
+
+// calLDetailsAPI()
+// Calls Details API and parses response
+fun callDetailsAPI(context : Context, place : Place) : DetailsResponse? {
+    return Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder(context, place.placeID)).readText())
+}
+
+// detailsSearchUrlBuilder()
+// Builds URL for Details Search API call
+fun detailsSearchUrlBuilder(context : Context, id : String) : String {
+    return "https://maps.googleapis.com/maps/api/place/details/json?" +
+            "placeid=" + id +
+            "&key=" + context.getString(R.string.google_api_key)
+
+}
+
+/** END PlaceDetails.kt **/

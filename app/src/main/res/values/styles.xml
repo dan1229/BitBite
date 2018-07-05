@@ -8,6 +8,18 @@
         <item name="android:fontFamily">@font/product_sans</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="cardBackgroundColor">@color/card_light</item>
+    </style>
+
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/product_sans</item>
+        <item name="android:textColor">@color/dmTextPrimary</item>
+        <item name="android:textColorSecondary">@color/dmTextSecondary</item>
+        <item name="android:colorBackground">@color/dmColorBackground</item>
+        <item name="cardBackgroundColor">@color/card_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
