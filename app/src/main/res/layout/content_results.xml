@@ -16,6 +16,7 @@
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card1"
+        android:transitionName="card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="3dp"
@@ -39,6 +40,7 @@
                 android:layout_weight="3">
                 <ImageView
                     android:id="@+id/image1"
+                    android:transitionName="place_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
@@ -97,6 +99,7 @@
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card2"
+        android:transitionName="card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="3dp"
@@ -120,6 +123,7 @@
                 android:layout_weight="3">
                 <ImageView
                     android:id="@+id/image2"
+                    android:transitionName="place_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
@@ -178,6 +182,7 @@
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card3"
+        android:transitionName="card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="3dp"
@@ -201,6 +206,7 @@
                 android:layout_weight="3">
                 <ImageView
                     android:id="@+id/image3"
+                    android:transitionName="place_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"

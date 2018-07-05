@@ -33,19 +33,12 @@ class LocationActivity : AppCompatActivity() {
         // Populate Location card
         updateLocation(response)
 
-        // Set on click listener for Directions Button -> Google Maps
-        buttonDirections.setOnClickListener{
-            place.openMapsPage(this)
-        }
-
         // Set on click listener for Reviews -> ReviewActivity.kt
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
             if(reviews.size > 0) {
                 val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
-                val bundle = Bundle()
-                bundle.putParcelableArrayList("review_list", reviews)
-                bundle.putString("place_id", place.placeID)
-                intent.putExtra("myBundle", bundle)
+                intent.putParcelableArrayListExtra("review_list", reviews)
+                intent.putExtra("place_id", place.placeID)
                 startActivity(intent)
             }
             else {
@@ -72,6 +65,20 @@ class LocationActivity : AppCompatActivity() {
                 intent.data = Uri.parse("tel: $phone")
                 startActivity(intent)
             }
+        }
+
+        // Set on click listener for Directions Button -> Google Maps
+        buttonDirections.setOnClickListener{
+            place.openMapsPage(this)
+        }
+
+        // Set on click listener for Share Button -> Share Menu
+        buttonShare.setOnClickListener {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.type="text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, place.googleMapsUrl);
+            startActivity(shareIntent)
         }
     }
 
@@ -157,7 +164,8 @@ class LocationActivity : AppCompatActivity() {
     private
     fun updateReviews(reviews : List<Reviews>) {
         if(!reviews.isEmpty()) { // Reviews array is not empty
-            setNonDefaultReview(reviews[0])
+            setNonDefaultReview(response.result.reviews[0])
+            copyReviews(response.result.reviews)
         }
         else { // Reviews array empty
             setDefaultReview()
@@ -171,13 +179,14 @@ class LocationActivity : AppCompatActivity() {
     // Sets non-default review info
     private
     fun setNonDefaultReview(input : Reviews) {
+
         var s = """"""" + input.text + """""""
         findViewById<TextView>(R.id.locationReviews).text = s
+
         s = "- " + ellipsizeText(input.author_name)
         findViewById<TextView>(R.id.locationReviewAuthor).text = s
-        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                .getDrawable(this, ratingConversion(input.rating)))
-        copyReviews(reviews)
+
+        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat.getDrawable(this, ratingConversion(input.rating)))
     }
 
     // setDefaultReview()
@@ -186,8 +195,7 @@ class LocationActivity : AppCompatActivity() {
     fun setDefaultReview() {
         findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
         findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
-        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                .getDrawable(this, R.drawable.default_star))
+        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_star))
     }
 
     // copyReviews()

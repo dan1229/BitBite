@@ -9,10 +9,13 @@
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/locationCard"
+        android:transitionName="card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/big_card_margin"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:layout_constraintBottom_toBottomOf="parent"
         card_view:cardCornerRadius="@dimen/big_card_radius"
         card_view:cardElevation="@dimen/big_card_elevation"
         card_view:cardBackgroundColor="@color/card_light">
@@ -27,6 +30,7 @@
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/locationImage"
+                android:transitionName="place_image"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="5"
@@ -239,19 +243,8 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-                <TextView
-                    android:id="@+id/moreInfoTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="@dimen/text_normal"
-                    android:textColor="@color/colorPrimary"
-                    android:text="@string/more_info_text"/>
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
                 <LinearLayout
                     android:id="@+id/buttonDirections"
                     style="@style/AppTheme.RoundedCornerMaterialButton"
@@ -260,22 +253,80 @@
                     android:padding="4dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal" >
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxHeight="30dp"
                         android:maxWidth="30dp"
-                        android:scaleType="fitStart"
+                        android:scaleType="centerCrop"
                         android:src="@android:drawable/ic_menu_directions" />
                     <TextView
                         android:id="@+id/search2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="2dp"
-                        android:textSize="@dimen/text_large"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
+                        android:textSize="@dimen/text_normal"
+                        android:textColor="@color/white"
                         android:text="@string/button_directions" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/buttonMoreInfo"
+                    style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="30dp"
+                        android:maxWidth="30dp"
+                        android:scaleType="fitCenter"
+                        android:src="@android:drawable/ic_menu_directions" />
+                    <TextView
+                        android:id="@+id/locationMoreInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
+                        android:textSize="@dimen/text_normal"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/more_info_text"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/buttonShare"
+                    style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="30dp"
+                        android:maxWidth="30dp"
+                        android:scaleType="centerCrop"
+                        android:src="@android:drawable/ic_menu_directions" />
+                    <TextView
+                        android:id="@+id/locationShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="3dp"
+                        android:paddingRight="3dp"
+                        android:textSize="@dimen/text_normal"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/button_share" />
                 </LinearLayout>
             </LinearLayout>
 

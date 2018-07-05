@@ -1,13 +1,19 @@
 package com.example.daniel.bitbite
 
+import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.media.Image
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.constraint.ConstraintSet
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.CardView
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import com.beust.klaxon.Klaxon
@@ -21,6 +27,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
 import java.net.URL
+import android.util.Pair as UtilPair
 
 
 class ResultsActivity : AppCompatActivity() {
@@ -76,26 +83,27 @@ class ResultsActivity : AppCompatActivity() {
         // Set on click listeners for cards -> LocationActivity.kt
         card1.setOnClickListener {
             if ((3 * page) < listSize)
-                goToLocation(places[3 * page])
+                goToLocation(places[3 * page], image1, card3)
         }
 
         card2.setOnClickListener {
             if ((3 * page + 1) < listSize)
-                goToLocation(places[3 * page + 1])
+                goToLocation(places[3 * page + 1], image2, card2)
         }
 
         card3.setOnClickListener {
             if ((3 * page + 2) < listSize)
-                goToLocation(places[3 * page + 2])
+                goToLocation(places[3 * page + 2], image3, card1)
         }
     }
+
     /**====================================================================================================**/
     /** Intent Makers **/
 
     // goToLocation()
     // Goes to LocationActivity, calls Place Details API
     private
-    fun goToLocation(place : Place) {
+    fun goToLocation(place : Place, view : ImageView, card : CardView) {
         doAsync {
             val response = callDetailsAPI(this@ResultsActivity, place)
 
@@ -103,14 +111,22 @@ class ResultsActivity : AppCompatActivity() {
                 val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
                 intent.putExtra("place", place)
                 intent.putExtra("details_response", response)
-                startActivity(intent)
+
+                // Check Android version for animation
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val options = ActivityOptions.makeSceneTransitionAnimation(
+                            this@ResultsActivity, view, "place_image")
+                    startActivity(intent, options.toBundle())
+                } else {
+                    startActivity(intent)
+                }
             }
         }
     }
 
 
     /**====================================================================================================**/
-    /** Update Methods **/
+    /** Updater Methods **/
 
     // updateCard()
     // Calls update function for each segment of card

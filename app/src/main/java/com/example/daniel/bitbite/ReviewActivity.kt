@@ -18,17 +18,14 @@ class ReviewActivity : AppCompatActivity() {
 
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
-    var placeId
+    var placeId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
 
-        // Get reviews ArrayList
-        val bundle = intent.getBundleExtra("myBundle")
-        reviews = bundle.getParcelableArrayList<Reviews>("review_list")
-
-        // Get placeID
+        // Get Extras
+        reviews = intent.getParcelableArrayListExtra<Reviews>("review_list")
         placeId = intent.getStringExtra("place_id")
 
         // Populate review cards
@@ -38,7 +35,8 @@ class ReviewActivity : AppCompatActivity() {
 
         // Set on click listener for making review
         makeReviewCard.setOnClickListener {
-            openWebPage(this, mapsReviewUrlBuilder(placeId))
+            if(!placeId.equals(""))
+                openWebPage(this, mapsReviewUrlBuilder(placeId))
         }
     }
 
@@ -130,27 +128,6 @@ class ReviewActivity : AppCompatActivity() {
         4 -> findViewById(R.id.reviewRating5)
         else -> findViewById<ImageView>(R.id.reviewRating1)
     }
-
-    /**====================================================================================================**/
-    /** Helper Methods **/
-
-    // openWebPage()
-    // Opens web page to passed URL
-    private
-    fun openWebPage(context : Context, string : String) {
-        val uris = Uri.parse(string)
-        val intents = Intent(Intent.ACTION_VIEW, uris)
-        val bundle = Bundle()
-        bundle.putBoolean("new_window", true)
-        intents.putExtras(bundle)
-        context.startActivity(intents)
-    }
-
-    // mapsReviewUrlBuilder()
-    // Builds URL to leave Google Maps Review
-    private
-    fun mapsReviewUrlBuilder(id : String) : String {
-        return "https://search.google.com/local/writereview?placeid=$id"
-    }
+    
 
 } /** END CLASS ReviewActivity.kt **/

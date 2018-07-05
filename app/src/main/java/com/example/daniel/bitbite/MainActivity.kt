@@ -527,6 +527,7 @@ class MainActivity : AppCompatActivity() {
             geocodeGetLocationDialog()
         }
 
+        // Check box listener
         val checkboxView = view.findViewById(R.id.confirmationCheckbox) as CheckBox
         checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->
             checkbox = isChecked

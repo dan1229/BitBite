@@ -5,7 +5,7 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@color/card_light"
     android:fitsSystemWindows="true"
     tools:context="com.example.daniel.bitbite.MainActivity">
 
@@ -115,7 +115,7 @@
 
         <Button
             android:id="@+id/feelingLuckyButton"
-            style="@style/AppTheme.RoundedCornerMaterialButton"
+            style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"

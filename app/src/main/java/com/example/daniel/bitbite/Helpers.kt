@@ -1,5 +1,10 @@
 package com.example.daniel.bitbite
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+
 /**
  * Made by Daniel Nazarian
  * 7/5/2018 @ 1:00
@@ -30,4 +35,21 @@ fun ellipsizeText(input : String, max : Int = 20) : String {
         res = input.substring(0, max - 3) + "..."
 
     return res
+}
+
+// openWebPage()
+// Opens web page to passed URL
+fun openWebPage(context : Context, string : String) {
+    val uris = Uri.parse(string)
+    val intents = Intent(Intent.ACTION_VIEW, uris)
+    val bundle = Bundle()
+    bundle.putBoolean("new_window", true)
+    intents.putExtras(bundle)
+    context.startActivity(intents)
+}
+
+// mapsReviewUrlBuilder()
+// Builds URL to leave Google Maps Review
+fun mapsReviewUrlBuilder(id : String) : String {
+    return "https://search.google.com/local/writereview?placeid=$id"
 }
