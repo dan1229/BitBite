@@ -83,17 +83,17 @@ class ResultsActivity : AppCompatActivity() {
         // Set on click listeners for cards -> LocationActivity.kt
         card1.setOnClickListener {
             if ((3 * page) < listSize)
-                goToLocation(places[3 * page], image1, card3)
+                goToLocation(places[3 * page], image1)
         }
 
         card2.setOnClickListener {
             if ((3 * page + 1) < listSize)
-                goToLocation(places[3 * page + 1], image2, card2)
+                goToLocation(places[3 * page + 1], image2)
         }
 
         card3.setOnClickListener {
             if ((3 * page + 2) < listSize)
-                goToLocation(places[3 * page + 2], image3, card1)
+                goToLocation(places[3 * page + 2], image3)
         }
     }
 
@@ -103,24 +103,19 @@ class ResultsActivity : AppCompatActivity() {
     // goToLocation()
     // Goes to LocationActivity, calls Place Details API
     private
-    fun goToLocation(place : Place, view : ImageView, card : CardView) {
-        doAsync {
-            val response = callDetailsAPI(this@ResultsActivity, place)
+    fun goToLocation(place : Place, view : ImageView) {
 
-            uiThread {
-                val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
-                intent.putExtra("place", place)
-                intent.putExtra("details_response", response)
+        // Create Intent
+        val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
+        intent.putExtra("place", place)
 
-                // Check Android version for animation
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val options = ActivityOptions.makeSceneTransitionAnimation(
-                            this@ResultsActivity, view, "place_image")
-                    startActivity(intent, options.toBundle())
-                } else {
-                    startActivity(intent)
-                }
-            }
+        // Check Android version for animation
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this@ResultsActivity, view, "place_image")
+            startActivity(intent, options.toBundle())
+        } else {
+            startActivity(intent)
         }
     }
 

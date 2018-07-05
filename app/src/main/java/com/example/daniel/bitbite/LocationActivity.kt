@@ -1,7 +1,9 @@
 package com.example.daniel.bitbite
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -9,7 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_location.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 class LocationActivity : AppCompatActivity() {
 
@@ -27,11 +31,16 @@ class LocationActivity : AppCompatActivity() {
         // Get place
         place = intent.getParcelableExtra("place")
 
-        // Get response
-        response = intent.getParcelableExtra("details_response")
+        // Place Details call
+        doAsync {
+            response = callDetailsAPI(this@LocationActivity, place) as DetailsResponse
 
-        // Populate Location card
-        updateLocation(response)
+            uiThread {
+                // Populate Location card
+                updateLocation(response)
+            }
+        }
+
 
         // Set on click listener for Reviews -> ReviewActivity.kt
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt

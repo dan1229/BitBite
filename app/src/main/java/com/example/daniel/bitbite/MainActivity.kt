@@ -160,18 +160,9 @@ class MainActivity : AppCompatActivity() {
     private
     fun feelingLucky() {
         if(valid) {
-            doAsync {
-                // Call Details API
-                val response = callDetailsAPI(this@MainActivity, placesList[0])
-
-                uiThread {
-                    // Go to LocationActivity.kt
-                    val intent = Intent(this@MainActivity, LocationActivity::class.java)
-                    intent.putExtra("place", placesList[0])
-                    intent.putExtra("details_response", response)
-                    startActivity(intent)
-                }
-            }
+            val intent = Intent(this@MainActivity, LocationActivity::class.java)
+            intent.putExtra("place", placesList[0])
+            startActivity(intent)
         }
     }
 
