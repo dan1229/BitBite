@@ -25,6 +25,7 @@ import java.net.URL
 
 class ResultsActivity : AppCompatActivity() {
 
+    /** Variables **/
     var places = ArrayList<Place>()
     var listSize = 0
     var page = 0
@@ -72,7 +73,7 @@ class ResultsActivity : AppCompatActivity() {
         }
 
 
-        // Set on click listeners for cards to send to Google Maps
+        // Set on click listeners for cards -> LocationActivity.kt
         card1.setOnClickListener {
             if ((3 * page) < listSize)
                 goToLocation(places[3 * page])
@@ -88,7 +89,10 @@ class ResultsActivity : AppCompatActivity() {
                 goToLocation(places[3 * page + 2])
         }
     }
+    /**====================================================================================================**/
+    /** Intent Makers **/
 
+    // goToLocation()
     // Goes to LocationActivity, calls Place Details API
     private
     fun goToLocation(place : Place) {
@@ -104,6 +108,11 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
+
+    /**====================================================================================================**/
+    /** Update Methods **/
+
+    // updateCard()
     // Calls update function for each segment of card
     private
     fun updateCard(card : Int, index : Int) {
@@ -118,6 +127,7 @@ class ResultsActivity : AppCompatActivity() {
         updateDescription(card, i)
     }
 
+    // updateName()
     // Updates name on the card
     private
     fun updateName(card : Int, index : Int) {
@@ -129,6 +139,7 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
+    // updatePrice()
     // Updates price on the card
     private
     fun updatePrice(card : Int, index : Int) {
@@ -140,6 +151,7 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
+    // updatePhoto()
     // Updates photo on the card
     private
     fun updatePhoto(card : Int, index : Int) {
@@ -151,6 +163,7 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
+    // updateRating()
     // Updates rating on the card
     private
     fun updateRating(card : Int, index : Int) {
@@ -162,6 +175,7 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
+    // updateDescription()
     // Updates description on the card
     private
     fun updateDescription(card : Int, index : Int) {
@@ -173,50 +187,63 @@ class ResultsActivity : AppCompatActivity() {
         }
     }
 
+
+    /**====================================================================================================**/
+    /** Find View Methods **/
+
+    // getNameView()
     // Gets TextView for name view based on card number
     private
     fun getNameView(card : Int) = when(card) {
-            1 -> findViewById(R.id.name1)
-            2 -> findViewById(R.id.name2)
-            3 -> findViewById(R.id.name3)
-            else -> findViewById<TextView>(R.id.name1)
+        1 -> findViewById(R.id.name1)
+        2 -> findViewById(R.id.name2)
+        3 -> findViewById(R.id.name3)
+        else -> findViewById<TextView>(R.id.name1)
     }
 
+    // getPriceView()
     // Gets TextView for price view based on card number
     private
     fun getPriceView(card : Int) = when(card) {
-            1 -> findViewById(R.id.price1)
-            2 -> findViewById(R.id.price2)
-            3 -> findViewById(R.id.price3)
-            else -> findViewById<TextView>(R.id.price1)
+        1 -> findViewById(R.id.price1)
+        2 -> findViewById(R.id.price2)
+        3 -> findViewById(R.id.price3)
+        else -> findViewById<TextView>(R.id.price1)
     }
 
+    // getPhotoView()
     // Gets ImageView for photo view based on card number
     private
     fun getPhotoView(card : Int) = when(card) {
-            1 -> findViewById(R.id.image1)
-            2 -> findViewById(R.id.image2)
-            3 -> findViewById(R.id.image3)
-            else -> findViewById<ImageView>(R.id.image1)
+        1 -> findViewById(R.id.image1)
+        2 -> findViewById(R.id.image2)
+        3 -> findViewById(R.id.image3)
+        else -> findViewById<ImageView>(R.id.image1)
     }
 
+    // getRatingView()
     // Gets TextView for rating view based on card number
     private
     fun getRatingView(card : Int) = when(card) {
-            1 -> findViewById(R.id.rating1) as ImageView
-            2 -> findViewById(R.id.rating2) as ImageView
-            3 -> findViewById(R.id.rating3) as ImageView
-            else -> findViewById(R.id.rating1) as ImageView
+        1 -> findViewById(R.id.rating1) as ImageView
+        2 -> findViewById(R.id.rating2) as ImageView
+        3 -> findViewById(R.id.rating3) as ImageView
+        else -> findViewById(R.id.rating1) as ImageView
     }
 
+    // getDescriptionView()
     // Gets TextView for descritpion view based on card number
     private
     fun getDescriptionView(card : Int) = when(card) {
-            1 -> findViewById(R.id.description1) as TextView
-            2 -> findViewById(R.id.description2) as TextView
-            3 -> findViewById(R.id.description3) as TextView
-            else -> findViewById(R.id.description1) as TextView
+        1 -> findViewById(R.id.description1) as TextView
+        2 -> findViewById(R.id.description2) as TextView
+        3 -> findViewById(R.id.description3) as TextView
+        else -> findViewById(R.id.description1) as TextView
     }
+
+
+    /**====================================================================================================**/
+    /** Helper/Misc. Methods **/
 
     // Ellipsizes text
     private
@@ -230,4 +257,6 @@ class ResultsActivity : AppCompatActivity() {
         return res
     }
 
-} // END CLASS ResultsActivity.kt
+
+
+} /** END CLASS ResultsActivity.kt **/

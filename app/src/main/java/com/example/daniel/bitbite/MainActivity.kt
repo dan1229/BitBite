@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             if(changed) { // If selections have changed, recall API and remake list
                 placesList.clear()
                 try {
-                    placesList = callPlacesApi(lat, lng, style, price)
+                    placesList = callPlacesApi()
                     valid = true
                 } catch(e : RuntimeException){
                     valid = false
