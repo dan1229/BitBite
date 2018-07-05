@@ -155,27 +155,34 @@ class LocationActivity : AppCompatActivity() {
     // updateReviews()
     private
     fun updateReviews(reviews : List<Reviews>) {
-        val input = reviews[0]
-
         if(!reviews.isEmpty()) { // Reviews array is not empty
-            var s = """"""" + input.text + """""""
-            findViewById<TextView>(R.id.locationReviews).text = s
-            s = "- " + ellipsizeText(input.author_name)
-            findViewById<TextView>(R.id.locationReviewAuthor).text = s
-            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                    .getDrawable(this, ratingConversion(input.rating)))
-            copyReviews(reviews)
+            setNonDefaultReview(reviews[0])
         }
         else { // Reviews array empty
-            findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
-            findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
-            findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
-                    .getDrawable(this, R.drawable.default_star))
+            setDefaultReview()
         }
     }
 
-    /**====================================================================================================**/
-    /** Helper Methods **/
+    // setNonDefaultReview()
+    private
+    fun setNonDefaultReview(input : Reviews) {
+        var s = """"""" + input.text + """""""
+        findViewById<TextView>(R.id.locationReviews).text = s
+        s = "- " + ellipsizeText(input.author_name)
+        findViewById<TextView>(R.id.locationReviewAuthor).text = s
+        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
+                .getDrawable(this, ratingConversion(input.rating)))
+        copyReviews(reviews)
+    }
+
+    // setDefaultReview()
+    private
+    fun setDefaultReview() {
+        findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
+        findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
+        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat
+                .getDrawable(this, R.drawable.default_star))
+    }
 
     // copyReviews()
     // Copies reviews array to store locally
@@ -183,32 +190,6 @@ class LocationActivity : AppCompatActivity() {
     fun copyReviews(input : List<Reviews>?) {
         for(i in 0..(input!!.size - 1))
             reviews.add(input[i])
-    }
-
-
-    // ratingConversion()
-    // Converts rating to drawable of stars based on value
-    private
-    fun ratingConversion(rating : Int) = when (rating) {
-        1 -> R.drawable.star_1
-        2 -> R.drawable.star_2
-        3 -> R.drawable.star_3
-        4 -> R.drawable.star_4
-        5 -> R.drawable.star_5
-        else -> R.drawable.default_star
-    }
-
-    // ellipsizeText()
-    // Ellipsizes text
-    private
-    fun ellipsizeText(input : String, max : Int = 20) : String {
-        val size = input.length
-        var res = input
-
-        if (size > max)
-            res = input.substring(0, max - 3) + "..."
-
-        return res
     }
 
 

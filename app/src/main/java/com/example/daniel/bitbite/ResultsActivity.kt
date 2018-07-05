@@ -242,21 +242,4 @@ class ResultsActivity : AppCompatActivity() {
     }
 
 
-    /**====================================================================================================**/
-    /** Helper/Misc. Methods **/
-
-    // Ellipsizes text
-    private
-    fun ellipsizeText(input : String, max : Int = 20) : String {
-        val size = input.length
-        var res = input
-
-        if (size > max)
-            res = input.substring(0, max - 3) + "..."
-
-        return res
-    }
-
-
-
 } /** END CLASS ResultsActivity.kt **/

@@ -13,6 +13,7 @@ import org.jetbrains.anko.toast
 
 class ReviewActivity : AppCompatActivity() {
 
+    /** Variables **/
     var reviews = ArrayList<Reviews>(5)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,13 +25,15 @@ class ReviewActivity : AppCompatActivity() {
         reviews = bundle.getParcelableArrayList<Reviews>("review_list")
 
         // Populate review cards
-        Log.d(("INDEX"), reviews.size.toString())
         for(i in 0..4) {
             updateReview(i)
         }
     }
 
-    // Updates review card
+    /**====================================================================================================**/
+    /** Updater Methods **/
+
+    // updateReview
     private
     fun updateReview(index : Int) {
         if(index >= reviews.size) { // Make card invisible
@@ -42,6 +45,7 @@ class ReviewActivity : AppCompatActivity() {
         }
     }
 
+    // changeCardVisibility()
     // Changes card visibility if review doesn't exist
     private
     fun changeCardVisibility(index : Int) {
@@ -55,7 +59,7 @@ class ReviewActivity : AppCompatActivity() {
         }
     }
 
-    // Updates review text
+    // updateText()
     private
     fun updateText(index : Int) {
         val view = getReviewTextView(index)
@@ -63,7 +67,7 @@ class ReviewActivity : AppCompatActivity() {
         view.text = s
     }
 
-    // Updates review author
+    // updateAuthor()
     private
     fun updateAuthor(index : Int) {
         val view = getReviewAuthorView(index)
@@ -71,15 +75,18 @@ class ReviewActivity : AppCompatActivity() {
         view.text = s
     }
 
-    // Updates review rating
+    // updateRating()
     private
     fun updateRating(index : Int) {
         val view = getReviewRatingView(index)
         view.setImageDrawable(ContextCompat.getDrawable(
-                this, reviewRatingConversion(reviews[index].rating)))
+                this, ratingConversion(reviews[index].rating)))
     }
 
-    // Gets TextView for review text view
+    /**====================================================================================================**/
+    /** View Finder Methods **/
+
+    // getReviewTextView()
     private
     fun getReviewTextView(card : Int) = when(card) {
         0 -> findViewById(R.id.reviewReview1)
@@ -90,7 +97,7 @@ class ReviewActivity : AppCompatActivity() {
         else -> findViewById<TextView>(R.id.reviewReview1)
     }
 
-    // Gets TextView for review author view
+    // getReviewAuthorView()
     private
     fun getReviewAuthorView(card : Int) = when(card) {
         0 -> findViewById(R.id.reviewAuthor1)
@@ -101,8 +108,7 @@ class ReviewActivity : AppCompatActivity() {
         else -> findViewById<TextView>(R.id.reviewAuthor1)
     }
 
-
-    // Gets ImageView for review rating view
+    // getReviewRatingView()
     private
     fun getReviewRatingView(card : Int) = when(card) {
         0 -> findViewById(R.id.reviewRating1)
@@ -113,27 +119,4 @@ class ReviewActivity : AppCompatActivity() {
         else -> findViewById<ImageView>(R.id.reviewRating1)
     }
 
-    // Converts rating to drawable of stars based on value
-    private
-    fun reviewRatingConversion(rating : Int) = when (rating) {
-        1 -> R.drawable.star_1
-        2 -> R.drawable.star_2
-        3 -> R.drawable.star_3
-        4 -> R.drawable.star_4
-        5 -> R.drawable.star_5
-        else -> R.drawable.default_star
-    }
-
-    // Ellipsizes text
-    private
-    fun ellipsizeText(input : String, max : Int = 20) : String {
-        val size = input.length
-        var res = input
-
-        if (size > max)
-            res = input.substring(0, max - 3) + "..."
-
-        return res
-    }
-
-} // END CLASS ReviewActivity.kt
+} /** END CLASS ReviewActivity.kt **/
