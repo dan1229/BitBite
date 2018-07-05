@@ -62,6 +62,7 @@
                         android:id="@+id/locationDescription"
                         android:layout_marginBottom="4dp"
                         android:textSize="@dimen/text_normal"
+                        android:textColor="@color/text_secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
@@ -72,10 +73,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:layout_marginRight="3dp"
+                        android:textColor="@color/text_secondary"
                         android:text="@string/dot"/>
                     <TextView
                         android:id="@+id/locationPrice"
                         android:textSize="@dimen/text_normal"
+                        android:textColor="@color/text_secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="end"
@@ -101,6 +104,7 @@
                     android:id="@+id/locationReviews"
                     android:layout_marginBottom="4dp"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="3"
@@ -114,17 +118,18 @@
                     <TextView
                         android:id="@+id/locationReviewAuthor"
                         android:textSize="@dimen/text_normal"
+                        android:textColor="@color/text_secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:text="@string/default_review_author" />
                     <ImageView
                         android:id="@+id/locationReviewRating"
-                        android:layout_width="72dp"
+                        android:layout_width="96dp"
+                        android:layout_marginLeft="4dp"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:gravity="end"
-                        android:scaleType="fitEnd"
+                        android:scaleType="fitStart"
                         app:srcCompat="@drawable/default_star" />
                 </LinearLayout>
 
@@ -247,7 +252,7 @@
                     android:layout_gravity="center_vertical"
                     android:textSize="@dimen/text_normal"
                     android:textColor="@color/colorPrimary"
-                    android:text="More Info"/>
+                    android:text="@string/more_info_text"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"

@@ -74,16 +74,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:text="@string/default_description" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/locationDot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:textColor="@color/text_secondary"
+                    android:text="@string/dot"/>
                 <TextView
                     android:id="@+id/price1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:text="@string/default_price" />
             </LinearLayout>
         </LinearLayout>
@@ -149,16 +155,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:text="@string/default_description" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/locationDot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:textColor="@color/text_secondary"
+                    android:text="@string/dot"/>
                 <TextView
                     android:id="@+id/price2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:text="@string/default_price" />
             </LinearLayout>
         </LinearLayout>
@@ -224,16 +236,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:text="@string/default_description" />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/locationDot3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:textColor="@color/text_secondary"
+                    android:text="@string/dot"/>
                 <TextView
                     android:id="@+id/price3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
+                    android:textColor="@color/text_secondary"
                     android:text="@string/default_price" />
             </LinearLayout>
         </LinearLayout>
