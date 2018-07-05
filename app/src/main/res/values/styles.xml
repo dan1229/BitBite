@@ -13,6 +13,10 @@
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
 
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/fade_in</item>
+        <item name="android:windowExitTransition">@transition/fade_out</item>
+
         <!-- specify shared element transitions -->
         <item name="android:windowSharedElementEnterTransition">
             @transition/change_image_transform</item>
