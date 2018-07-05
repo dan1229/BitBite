@@ -13,7 +13,7 @@ import org.jetbrains.anko.toast
 
 class LocationActivity : AppCompatActivity() {
 
-    // Variables
+    /** Variables **/
     lateinit var place:Place
     lateinit var response:DetailsResponse
     var reviews = ArrayList<Reviews>(5)
@@ -33,12 +33,12 @@ class LocationActivity : AppCompatActivity() {
         // Populate Location card
         updateLocation(response)
 
-        // Set on click listener for Directions Button
+        // Set on click listener for Directions Button -> Google Maps
         buttonDirections.setOnClickListener{
             place.openMapsPage(this)
         }
 
-        // Set on click listener for Reviews Layout
+        // Set on click listener for Reviews -> ReviewActivity.kt
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
             if(reviews.size > 0) {
                 val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
@@ -52,7 +52,7 @@ class LocationActivity : AppCompatActivity() {
             }
         }
 
-        // Set on click listener for Website
+        // Set on click listener for Website -> Web Browser
         layoutWebsite.setOnClickListener {
             if(website != "") { // Open website in browser
                 val uris = Uri.parse(website)
@@ -64,7 +64,7 @@ class LocationActivity : AppCompatActivity() {
             }
         }
 
-        // Set on click listener for Phone Number
+        // Set on click listener for Phone Number -> Dialer
         layoutPhone.setOnClickListener {
             if (phone != "") { // Opens dialer with phone number
                 val intent = Intent(Intent.ACTION_DIAL)
@@ -74,7 +74,10 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
-    // Updates information displayed
+    /**====================================================================================================**/
+    /** Updater Methods() **/
+
+    // updateLocation()
     private
     fun updateLocation(response : DetailsResponse?) {
 
@@ -94,17 +97,17 @@ class LocationActivity : AppCompatActivity() {
         updateReviews(response.result.reviews)
     }
 
-    // Update photo
+    // updatePhoto()
     private
     fun updatePhoto(photoRef : String){
         if(photoRef != "DEFAULT")
-            placePhotoCall(photoRef, findViewById(R.id.locationImage)) // Fetch image
+            place.placePhotoCall(this, findViewById(R.id.locationImage)) // Fetch image
         else
             findViewById<ImageView>(R.id.locationImage).setImageDrawable(ContextCompat.getDrawable( // Set default image
                     this, R.drawable.default_place_image))
     }
 
-    // Update Open Now
+    // updateOpennow()
     private
     fun updateOpennow(bool : Boolean) {
         if(bool){
@@ -118,14 +121,14 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
-    // Update price
+    // updatePrice()
     private
     fun updatePrice(place : Place) {
         val view = findViewById<TextView>(R.id.locationPrice)
         view.text = place.priceConversion()
     }
 
-    // Updates website section
+    // updateWebsite()
     private
     fun updateWebsite(input : String) {
         val view = findViewById<TextView>(R.id.locationWebsite)
@@ -137,7 +140,7 @@ class LocationActivity : AppCompatActivity() {
         website = input
     }
 
-    // Updates phone section
+    // updatePhone()
     private
     fun updatePhone(input : String) {
         val view = findViewById<TextView>(R.id.locationPhone)
@@ -149,7 +152,7 @@ class LocationActivity : AppCompatActivity() {
         phone = input
     }
 
-    // Update reviews
+    // updateReviews()
     private
     fun updateReviews(reviews : List<Reviews>) {
         val input = reviews[0]
@@ -171,6 +174,10 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
+    /**====================================================================================================**/
+    /** Helper Methods **/
+
+    // copyReviews()
     // Copies reviews array to store locally
     private
     fun copyReviews(input : List<Reviews>?) {
@@ -178,21 +185,8 @@ class LocationActivity : AppCompatActivity() {
             reviews.add(input[i])
     }
 
-    // Calls Place Photo API and returns image
-    private
-    fun placePhotoCall(ref : String, view : ImageView) {
-        Glide.with(this).load(createPhotosRequestURL(ref)).into(view)
-    }
 
-    // Creates URL for Place Photo API request
-    private
-    fun createPhotosRequestURL(ref : String) : String {
-        return  "https://maps.googleapis.com/maps/api/place/photo?" +
-                "maxwidth=1000" +
-                "&photoreference=" + ref +
-                "&key=" + getString(R.string.google_api_key)
-    }
-
+    // ratingConversion()
     // Converts rating to drawable of stars based on value
     private
     fun ratingConversion(rating : Int) = when (rating) {
@@ -204,6 +198,7 @@ class LocationActivity : AppCompatActivity() {
         else -> R.drawable.default_star
     }
 
+    // ellipsizeText()
     // Ellipsizes text
     private
     fun ellipsizeText(input : String, max : Int = 20) : String {
@@ -215,4 +210,6 @@ class LocationActivity : AppCompatActivity() {
 
         return res
     }
-}
+
+
+} /** END LocationActivity.kt **/
