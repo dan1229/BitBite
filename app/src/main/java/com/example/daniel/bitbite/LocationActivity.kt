@@ -45,10 +45,7 @@ class LocationActivity : AppCompatActivity() {
         // Set on click listener for Reviews -> ReviewActivity.kt
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
             if(reviews.size > 0) {
-                val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
-                intent.putParcelableArrayListExtra("review_list", reviews)
-                intent.putExtra("place_id", place.placeID)
-                startActivity(intent)
+                goToReviews()
             }
             else {
                 toast("No reviews available.")
@@ -88,6 +85,28 @@ class LocationActivity : AppCompatActivity() {
             shareIntent.type="text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT, place.googleMapsUrl);
             startActivity(shareIntent)
+        }
+    }
+
+    /**====================================================================================================**/
+    /** Intent Makers **/
+
+    // goToReviews()
+    // Creates Intent for Reviews.kt and animates transition
+    private
+    fun goToReviews() {
+        // Create Intent
+        val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
+        intent.putParcelableArrayListExtra("review_list", reviews)
+        intent.putExtra("place_id", place.placeID)
+
+        // Check Android version for animation
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this@LocationActivity, layoutReviews, "review_card")
+            startActivity(intent, options.toBundle())
+        } else {
+            startActivity(intent)
         }
     }
 

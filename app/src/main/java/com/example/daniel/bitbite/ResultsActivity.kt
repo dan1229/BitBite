@@ -83,17 +83,17 @@ class ResultsActivity : AppCompatActivity() {
         // Set on click listeners for cards -> LocationActivity.kt
         card1.setOnClickListener {
             if ((3 * page) < listSize)
-                goToLocation(places[3 * page], image1)
+                goToLocation(places[3 * page], card1, image1)
         }
 
         card2.setOnClickListener {
             if ((3 * page + 1) < listSize)
-                goToLocation(places[3 * page + 1], image2)
+                goToLocation(places[3 * page + 1], card2, image2)
         }
 
         card3.setOnClickListener {
             if ((3 * page + 2) < listSize)
-                goToLocation(places[3 * page + 2], image3)
+                goToLocation(places[3 * page + 2], card3, image3)
         }
     }
 
@@ -103,7 +103,7 @@ class ResultsActivity : AppCompatActivity() {
     // goToLocation()
     // Goes to LocationActivity, calls Place Details API
     private
-    fun goToLocation(place : Place, view : ImageView) {
+    fun goToLocation(place : Place, card : CardView, img : ImageView) {
 
         // Create Intent
         val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
@@ -111,8 +111,9 @@ class ResultsActivity : AppCompatActivity() {
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this@ResultsActivity, view, "place_image")
+            val options = ActivityOptions.makeSceneTransitionAnimation(this@ResultsActivity,
+                    UtilPair.create<View, String>(card, "card"),
+                    UtilPair.create<View, String>(img, "place_image"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)
@@ -139,7 +140,6 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     // updateName()
-    // Updates name on the card
     private
     fun updateName(card : Int, index : Int) {
         val textView = getNameView(card)
@@ -151,7 +151,6 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     // updatePrice()
-    // Updates price on the card
     private
     fun updatePrice(card : Int, index : Int) {
         val textView = getPriceView(card)
@@ -163,7 +162,6 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     // updatePhoto()
-    // Updates photo on the card
     private
     fun updatePhoto(card : Int, index : Int) {
         val view = getPhotoView(card)
@@ -175,7 +173,6 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     // updateRating()
-    // Updates rating on the card
     private
     fun updateRating(card : Int, index : Int) {
         val view = getRatingView(card)
@@ -187,7 +184,6 @@ class ResultsActivity : AppCompatActivity() {
     }
 
     // updateDescription()
-    // Updates description on the card
     private
     fun updateDescription(card : Int, index : Int) {
         val textView = getDescriptionView(card)
@@ -236,20 +232,20 @@ class ResultsActivity : AppCompatActivity() {
     // Gets TextView for rating view based on card number
     private
     fun getRatingView(card : Int) = when(card) {
-        1 -> findViewById(R.id.rating1) as ImageView
-        2 -> findViewById(R.id.rating2) as ImageView
-        3 -> findViewById(R.id.rating3) as ImageView
-        else -> findViewById(R.id.rating1) as ImageView
+        1 -> findViewById(R.id.rating1)
+        2 -> findViewById(R.id.rating2)
+        3 -> findViewById(R.id.rating3)
+        else -> findViewById<ImageView>(R.id.rating1)
     }
 
     // getDescriptionView()
     // Gets TextView for descritpion view based on card number
     private
     fun getDescriptionView(card : Int) = when(card) {
-        1 -> findViewById(R.id.description1) as TextView
-        2 -> findViewById(R.id.description2) as TextView
-        3 -> findViewById(R.id.description3) as TextView
-        else -> findViewById(R.id.description1) as TextView
+        1 -> findViewById(R.id.description1)
+        2 -> findViewById(R.id.description2)
+        3 -> findViewById(R.id.description3)
+        else -> findViewById<TextView>(R.id.description1)
     }
 
 
