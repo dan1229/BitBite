@@ -1,5 +1,8 @@
 package com.example.daniel.bitbite
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -15,6 +18,7 @@ class ReviewActivity : AppCompatActivity() {
 
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
+    var placeId
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +28,17 @@ class ReviewActivity : AppCompatActivity() {
         val bundle = intent.getBundleExtra("myBundle")
         reviews = bundle.getParcelableArrayList<Reviews>("review_list")
 
+        // Get placeID
+        placeId = intent.getStringExtra("place_id")
+
         // Populate review cards
         for(i in 0..4) {
             updateReview(i)
+        }
+
+        // Set on click listener for making review
+        makeReviewCard.setOnClickListener {
+            openWebPage(this, mapsReviewUrlBuilder(placeId))
         }
     }
 
@@ -117,6 +129,28 @@ class ReviewActivity : AppCompatActivity() {
         3 -> findViewById(R.id.reviewRating4)
         4 -> findViewById(R.id.reviewRating5)
         else -> findViewById<ImageView>(R.id.reviewRating1)
+    }
+
+    /**====================================================================================================**/
+    /** Helper Methods **/
+
+    // openWebPage()
+    // Opens web page to passed URL
+    private
+    fun openWebPage(context : Context, string : String) {
+        val uris = Uri.parse(string)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val bundle = Bundle()
+        bundle.putBoolean("new_window", true)
+        intents.putExtras(bundle)
+        context.startActivity(intents)
+    }
+
+    // mapsReviewUrlBuilder()
+    // Builds URL to leave Google Maps Review
+    private
+    fun mapsReviewUrlBuilder(id : String) : String {
+        return "https://search.google.com/local/writereview?placeid=$id"
     }
 
 } /** END CLASS ReviewActivity.kt **/

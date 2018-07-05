@@ -44,6 +44,7 @@ class LocationActivity : AppCompatActivity() {
                 val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
                 val bundle = Bundle()
                 bundle.putParcelableArrayList("review_list", reviews)
+                bundle.putString("place_id", place.placeID)
                 intent.putExtra("myBundle", bundle)
                 startActivity(intent)
             }
@@ -75,7 +76,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     /**====================================================================================================**/
-    /** Updater Methods() **/
+    /** Updater Methods **/
 
     // updateLocation()
     private
@@ -163,7 +164,11 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
+    /**====================================================================================================**/
+    /** Helper Methods **/
+
     // setNonDefaultReview()
+    // Sets non-default review info
     private
     fun setNonDefaultReview(input : Reviews) {
         var s = """"""" + input.text + """""""
@@ -176,6 +181,7 @@ class LocationActivity : AppCompatActivity() {
     }
 
     // setDefaultReview()
+    // Sets default review info
     private
     fun setDefaultReview() {
         findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
