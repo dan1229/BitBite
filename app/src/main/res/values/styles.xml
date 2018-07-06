@@ -70,12 +70,13 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">@color/colorPrimary</item>
+        <!--<item name="android:background">@color/colorToolbarLight</item>-->
+        <!--<item name="android:textColor">@color/colorPrimary</item>-->
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
-        <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:paddingTop">@dimen/appbar_padding_top</item>
+        <!--<item name="android:background">@color/colorToolbarLight</item>-->
+        <!--<item name="android:textColor">@color/colorPrimary</item>-->
     </style>
 
 </resources>

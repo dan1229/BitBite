@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/default_description" />
                 <TextView
                     android:id="@+id/locationDot1"
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/dot"/>
                 <TextView
                     android:id="@+id/price1"
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/default_price" />
             </LinearLayout>
         </LinearLayout>
@@ -166,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/default_description" />
                 <TextView
                     android:id="@+id/locationDot2"
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/dot"/>
                 <TextView
                     android:id="@+id/price2"
@@ -182,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/default_price" />
             </LinearLayout>
         </LinearLayout>
@@ -253,7 +253,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/default_description" />
                 <TextView
                     android:id="@+id/locationDot3"
@@ -261,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="3dp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/dot"/>
                 <TextView
                     android:id="@+id/price3"
@@ -269,7 +269,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/colorAccent"
                     android:text="@string/default_price" />
             </LinearLayout>
         </LinearLayout>
