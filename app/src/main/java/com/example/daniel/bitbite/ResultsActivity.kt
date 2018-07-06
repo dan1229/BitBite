@@ -146,7 +146,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateName(card : Int, index : Int) {
         val textView = getNameView(card)
         if(index >= 0){ // In bounds
-            textView.text = ellipsizeText(places[index].name, 30)
+            textView.text = ellipsizeText(places[index].name, 25)
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_name)
         }
