@@ -7,12 +7,15 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Pair
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_location.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.toolbar
 import org.jetbrains.anko.uiThread
 
 class LocationActivity : AppCompatActivity() {
@@ -38,8 +41,7 @@ class LocationActivity : AppCompatActivity() {
         doAsync {
             response = callDetailsAPI(this@LocationActivity, place) as DetailsResponse
 
-            uiThread {
-                // Populate Location card
+            uiThread { // Populate Location card
                 updateLocation(response)
             }
         }
@@ -100,13 +102,14 @@ class LocationActivity : AppCompatActivity() {
     fun goToReviews() {
         // Create Intent
         val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
-        intent.putParcelableArrayListExtra("review_list", reviews)
-        intent.putExtra("place_id", place.placeID)
+        intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
+        intent.putExtra("place_id", place.placeID) // Pass placeID
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this@LocationActivity, layoutReviews, "review_card")
+            val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
+                    Pair.create<View, String>(layoutReviews, "review_card"),
+                    Pair.create<View, String>(locationReviewRating, "review_rating"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)

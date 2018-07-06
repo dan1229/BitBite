@@ -19,6 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.beust.klaxon.*
+import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     var EMPTY = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar as Toolbar)
