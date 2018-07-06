@@ -8,26 +8,25 @@
     tools:context=".ResultsActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbar_results"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
+            android:elevation="@dimen/toolbar_elevation"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/app_name" />
-
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        <ImageView
+            android:transitionName="main_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/main_activity_logo"/>
     </android.support.design.widget.AppBarLayout>
-
 
     <include
         android:id="@+id/include"

@@ -32,6 +32,9 @@ class LocationActivity : AppCompatActivity() {
         // Get place
         place = intent.getParcelableExtra("place")
 
+        // Update toolbar title
+        toolbar_location.title = ellipsizeText(place.name, 30)
+
         // Update photo
         placeUpdates()
 
@@ -43,7 +46,6 @@ class LocationActivity : AppCompatActivity() {
                 responseUpdates(response)
             }
         }
-
 
         // Set on click listener for Reviews -> ReviewActivity.kt
         layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
@@ -102,6 +104,7 @@ class LocationActivity : AppCompatActivity() {
         val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
         intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
         intent.putExtra("place_id", place.placeID) // Pass placeID
+        intent.putExtra("name", place.name) // Pass name
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

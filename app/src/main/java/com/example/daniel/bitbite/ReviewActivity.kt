@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_review.*
+import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import org.jetbrains.anko.toast
 
 class ReviewActivity : AppCompatActivity() {
@@ -19,6 +20,7 @@ class ReviewActivity : AppCompatActivity() {
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
     var placeId = ""
+    var name = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,11 @@ class ReviewActivity : AppCompatActivity() {
         // Get Extras
         reviews = intent.getParcelableArrayListExtra<Reviews>("review_list")
         placeId = intent.getStringExtra("place_id")
+        name = intent.getStringExtra("name")
+
+        // Update make your own review card
+        placeName.visibility = View.VISIBLE
+        placeName.text = name
 
         // Populate review cards
         for(i in 0..4) {
@@ -52,20 +59,6 @@ class ReviewActivity : AppCompatActivity() {
             updateText(index)
             updateAuthor(index)
             updateRating(index)
-        }
-    }
-
-    // changeCardVisibility()
-    // Changes card visibility if review doesn't exist
-    private
-    fun changeCardVisibility(index : Int) {
-        when (index) {
-            0 -> findViewById<CardView>(R.id.reviewCard1).visibility = View.GONE
-            1 -> findViewById<CardView>(R.id.reviewCard2).visibility = View.GONE
-            2 -> findViewById<CardView>(R.id.reviewCard3).visibility = View.GONE
-            3 -> findViewById<CardView>(R.id.reviewCard4).visibility = View.GONE
-            4 -> findViewById<CardView>(R.id.reviewCard5).visibility = View.GONE
-            else -> findViewById<CardView>(R.id.reviewCard1).visibility = View.GONE
         }
     }
 
@@ -95,6 +88,20 @@ class ReviewActivity : AppCompatActivity() {
 
     /**====================================================================================================**/
     /** View Finder Methods **/
+
+    // changeCardVisibility()
+    // Changes card visibility if review doesn't exist
+    private
+    fun changeCardVisibility(index : Int) {
+        when (index) {
+            0 -> findViewById<CardView>(R.id.reviewCard1).visibility = View.GONE
+            1 -> findViewById<CardView>(R.id.reviewCard2).visibility = View.GONE
+            2 -> findViewById<CardView>(R.id.reviewCard3).visibility = View.GONE
+            3 -> findViewById<CardView>(R.id.reviewCard4).visibility = View.GONE
+            4 -> findViewById<CardView>(R.id.reviewCard5).visibility = View.GONE
+            else -> findViewById<CardView>(R.id.reviewCard1).visibility = View.GONE
+        }
+    }
 
     // getReviewTextView()
     private

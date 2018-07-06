@@ -10,27 +10,21 @@
     tools:context="com.example.daniel.bitbite.MainActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbar_main"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
-
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
+            android:elevation="@dimen/toolbar_elevation"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="@string/app_name" >
-
-
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
 
 
@@ -43,6 +37,7 @@
 
         <ImageView
             android:id="@+id/imageView"
+            android:transitionName="main_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"

@@ -1,10 +1,12 @@
 package com.example.daniel.bitbite
 
 import android.Manifest
+import android.app.ActivityOptions
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
@@ -13,6 +15,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.util.Pair
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -22,6 +25,7 @@ import com.beust.klaxon.*
 import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import java.net.URL
@@ -59,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar as Toolbar)
+        setSupportActionBar(toolbar_main as Toolbar)
 
         // Get settings
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
@@ -153,7 +157,15 @@ class MainActivity : AppCompatActivity() {
             val bundle = Bundle()
             bundle.putParcelableArrayList(EXTRA_PLACES_LIST, placesList)
             intent.putExtra("myBundle", bundle)
-            startActivity(intent)
+
+            // Check Android version for animation
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity,
+                        Pair.create<View, String>(imageView, "main_logo"))
+                startActivity(intent, options.toBundle())
+            } else {
+                startActivity(intent)
+            }
         }
     }
 

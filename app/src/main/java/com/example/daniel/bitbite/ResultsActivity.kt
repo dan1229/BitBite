@@ -20,7 +20,6 @@ import com.beust.klaxon.Klaxon
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_results.*
 import org.jetbrains.anko.toast
-import com.example.daniel.bitbite.R.id.toolbar
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.content_results.*
 import kotlinx.android.synthetic.main.content_results.view.*
@@ -147,7 +146,7 @@ class ResultsActivity : AppCompatActivity() {
     fun updateName(card : Int, index : Int) {
         val textView = getNameView(card)
         if(index >= 0){ // In bounds
-            textView.text = ellipsizeText(places[index].name)
+            textView.text = ellipsizeText(places[index].name, 30)
         } else{ // Out of bounds, default val
             textView.setText(R.string.default_name)
         }

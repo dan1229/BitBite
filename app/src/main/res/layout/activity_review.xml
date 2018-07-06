@@ -1,276 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackground"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ReviewActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_review"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ReviewActivity"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/makeReviewCard"
-            android:layout_width="fill_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingTop="@dimen/appbar_padding_top"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_review"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            card_view:cardCornerRadius="@dimen/card_radius"
-            card_view:cardElevation="@dimen/card_elevation">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/big_card_margin"
-                android:orientation="vertical">
-                <TextView
+            android:layout_weight="1"
+            android:elevation="@dimen/toolbar_elevation"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/main_activity_logo"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="?attr/actionBarSize" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ReviewActivity"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/makeReviewCard"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_x_large"
-                    android:textColor="@color/text_primary"
-                    android:gravity="center_horizontal"
-                    android:text="@string/make_review_title"/>
-                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/big_card_margin"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/makeReviewTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_x_large"
+                        android:textColor="@color/text_primary"
+                        android:gravity="center_horizontal"
+                        android:text="@string/make_review_title"/>
+                    <TextView
+                        android:id="@+id/placeName"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_normal"
+                        android:textColor="@color/text_secondary"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:gravity="center_horizontal"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_normal"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center_horizontal"
+                        android:text="@string/make_review_description"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_margin="6dp"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/default_star"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reviewCard1"
+                android:transitionName="review_card"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
-                    android:gravity="center_horizontal"
-                    android:text="@string/make_review_description"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_margin="6dp"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/default_star"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/big_card_margin"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/reviewReview1"
+                        android:transitionName="review_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/default_review"
+                        android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:id="@+id/reviewAuthor1"
+                        android:transitionName="review_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:text="@string/default_review_author"
+                        android:textSize="@dimen/text_large" />
+                    <ImageView
+                        android:id="@+id/reviewRating1"
+                        android:transitionName="review_rating"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/default_star" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/reviewCard1"
-            android:transitionName="review_card"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            card_view:cardCornerRadius="@dimen/card_radius"
-            card_view:cardElevation="@dimen/card_elevation">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/big_card_margin"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/reviewReview1"
-                    android:transitionName="review_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:text="@string/default_review"
-                    android:textSize="@dimen/text_normal" />
-                <TextView
-                    android:id="@+id/reviewAuthor1"
-                    android:transitionName="review_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:singleLine="true"
-                    android:text="@string/default_review_author"
-                    android:textSize="@dimen/text_large" />
-                <ImageView
-                    android:id="@+id/reviewRating1"
-                    android:transitionName="review_rating"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:gravity="end"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/default_star" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reviewCard2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/big_card_margin"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/reviewReview2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/default_review"
+                        android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:id="@+id/reviewAuthor2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:text="@string/default_review_author"
+                        android:textSize="@dimen/text_large" />
+                    <ImageView
+                        android:id="@+id/reviewRating2"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/default_star" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/reviewCard2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            card_view:cardCornerRadius="@dimen/card_radius"
-            card_view:cardElevation="@dimen/card_elevation">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/big_card_margin"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/reviewReview2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:text="@string/default_review"
-                    android:textSize="@dimen/text_normal" />
-                <TextView
-                    android:id="@+id/reviewAuthor2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:singleLine="true"
-                    android:text="@string/default_review_author"
-                    android:textSize="@dimen/text_large" />
-                <ImageView
-                    android:id="@+id/reviewRating2"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:gravity="end"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/default_star" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reviewCard3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/big_card_margin"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/reviewReview3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/default_review"
+                        android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:id="@+id/reviewAuthor3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:text="@string/default_review_author"
+                        android:textSize="@dimen/text_large" />
+                    <ImageView
+                        android:id="@+id/reviewRating3"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/default_star" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/reviewCard3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            card_view:cardCornerRadius="@dimen/card_radius"
-            card_view:cardElevation="@dimen/card_elevation">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/big_card_margin"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/reviewReview3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:text="@string/default_review"
-                    android:textSize="@dimen/text_normal" />
-                <TextView
-                    android:id="@+id/reviewAuthor3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:singleLine="true"
-                    android:text="@string/default_review_author"
-                    android:textSize="@dimen/text_large" />
-                <ImageView
-                    android:id="@+id/reviewRating3"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:gravity="end"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/default_star" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reviewCard4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/big_card_margin"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/reviewReview4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/default_review"
+                        android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:id="@+id/reviewAuthor4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:text="@string/default_review_author"
+                        android:textSize="@dimen/text_large" />
+                    <ImageView
+                        android:id="@+id/reviewRating4"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/default_star" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/reviewCard4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            card_view:cardCornerRadius="@dimen/card_radius"
-            card_view:cardElevation="@dimen/card_elevation">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/big_card_margin"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/reviewReview4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:text="@string/default_review"
-                    android:textSize="@dimen/text_normal" />
-                <TextView
-                    android:id="@+id/reviewAuthor4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:singleLine="true"
-                    android:text="@string/default_review_author"
-                    android:textSize="@dimen/text_large" />
-                <ImageView
-                    android:id="@+id/reviewRating4"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:gravity="end"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/default_star" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reviewCard5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                card_view:cardCornerRadius="@dimen/card_radius"
+                card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/big_card_margin"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/reviewReview5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:text="@string/default_review"
+                        android:textSize="@dimen/text_normal" />
+                    <TextView
+                        android:id="@+id/reviewAuthor5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:text="@string/default_review_author"
+                        android:textSize="@dimen/text_large" />
+                    <ImageView
+                        android:id="@+id/reviewRating5"
+                        android:layout_width="128dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:gravity="end"
+                        android:scaleType="fitEnd"
+                        app:srcCompat="@drawable/default_star" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/reviewCard5"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            card_view:cardCornerRadius="@dimen/card_radius"
-            card_view:cardElevation="@dimen/card_elevation">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/big_card_margin"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/reviewReview5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:text="@string/default_review"
-                    android:textSize="@dimen/text_normal" />
-                <TextView
-                    android:id="@+id/reviewAuthor5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:singleLine="true"
-                    android:text="@string/default_review_author"
-                    android:textSize="@dimen/text_large" />
-                <ImageView
-                    android:id="@+id/reviewRating5"
-                    android:layout_width="128dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:gravity="end"
-                    android:scaleType="fitEnd"
-                    app:srcCompat="@drawable/default_star" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-
-</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>
