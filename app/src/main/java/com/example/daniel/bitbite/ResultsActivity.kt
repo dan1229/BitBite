@@ -23,6 +23,7 @@ import org.jetbrains.anko.toast
 import com.example.daniel.bitbite.R.id.toolbar
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.content_results.*
+import kotlinx.android.synthetic.main.content_results.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
@@ -84,17 +85,17 @@ class ResultsActivity : AppCompatActivity() {
         // Set on click listeners for cards -> LocationActivity.kt
         card1.setOnClickListener {
             if ((3 * page) < listSize)
-                goToLocation(places[3 * page], card1, image1)
+                goToLocation(places[3 * page], card1, image1, 1)
         }
 
         card2.setOnClickListener {
             if ((3 * page + 1) < listSize)
-                goToLocation(places[3 * page + 1], card2, image2)
+                goToLocation(places[3 * page + 1], card2, image2, 2)
         }
 
         card3.setOnClickListener {
             if ((3 * page + 2) < listSize)
-                goToLocation(places[3 * page + 2], card3, image3)
+                goToLocation(places[3 * page + 2], card3, image3, 3)
         }
     }
 
@@ -104,7 +105,7 @@ class ResultsActivity : AppCompatActivity() {
     // goToLocation()
     // Goes to LocationActivity, calls Place Details API
     private
-    fun goToLocation(place : Place, card : CardView, img : ImageView) {
+    fun goToLocation(place : Place, card : CardView, img : ImageView, i : Int) {
 
         // Create Intent
         val intent = Intent(this@ResultsActivity, LocationActivity::class.java)
@@ -114,7 +115,8 @@ class ResultsActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@ResultsActivity,
                     UtilPair.create<View, String>(card, "card"),
-                    UtilPair.create<View, String>(img, "place_image"))
+                    UtilPair.create<View, String>(img, "place_image"),
+                    UtilPair.create<View, String>(getNameView(i), "place_name"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)

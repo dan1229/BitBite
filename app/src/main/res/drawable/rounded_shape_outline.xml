@@ -7,7 +7,7 @@
     </solid>
 
     <stroke
-        android:color="@color/colorAccent"
+        android:color="@color/colorPrimary"
         android:width="5px" >
     </stroke>
 

@@ -258,8 +258,11 @@ class MainActivity : AppCompatActivity() {
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=$lat,$lng" +
-                "&type=restaurant" +
-                "&opennow=" + OPENNOW
+                "&type=restaurant"
+
+        if(OPENNOW.equals("true")){ // Open Now
+                url += "&opennow=$OPENNOW"
+        }
 
         if(RANKBY.equals("distance")) { // Rank by distance
             url += "&rankby=$RANKBY"
@@ -272,10 +275,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(price != 0){ // Add max price if not "any price"
-            url += "&maxprice=" + price.toString()
+            url += "&maxprice=$price"
         }
 
-        url += "&key=" + getString(R.string.google_api_key)
+        url += "&key=${getString(R.string.google_api_key)}"
 
         return url
     }

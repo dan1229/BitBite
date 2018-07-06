@@ -11,11 +11,9 @@ import android.util.Pair
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_location.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.toolbar
 import org.jetbrains.anko.uiThread
 
 class LocationActivity : AppCompatActivity() {
@@ -35,14 +33,14 @@ class LocationActivity : AppCompatActivity() {
         place = intent.getParcelableExtra("place")
 
         // Update photo
-        updatePhoto(place.photoRef)
+        placeUpdates()
 
         // Place Details call
         doAsync {
             response = callDetailsAPI(this@LocationActivity, place) as DetailsResponse
 
             uiThread { // Populate Location card
-                updateLocation(response)
+                responseUpdates(response)
             }
         }
 
@@ -109,7 +107,9 @@ class LocationActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
                     Pair.create<View, String>(layoutReviews, "review_card"),
-                    Pair.create<View, String>(locationReviewRating, "review_rating"))
+                    Pair.create<View, String>(locationReviewRating, "review_rating"),
+                    Pair.create<View, String>(locationReviewAuthor, "review_author"),
+                    Pair.create<View, String>(locationReviews, "review_text"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)
@@ -119,10 +119,10 @@ class LocationActivity : AppCompatActivity() {
     /**====================================================================================================**/
     /** Updater Methods **/
 
-    // updateLocation()
+    // placeUpdates()
+    // Updates fields from place object (Place Search)
     private
-    fun updateLocation(response : DetailsResponse?) {
-
+    fun placeUpdates() {
         // Photo and Opennow
         updatePhoto(place.photoRef)
         updateOpennow(place.openNow)
@@ -131,8 +131,14 @@ class LocationActivity : AppCompatActivity() {
         // Name, price, description, rating
         findViewById<TextView>(R.id.locationName).text = place.name
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
-        findViewById<ImageView>(R.id.locationRating).setImageDrawable(ContextCompat.getDrawable(this, place.ratingConversion()))
+        findViewById<ImageView>(R.id.locationRating).setImageDrawable(
+                ContextCompat.getDrawable(this, place.ratingConversion()))
+    }
 
+    // responseUpdates()
+    // Updates fields from response object (Place Details)
+    private
+    fun responseUpdates(response : DetailsResponse?) {
         // Update website, phone and review
         updateWebsite(response!!.result.website)
         updatePhone(response.result.formatted_phone_number)
