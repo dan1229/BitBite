@@ -25,6 +25,17 @@ fun ratingConversion(rating : Int) = when (rating) {
     else -> R.drawable.default_star
 }
 
+// ratingConversion()
+// Converts rating to drawable of stars based on value
+fun reviewRatingConversion(rating : Int) = when (rating) {
+    1 -> R.drawable.face_1
+    2 -> R.drawable.face_2
+    3 -> R.drawable.face_3
+    4 -> R.drawable.face_4
+    5 -> R.drawable.face_5
+    else -> R.drawable.face_3
+}
+
 // ellipsizeText()
 // Ellipsizes text
 fun ellipsizeText(input : String, max : Int = 20) : String {

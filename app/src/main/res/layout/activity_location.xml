@@ -158,12 +158,12 @@
                         <ImageView
                             android:id="@+id/locationReviewRating"
                             android:transitionName="review_rating"
-                            android:layout_width="96dp"
-                            android:layout_marginLeft="4dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_marginStart="4dp"
                             android:adjustViewBounds="true"
                             android:scaleType="fitStart"
-                            app:srcCompat="@drawable/default_star" />
+                            app:srcCompat="@drawable/face_3" />
                     </LinearLayout>
 
                 </LinearLayout>

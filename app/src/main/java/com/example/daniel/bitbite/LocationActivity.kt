@@ -229,7 +229,7 @@ class LocationActivity : AppCompatActivity() {
         s = "- " + ellipsizeText(input.author_name)
         findViewById<TextView>(R.id.locationReviewAuthor).text = s
 
-        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat.getDrawable(this, ratingConversion(input.rating)))
+        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat.getDrawable(this, reviewRatingConversion(input.rating)))
     }
 
     // setDefaultReview()
