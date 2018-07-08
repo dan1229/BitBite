@@ -56,9 +56,16 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         val places = intent.getParcelableArrayListExtra<Place>(EXTRA_PLACES_LIST)
         listSize = places.size
 
-        for(i in 0..(listSize - 1)) {
-            val fragment = ResultsCard.newInstance(places[i])
-            fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
+        doAsync {
+            for(i in 0..(listSize - 1)) {
+                val fragment = ResultsCard.newInstance(places[i])
+                fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
+
+                uiThread {
+                    places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
+                }
+        }
+
 
 
 //            doAsync {

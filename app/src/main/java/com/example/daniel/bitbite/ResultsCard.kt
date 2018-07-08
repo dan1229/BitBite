@@ -136,6 +136,5 @@ class ResultsCard : Fragment() {
         view.results_price.text = place.priceConversion()
         view.results_rating.setImageDrawable(getDrawable(act, place.ratingConversion()))
         view.results_description.text = place.fixDescription()
-        place.placePhotoCall(act, view.results_image)
     }
 }
