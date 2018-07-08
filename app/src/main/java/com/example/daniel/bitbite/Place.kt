@@ -33,9 +33,9 @@ class Place (var name:String, var placeID:String, var description:String, var ph
     private
     fun photoCallUrlBuilder(context : Context, ref : String) : String {
         return  "https://maps.googleapis.com/maps/api/place/photo?" +
-                "maxwidth=1000" +
-                "&photoreference=" + ref +
-                "&key=" + context.getString(R.string.google_api_key)
+                "maxwidth=500" +
+                "&photoreference=$ref" +
+                "&key=${context.getString(R.string.google_api_key)}"
     }
 
     /**====================================================================================================**/

@@ -53,24 +53,17 @@ class MainActivity : AppCompatActivity() {
     var lng = 0.0
 
     /** Settings Variables **/
-    var OPENNOW = "true"
-    var RADIUS = "15"
+    var OPENNOW = true
+    var RADIUS = 15 / 0.00062137
     var RANKBY = "distance"
     var DEFAULTLOCATION = ""
-    var EMPTY = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar_main as Toolbar)
-
-        // Get settings
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        RADIUS = (prefs.getInt("radius", 15) / 0.00062137).toString()
-        OPENNOW = prefs.getBoolean("opennow", true).toString()
-        RANKBY = prefs.getString("sortby", "distance")
-        // DEFAULTLOCATION = prefs.getString("defaultlocation", "")
+        changed = true
 
         // Get location
         setupLocation()
@@ -154,14 +147,12 @@ class MainActivity : AppCompatActivity() {
     fun goToResults() {
         if(valid) {
             val intent = Intent(this@MainActivity, ResultsActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList(EXTRA_PLACES_LIST, placesList)
-            intent.putExtra("myBundle", bundle)
+            intent.putParcelableArrayListExtra(EXTRA_PLACES_LIST, placesList)
 
             // Check Android version for animation
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity,
-                        Pair.create<View, String>(imageView, "main_logo"))
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                        this@MainActivity, imageView, "main_logo")
                 startActivity(intent, options.toBundle())
             } else {
                 startActivity(intent)
@@ -177,6 +168,24 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, LocationActivity::class.java)
             intent.putExtra("place", placesList[0])
             startActivity(intent)
+        }
+    }
+
+    // goToSettings()
+    // Go to SettinsActivity.kt
+    private
+    fun goToSettings() {
+        if(valid) {
+            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+
+            // Check Android version for animation
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                        this@MainActivity, imageView, "main_logo")
+                startActivity(intent, options.toBundle())
+            } else {
+                startActivity(intent)
+            }
         }
     }
 
@@ -267,22 +276,23 @@ class MainActivity : AppCompatActivity() {
         // price = price spinner
         // key = API key
         // * - choose in settings
+        updateSettings()
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=$lat,$lng" +
                 "&type=restaurant"
 
-        if(OPENNOW.equals("true")){ // Open Now
+        if(OPENNOW.toString() == "true"){ // Open Now
                 url += "&opennow=$OPENNOW"
         }
 
-        if(RANKBY.equals("distance")) { // Rank by distance
+        if(RANKBY == "distance") { // Rank by distance
             url += "&rankby=$RANKBY"
         } else{ // Rank by prominence (use radius)
             url += "&radius=$RADIUS"
         }
 
-        if(!style.equals("Random")){ // Add style if not "random"
+        if(style != "Random"){ // Add style if not "random"
             url += "&keyword=$style"
         }
 
@@ -455,8 +465,7 @@ class MainActivity : AppCompatActivity() {
 
         when(id) {
             R.id.action_settings -> { // Selected settings
-                val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-                startActivity(intent)
+                goToSettings()
             }
             R.id.action_about_us -> { // About us selected
                 // Go to About activity
@@ -466,6 +475,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // updateSettings()
+    // Updates settings variables
+    private
+    fun updateSettings() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        RADIUS = (prefs.getInt("radius", 15) / 0.00062137)
+        OPENNOW = prefs.getBoolean("opennow", true)
+        RANKBY = prefs.getString("sortby", "distance")
     }
 
 
@@ -552,7 +571,6 @@ class MainActivity : AppCompatActivity() {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
-
 
 
 }  /** END CLASS MainActivity.kt **/
