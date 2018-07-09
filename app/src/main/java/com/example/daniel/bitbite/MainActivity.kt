@@ -199,7 +199,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     /** Place Search API **/
 
     // JSON Class Representations
-    class Response(val results:List<Results>, val status:String)
+    class Response(val results:List<Results>, val status:String, val next_page_token:String)
 
     class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null,
                   val place_id:String="", val price_level:Int=0, val rating:Double=0.0,

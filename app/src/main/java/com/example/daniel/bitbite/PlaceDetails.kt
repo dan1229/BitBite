@@ -16,7 +16,7 @@ import java.net.URL
 class DetailsResponse(val result:DetailsResults, val status:String) : Parcelable
 
 @Parcelize
-class DetailsResults(val formatted_phone_number:String = "",
+class DetailsResults(val formatted_address:String = "", val formatted_phone_number:String = "",
                      val reviews:List<Reviews>, val website:String = "") : Parcelable
 
 @Parcelize

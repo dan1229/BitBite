@@ -42,7 +42,7 @@ class ReviewActivity : AppCompatActivity() {
 
         // Set on click listener for making review
         makeReviewCard.setOnClickListener {
-            if(!placeId.equals(""))
+            if(placeId != "")
                 openWebPage(this, mapsReviewUrlBuilder(placeId))
         }
     }
