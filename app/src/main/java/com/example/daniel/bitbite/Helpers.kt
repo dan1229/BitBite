@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import java.net.URL
 
 /**
  * Made by Daniel Nazarian
@@ -74,4 +77,11 @@ fun openWebPage(context : Context, string : String) {
 // Builds URL to leave Google Maps Review
 fun mapsReviewUrlBuilder(id : String) : String {
     return "https://search.google.com/local/writereview?placeid=$id"
+}
+
+// downloadPhoto()
+// Downloads photo based on passed URL into passed ImageView
+fun downloadPhoto(context : Context, view : ImageView, url : String) {
+    Glide.with(context).load(url).into(view)
+
 }

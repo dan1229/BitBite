@@ -117,16 +117,28 @@
                         android:gravity="start"
                         android:text="@string/default_review"
                         android:textSize="@dimen/text_normal" />
-                    <TextView
-                        android:id="@+id/reviewAuthor1"
-                        android:transitionName="review_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="start"
-                        android:singleLine="true"
-                        android:text="@string/default_review_author"
-                        android:textSize="@dimen/text_large" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="start">
+                        <ImageView
+                            android:id="@+id/reviewAuthorPhoto1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/default_account_icon"/>
+                        <TextView
+                            android:id="@+id/reviewAuthor1"
+                            android:transitionName="review_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_review_author"
+                            android:textSize="@dimen/text_large" />
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/reviewRating1"
                         android:transitionName="review_rating"
@@ -162,15 +174,28 @@
                         android:gravity="start"
                         android:text="@string/default_review"
                         android:textSize="@dimen/text_normal" />
-                    <TextView
-                        android:id="@+id/reviewAuthor2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="start"
-                        android:singleLine="true"
-                        android:text="@string/default_review_author"
-                        android:textSize="@dimen/text_large" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="start">
+                        <ImageView
+                            android:id="@+id/reviewAuthorPhoto2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/default_account_icon"/>
+                        <TextView
+                            android:id="@+id/reviewAuthor2"
+                            android:transitionName="review_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_review_author"
+                            android:textSize="@dimen/text_large" />
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/reviewRating2"
                         android:layout_width="128dp"
@@ -205,15 +230,28 @@
                         android:gravity="start"
                         android:text="@string/default_review"
                         android:textSize="@dimen/text_normal" />
-                    <TextView
-                        android:id="@+id/reviewAuthor3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="start"
-                        android:singleLine="true"
-                        android:text="@string/default_review_author"
-                        android:textSize="@dimen/text_large" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="start">
+                        <ImageView
+                            android:id="@+id/reviewAuthorPhoto3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/default_account_icon"/>
+                        <TextView
+                            android:id="@+id/reviewAuthor3"
+                            android:transitionName="review_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_review_author"
+                            android:textSize="@dimen/text_large" />
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/reviewRating3"
                         android:layout_width="128dp"
@@ -248,15 +286,28 @@
                         android:gravity="start"
                         android:text="@string/default_review"
                         android:textSize="@dimen/text_normal" />
-                    <TextView
-                        android:id="@+id/reviewAuthor4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="start"
-                        android:singleLine="true"
-                        android:text="@string/default_review_author"
-                        android:textSize="@dimen/text_large" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="start">
+                        <ImageView
+                            android:id="@+id/reviewAuthorPhoto4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/default_account_icon"/>
+                        <TextView
+                            android:id="@+id/reviewAuthor4"
+                            android:transitionName="review_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_review_author"
+                            android:textSize="@dimen/text_large" />
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/reviewRating4"
                         android:layout_width="128dp"
@@ -291,15 +342,28 @@
                         android:gravity="start"
                         android:text="@string/default_review"
                         android:textSize="@dimen/text_normal" />
-                    <TextView
-                        android:id="@+id/reviewAuthor5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:gravity="start"
-                        android:singleLine="true"
-                        android:text="@string/default_review_author"
-                        android:textSize="@dimen/text_large" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="start">
+                        <ImageView
+                            android:id="@+id/reviewAuthorPhoto5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/default_account_icon"/>
+                        <TextView
+                            android:id="@+id/reviewAuthor5"
+                            android:transitionName="review_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_review_author"
+                            android:textSize="@dimen/text_large" />
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/reviewRating5"
                         android:layout_width="128dp"

@@ -39,7 +39,7 @@
     <string name="default_open"></string>
     <string name="default_phone_title">Phone: </string>
     <string name="default_review">"No reviews available."</string>
-    <string name="default_review_author">"- N/A"</string>
+    <string name="default_review_author">"N/A"</string>
     <string name="default_description">N/A</string>
 
     <string name="location_dialog">Help Us Locate You</string>

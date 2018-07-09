@@ -20,8 +20,8 @@ class DetailsResults(val formatted_phone_number:String = "",
                      val reviews:List<Reviews>, val website:String = "") : Parcelable
 
 @Parcelize
-class Reviews(val author_name:String = "", val text:String = "",
-              val rating:Int = 0) : Parcelable
+class Reviews(val author_name:String = "", val profile_photo_url:String = "EMPTY",
+              val text:String = "", val rating:Int = 0) : Parcelable
 
 // calLDetailsAPI()
 // Calls Details API and parses response

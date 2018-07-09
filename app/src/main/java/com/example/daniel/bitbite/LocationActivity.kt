@@ -88,7 +88,9 @@ class LocationActivity : AppCompatActivity() {
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.type="text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, place.googleMapsUrl);
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Hey, look what I found using BitBite:\n" +
+                            "${place.name}\n${response.result.website}")
             startActivity(shareIntent)
         }
     }

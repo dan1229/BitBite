@@ -119,13 +119,9 @@
                             android:gravity="start"
                             android:text="@string/default_description" />
                         <TextView
-                            android:id="@+id/locationDot1"
+                            style="@style/TextDot"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="3dp"
-                            android:layout_marginRight="3dp"
-                            android:textColor="@color/text_secondary"
-                            android:text="@string/dot"/>
+                            android:layout_height="wrap_content" />
                         <TextView
                             android:id="@+id/locationPrice"
                             android:transitionName="place_price"

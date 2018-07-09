@@ -58,6 +58,7 @@ class ReviewActivity : AppCompatActivity() {
         } else { // Populate card
             updateText(index)
             updateAuthor(index)
+            updateAuthorPhoto(index)
             updateRating(index)
         }
     }
@@ -74,8 +75,21 @@ class ReviewActivity : AppCompatActivity() {
     private
     fun updateAuthor(index : Int) {
         val view = getReviewAuthorView(index)
-        val s = ellipsizeText("- ${reviews[index].author_name}", 25)
+        val s = ellipsizeText(" ${reviews[index].author_name}", 25)
         view.text = s
+    }
+
+    // updateAuthorPhoto()
+    private
+    fun updateAuthorPhoto(index : Int) {
+        val view = getReviewAuthorPhotoView(index)
+        val url = reviews[index].profile_photo_url
+        if(url != "EMPTY"){ // If not empty fetch photo
+            downloadPhoto(this, view, url)
+        } else { // If empty set default photo
+            view.setImageDrawable(ContextCompat.getDrawable(
+                    this, R.drawable.default_account_icon))
+        }
     }
 
     // updateRating()
@@ -123,6 +137,17 @@ class ReviewActivity : AppCompatActivity() {
         3 -> findViewById(R.id.reviewAuthor4)
         4 -> findViewById(R.id.reviewAuthor5)
         else -> findViewById<TextView>(R.id.reviewAuthor1)
+    }
+
+    // getReviewAuthorPhotoView()
+    private
+    fun getReviewAuthorPhotoView(card : Int) = when(card) {
+        0 -> findViewById(R.id.reviewAuthorPhoto1)
+        1 -> findViewById(R.id.reviewAuthorPhoto2)
+        2 -> findViewById(R.id.reviewAuthorPhoto3)
+        3 -> findViewById(R.id.reviewAuthorPhoto4)
+        4 -> findViewById(R.id.reviewAuthorPhoto5)
+        else -> findViewById<ImageView>(R.id.reviewAuthor1)
     }
 
     // getReviewRatingView()
