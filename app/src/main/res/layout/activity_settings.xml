@@ -25,7 +25,8 @@
             android:transitionName="main_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/main_activity_logo"/>
+            android:paddingBottom="10dp"
+            android:src="@drawable/toolbar_logo"/>
     </android.support.design.widget.AppBarLayout>
 
 </android.support.constraint.ConstraintLayout>

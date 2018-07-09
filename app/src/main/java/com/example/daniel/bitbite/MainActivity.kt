@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.ActivityOptions
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -33,7 +34,8 @@ import kotlin.RuntimeException
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
-class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
+class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     /** Spinner Options **/
     val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Health", "Breakfast", "Fast Food")
@@ -248,7 +250,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         Log.d("STREAM", placeSearchUrlBuilder())
         val response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
         if(response!!.status != "OK"){ // Response invalid
-            if(response.status.equals("ZERO_RESULTS")) { // No result
+            if(response.status == "ZERO_RESULTS") { // No result
                 throw RuntimeException("No result. Please try again.")
             }
             else { // Other issue
@@ -485,6 +487,12 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         RADIUS = (prefs.getInt("radius", 15) / 0.00062137)
         OPENNOW = prefs.getBoolean("opennow", true)
         RANKBY = prefs.getString("sortby", "distance")
+    }
+
+    // onSharedPreferenceChanged()
+    // Preference changed listener
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
+        changed = true
     }
 
 
