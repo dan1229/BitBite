@@ -184,7 +184,7 @@ class LocationActivity : AppCompatActivity() {
     fun updateWebsite(input : String) {
         val view = findViewById<TextView>(R.id.locationWebsite)
         if(!input.equals(""))
-            view.text = ellipsizeText(input, 30)
+            view.text = input
         else
             view.text = resources.getString(R.string.default_website)
         view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
