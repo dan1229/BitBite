@@ -113,7 +113,6 @@ class LocationActivity : AppCompatActivity() {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
                     Pair.create<View, String>(layoutReviews, "review_card"),
                     Pair.create<View, String>(locationReviewRating, "review_rating"),
-                    Pair.create<View, String>(locationReviewAuthor, "review_author"),
                     Pair.create<View, String>(locationReviews, "review_text"))
             startActivity(intent, options.toBundle())
         } else {

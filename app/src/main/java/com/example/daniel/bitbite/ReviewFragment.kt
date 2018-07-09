@@ -1,53 +1,40 @@
 package com.example.daniel.bitbite
 
-import android.app.ActivityOptions
 import android.app.Fragment
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.getDrawable
-import android.util.Log
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.daniel.bitbite.R.layout.fragment_results_card
-import kotlinx.android.synthetic.main.fragment_results_card.*
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.fragment_results_card.view.*
+import kotlinx.android.synthetic.main.fragment_review.view.*
 import org.jetbrains.anko.act
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.uiThread
 
 
-class ResultsCard : Fragment() {
-    private lateinit var place : Place
+class ReviewFragment : Fragment() {
+    // TODO: Rename and change types of parameters
+    private lateinit var review : Reviews
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        place = arguments.getParcelable("place")
+        review = arguments!!.getParcelable("review")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_results_card, container, false)
+        val view = inflater.inflate(R.layout.fragment_review, container, false)
 
         // Populate card
         updateCard(view)
 
-        // Set on click listener for card
-        view.results_card.setOnClickListener {
-            goToLocation()
-        }
-
         return view
-
     }
 
     /**====================================================================================================**/
@@ -80,9 +67,7 @@ class ResultsCard : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragInteraction(uri: Uri)  {
-
-        }
+        fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
@@ -90,38 +75,15 @@ class ResultsCard : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param place - Place object for fragment
-         * @return A new instance of fragment ResultsCard.
+         * @param review Parameter 1.
+         * @return A new instance of fragment ReviewFragment.
          */
-        fun newInstance(place : Place) : ResultsCard {
+        fun newInstance(review : Reviews) : ReviewFragment {
             val args = Bundle()
-            args.putParcelable("place", place)
-            val fragment = ResultsCard()
+            args.putParcelable("review", review)
+            val fragment = ReviewFragment()
             fragment.arguments = args
             return fragment
-        }
-    }
-
-    /**====================================================================================================**/
-    /** Intent Makers **/
-
-    // goToLocation()
-    // Goes to LocationActivity, calls Place Details API
-    private
-    fun goToLocation() {
-        // Create Intent
-        val intent = Intent(activity, LocationActivity::class.java)
-        intent.putExtra("place", place)
-
-        // Check Android version for animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                    Pair.create<View, String>(results_card, "card"),
-                    Pair.create<View, String>(results_image, "place_image"),
-                    Pair.create<View, String>(results_name, "place_name"))
-            startActivity(intent, options.toBundle())
-        } else {
-            startActivity(intent)
         }
     }
 
@@ -132,9 +94,23 @@ class ResultsCard : Fragment() {
     // Calls update function for each segment of card
     private
     fun updateCard(view : View) {
-        view.results_name.text = ellipsizeText(place.name, 25)
-        view.results_price.text = place.priceConversion()
-        view.results_rating.setImageDrawable(getDrawable(act, place.ratingConversion()))
-        view.results_description.text = place.fixDescription()
+        view.review_text.text = review.text
+        view.review_author.text = review.author_name
+        view.review_rating.setImageDrawable(
+                ContextCompat.getDrawable(act, ratingConversion(review.rating)))
+        updateReviewAuthorPhoto(view.review_author_photo)
+    }
+
+    // updateReviewAuthorPhoto()
+    // Updates review author profile picture
+    private
+    fun updateReviewAuthorPhoto(view : ImageView) {
+        val url = review.profile_photo_url
+        if(url != "EMPTY"){ // If not empty fetch photo
+            downloadPhoto(act, view, url)
+        } else { // If empty set default photo
+            view.setImageDrawable(ContextCompat.getDrawable(
+                    act, R.drawable.default_account_icon))
+        }
     }
 }
