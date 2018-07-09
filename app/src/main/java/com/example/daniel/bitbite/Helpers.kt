@@ -36,6 +36,17 @@ fun reviewRatingConversion(rating : Int) = when (rating) {
     else -> R.drawable.face_3
 }
 
+// priceConversion()
+// Converts price to string of "$" based on value
+fun priceConversion(price : Int) = when(price) {
+    1 -> "$"
+    2 -> "$$"
+    3 -> "$$$"
+    4 -> "$$$$"
+    5 -> "$$$$$"
+    else -> ""
+}
+
 // ellipsizeText()
 // Ellipsizes text
 fun ellipsizeText(input : String, max : Int = 20) : String {

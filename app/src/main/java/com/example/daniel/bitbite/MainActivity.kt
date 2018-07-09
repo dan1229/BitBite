@@ -27,6 +27,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.seekbar_view_layout.*
 import org.jetbrains.anko.*
 import java.net.URL
 import java.util.*
@@ -35,7 +36,7 @@ import kotlin.RuntimeException
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     /** Spinner Options **/
     val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Health", "Breakfast", "Fast Food")
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     var changed = false
     var valid = false
     var style = "Random"
-    var price = 0
+    var price = 5
     var lat = 0.0
     var lng = 0.0
 
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar_main as Toolbar)
+        priceBar!!.setOnSeekBarChangeListener(this)
         changed = true
 
         // Get location
@@ -123,18 +125,22 @@ class MainActivity : AppCompatActivity() {
                 changed = true
             }
         }
+    }
 
-        //Adapter for priceSpinner
-        priceSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, prices)
+    // SeekBar Listeners
+    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        changed = true
+        price = progress + 1
+        priceDisplay.text = price.toString()
+    }
 
-        //item selected listener for priceSpinner
-        priceSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                price = p2
-                changed = true
-            }
-        }
+    override fun onStartTrackingTouch(seekBar: SeekBar) {
+        priceBar.progress = 4
+        price = 5
+    }
+
+    override fun onStopTrackingTouch(p0: SeekBar?) {
+        price = p0!!.progress + 1
     }
 
 
@@ -280,7 +286,8 @@ class MainActivity : AppCompatActivity() {
 
         var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
                 "?location=$lat,$lng" +
-                "&type=restaurant"
+                "&type=restaurant" +
+                "&maxprice=$price"
 
         if(OPENNOW.toString() == "true"){ // Open Now
                 url += "&opennow=$OPENNOW"
@@ -294,10 +301,6 @@ class MainActivity : AppCompatActivity() {
 
         if(style != "Random"){ // Add style if not "random"
             url += "&keyword=$style"
-        }
-
-        if(price != 0){ // Add max price if not "any price"
-            url += "&maxprice=$price"
         }
 
         url += "&key=${getString(R.string.google_api_key)}"

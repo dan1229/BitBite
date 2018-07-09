@@ -13,14 +13,16 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_splash">SplashActivity</string>
 
-    <string name="main_activity_logo">Logo for main activity</string>
+    <string name="style_spinner_header">Style</string>
+    <string name="price_header">Price</string>
+    <string name="price_seekbar_text">5</string>
+
     <string name="submit_button">Search</string>
     <string name="more_info_text">More Info</string>
     <string name="button_share">Share</string>
     <string name="button_directions">Directions</string>
     <string name="feeling_lucky_button">I\'m Feeling Lucky</string>'
-    <string name="style_spinner_header">Style of food</string>
-    <string name="price_spinner_header">Price of food</string>
+
     <string name="title_activity_results">ResultsActivity</string>
     <string name="make_review_title">Been Here?</string>
     <string name="make_review_description">Leave your own review!</string>
