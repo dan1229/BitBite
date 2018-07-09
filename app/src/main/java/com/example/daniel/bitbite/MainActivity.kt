@@ -2,6 +2,7 @@ package com.example.daniel.bitbite
 
 import android.Manifest
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,8 +11,12 @@ import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -26,6 +31,7 @@ import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header.*
 import org.jetbrains.anko.*
 import java.net.URL
 import java.util.*
@@ -34,8 +40,7 @@ import kotlin.RuntimeException
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
-class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     /** Spinner Options **/
     val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Health", "Breakfast", "Fast Food")
@@ -43,6 +48,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
     /** Variables **/
     private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var mDrawerLayout: DrawerLayout
     private val locationRequestCode = 101
     var placesList = ArrayList<Place>()
     var changed = false
@@ -62,15 +68,40 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         setTheme(AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar_main as Toolbar)
         priceBar!!.setOnSeekBarChangeListener(this)
+        mDrawerLayout = findViewById(R.id.drawer_layout)
         changed = true
+
+        // Setup Toolbar
+        setSupportActionBar(toolbar_main as Toolbar)
+        val actionbar: ActionBar? = supportActionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu)
+            title = ""
+        }
 
         // Get location
         setupLocation()
 
-        // Setup spinners
+        // Setup spinner
         setupSpinner()
+
+        // Set Nav Drawer listener
+        nav_view.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            mDrawerLayout.closeDrawers()
+
+            true
+        }
+
+        // Set Nav Footer listener
+        nav_footer.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = false
+            mDrawerLayout.closeDrawers()
+            navMenuSwitch(menuItem)
+            false
+        }
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
@@ -92,6 +123,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
             }
         }
     }
+
 
     /**====================================================================================================**/
     /** Setup **/
@@ -176,22 +208,37 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         }
     }
 
+
+    /** NAV BAR INTENT MAKERS **/
+
+    // goToFavorites()
+    // Go to FavoritesActivity.kt
+    private
+    fun goToFavorites() {
+        Log.d("NAV", "favorites menu")
+    }
+
+    // goToAboutUs()
+    // Go to AboutUsActivity.kt
+    private
+    fun goToAboutUs() {
+        Log.d("NAV", "aboutus menu")
+    }
+
+    // goToFeedback()
+    // Go to FeedbackActivity.kt
+    private
+    fun goToFeedback() {
+        Log.d("NAV", "feedback menu")
+    }
+
     // goToSettings()
-    // Go to SettinsActivity.kt
+    // Go to SettingsActivity.kt
     private
     fun goToSettings() {
-        if(valid) {
-            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-
-            // Check Android version for animation
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                        this@MainActivity, imageView, "main_logo")
-                startActivity(intent, options.toBundle())
-            } else {
-                startActivity(intent)
-            }
-        }
+        changed = true
+        val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+        startActivity(intent)
     }
 
 
@@ -199,7 +246,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     /** Place Search API **/
 
     // JSON Class Representations
-    class Response(val results:List<Results>, val status:String, val next_page_token:String)
+    class Response(val results:List<Results>, val status:String, val next_page_token:String = "")
 
     class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null,
                   val place_id:String="", val price_level:Int=0, val rating:Double=0.0,
@@ -453,32 +500,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         Log.d("LOCATION", "default location is " + getString(R.string.default_location))
     }
 
-    // onCreateOptionsMenu()
-    // Create options menu
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.options_menu, menu)
-        return true
-    }
-
-    // onOptionsItemSelected()
-    // "On click listener" for options menu
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-        when(id) {
-            R.id.action_settings -> { // Selected settings
-                goToSettings()
-            }
-            R.id.action_about_us -> { // About us selected
-                // Go to About activity
-            }
-            R.id.action_rate_us -> { // Rate us selected
-                // Go to Google Play store
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     // updateSettings()
     // Updates settings variables
     private
@@ -489,10 +510,29 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         RANKBY = prefs.getString("sortby", "distance")
     }
 
-    // onSharedPreferenceChanged()
-    // Preference changed listener
-    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-        changed = true
+    // onOptionsItemSelected()
+    // "On click listener" for options menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                mDrawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    // navMenuSwitch()
+    // Calls appropriate function(s) based on Nav Drawer input
+    private
+    fun navMenuSwitch(menuItem: MenuItem) {
+        when(menuItem.toString()) {
+            "Home" -> mDrawerLayout.closeDrawers()
+            "Favorites" -> goToFavorites()
+            "Settings" -> goToSettings()
+            "About Us" -> goToAboutUs()
+            "Feedback" -> goToFeedback()
+        }
     }
 
 
@@ -564,7 +604,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Check box listener
         val checkboxView = view.findViewById(R.id.confirmationCheckbox) as CheckBox
-        checkboxView.setOnCheckedChangeListener { buttonView, isChecked ->
+        checkboxView.setOnCheckedChangeListener { _, isChecked ->
             checkbox = isChecked
         }
 

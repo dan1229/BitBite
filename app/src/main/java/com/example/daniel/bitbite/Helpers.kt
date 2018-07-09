@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import java.net.URL
@@ -15,7 +17,6 @@ import java.net.URL
 
 /**====================================================================================================**/
 /** Helper Methods **/
-
 
 // ratingConversion()
 // Converts rating to drawable of stars based on value
