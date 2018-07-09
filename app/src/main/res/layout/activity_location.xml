@@ -86,7 +86,28 @@
                         app:srcCompat="@drawable/default_star" />
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/openNowTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/text_normal"
+                            android:textColor="@color/text_secondary"
+                            android:layout_gravity="start"
+                            android:layout_marginEnd="@dimen/icon_margin"
+                            android:text="@string/open_title"/>
+                        <TextView
+                            android:id="@+id/locationOpen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/text_normal"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_open" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/locationDescription"
                             android:transitionName="place_description"
@@ -223,30 +244,6 @@
                             android:singleLine="true"
                             android:text="@string/default_phone" />
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/icon_margin"
-                        android:layout_marginBottom="@dimen/icon_margin">
-                        <TextView
-                            android:id="@+id/openNowTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textSize="@dimen/text_normal"
-                            android:layout_gravity="start"
-                            android:layout_marginRight="@dimen/icon_margin"
-                            android:text="@string/open_title"/>
-                        <TextView
-                            android:id="@+id/locationOpen"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:textSize="@dimen/text_normal"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:text="@string/default_open" />
-                    </LinearLayout>
-
 
                 </LinearLayout>
 

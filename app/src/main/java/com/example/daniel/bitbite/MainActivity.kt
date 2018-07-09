@@ -15,7 +15,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.util.Pair
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
@@ -25,9 +24,7 @@ import com.beust.klaxon.*
 import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.seekbar_view_layout.*
 import org.jetbrains.anko.*
 import java.net.URL
 import java.util.*
@@ -71,7 +68,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         setupLocation()
 
         // Setup spinners
-        setupSpinners()
+        setupSpinner()
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
@@ -110,10 +107,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         }
     }
 
-    // setupSpinners()
+    // setupSpinner()
     // Setup spinners and listeners
     private
-    fun setupSpinners() {
+    fun setupSpinner() {
         // Adapter for styleSpinner
         styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
 
