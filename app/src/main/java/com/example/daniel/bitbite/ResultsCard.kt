@@ -9,11 +9,10 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.getDrawable
+import android.support.v4.view.GestureDetectorCompat
 import android.util.Log
 import android.util.Pair
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.example.daniel.bitbite.R.layout.fragment_results_card
 import kotlinx.android.synthetic.main.fragment_results_card.*
 import kotlinx.android.synthetic.main.fragment_results_card.view.*
@@ -21,14 +20,20 @@ import org.jetbrains.anko.act
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.uiThread
+import javax.xml.transform.Result
 
 
-class ResultsCard : Fragment() {
+class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
+
     private lateinit var place : Place
+//    private lateinit var card : ResultsCard
+//    var gDetector: GestureDetectorCompat? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        this.gDetector = GestureDetectorCompat(activity, this)
+
 
         place = arguments.getParcelable("place")
     }
@@ -37,6 +42,8 @@ class ResultsCard : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_results_card, container, false)
+
+//        card = this
 
         // Populate card
         updateCard(view)
@@ -101,6 +108,46 @@ class ResultsCard : Fragment() {
             return fragment
         }
     }
+
+    /**====================================================================================================**/
+    /** Gestures Interface Overrides **/
+//
+//    override fun onTouchEvent(event: MotionEvent): Boolean {
+//        this.gDetector?.onTouchEvent(event)
+//        // Be sure to call the superclass implementation
+//        return super.onTouchEvent(event)
+//    }
+//
+//    // onFling()
+//    // Detects "fling" gesture events
+//    override fun onFling(event1: MotionEvent, event2: MotionEvent,
+//                         velocityX: Float, velocityY: Float): Boolean {
+//
+//        Log.d("GESTURE", "fling")
+//        getActivity().getFragmentManager().beginTransaction().remove(card).commit()
+//        return true
+//    }
+//
+//    override fun onDown(p0: MotionEvent?): Boolean {
+//        return false
+//    }
+//
+//    override fun onLongPress(p0: MotionEvent?) {
+//        //
+//    }
+//
+//    override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
+//        return false
+//    }
+//
+//    override fun onShowPress(p0: MotionEvent?) {
+//        Log.d("GESTURE", "fling")
+//
+//    }
+//
+//    override fun onSingleTapUp(p0: MotionEvent?): Boolean {
+//        return false
+//    }
 
     /**====================================================================================================**/
     /** Intent Makers **/

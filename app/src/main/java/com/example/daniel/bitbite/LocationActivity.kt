@@ -89,8 +89,9 @@ class LocationActivity : AppCompatActivity() {
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.type="text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Hey, look what I found using BitBite:\n" +
-                            "${place.name}\n${response.result.website}")
+                    "Hey, look what I found using BitBite (https://BitBite.app) :\n\n" +
+                            "${place.name}\n" +
+                            response.result.website)
             startActivity(shareIntent)
         }
     }
@@ -130,6 +131,7 @@ class LocationActivity : AppCompatActivity() {
         // Photo and Opennow
         updatePhoto(place.photoRef)
         updateOpennow(place.openNow)
+        updateClock(place.openNow)
         updatePrice(place)
 
         // Name, price, description, rating
@@ -169,6 +171,20 @@ class LocationActivity : AppCompatActivity() {
         } else {
             findViewById<TextView>(R.id.locationOpen).text = getString(R.string.no)
             findViewById<TextView>(R.id.locationOpen).setTextColor(
+                    ContextCompat.getColor(this, R.color.red))
+        }
+    }
+
+    // updateClock()
+    private
+    fun updateClock(bool : Boolean) {
+        if(bool){
+            findViewById<TextView>(R.id.locationClock).text = getString(R.string.open)
+            findViewById<TextView>(R.id.locationClock).setTextColor(
+                    ContextCompat.getColor(this, R.color.green))
+        } else {
+            findViewById<TextView>(R.id.locationClock).text = getString(R.string.closed)
+            findViewById<TextView>(R.id.locationClock).setTextColor(
                     ContextCompat.getColor(this, R.color.red))
         }
     }

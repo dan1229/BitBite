@@ -143,6 +143,7 @@
 
                 <LinearLayout
                     android:id="@+id/layoutReviews"
+                    android:visibility="gone"
                     android:transitionName="review_card"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -239,6 +240,26 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:text="@string/default_phone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/icon_margin"
+                        android:layout_marginBottom="@dimen/icon_margin">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/clock_icon"/>
+                        <TextView
+                            android:id="@+id/locationClock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_normal"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_clock" />
                     </LinearLayout>
 
                 </LinearLayout>

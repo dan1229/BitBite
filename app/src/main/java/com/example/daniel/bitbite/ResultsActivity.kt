@@ -43,8 +43,8 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_results)
         setSupportActionBar(toolbar_results)
-        toolbar_results.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar_results.title = ""
 
 
         // Check if already instantiated

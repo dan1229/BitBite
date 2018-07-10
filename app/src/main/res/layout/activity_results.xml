@@ -11,21 +11,24 @@
         android:id="@+id/appbar_results"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
+        android:layout_gravity="start"
         android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay" >
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_results"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:elevation="@dimen/toolbar_elevation"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         <ImageView
             android:transitionName="main_logo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:contentDescription="@string/imageview_description_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:paddingBottom="10dp"
+            android:layout_gravity="start"
             android:src="@drawable/toolbar_logo"/>
     </android.support.design.widget.AppBarLayout>
 

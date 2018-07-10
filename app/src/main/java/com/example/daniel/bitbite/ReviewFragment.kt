@@ -93,7 +93,7 @@ class ReviewFragment : Fragment() {
     // updateCard()
     // Calls update function for each segment of card
     private
-    fun updateCard(view : View) {
+    fun  updateCard(view : View) {
         val s = "\"${review.text}\""
         view.review_text.text = s
         view.review_author.text = review.author_name
