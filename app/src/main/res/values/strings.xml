@@ -25,7 +25,7 @@
     <string name="price_header">Price</string>
     <string name="price_display_text">$$$$$</string>
     <string name="submit_button">Search</string>
-    <string name="feeling_lucky_button">I\'m Feeling Lucky</string>'
+    <string name="feeling_lucky_button">I\'m Feeling Lucky</string>
 
     <!-- Nav Bar -->
     <string name="home">Home</string>
@@ -34,22 +34,25 @@
     <string name="about_us">About Us</string>
     <string name="feedback">Feedback</string>
 
-    <!-- LocationActivity / ResultsActivity -->
+    <!-- ResultsActivity -->
     <string name="title_activity_results">ResultsActivity</string>
+    <string name="show_more_button">Show More</string>
+    <string name="default_name">Not Available</string>
+    <string name="default_price"></string>
+
+    <!-- LocationActivity -->
     <string name="button_directions">Directions</string>
     <string name="more_info_text">More Info</string>
     <string name="button_share">Share</string>
     <string name="default_location"></string>
-    <string name="default_name">Not Available</string>
-    <string name="default_price"></string>
     <string name="default_rating"></string>
     <string name="default_address"></string>
-    <string name="default_website"></string>
     <string name="default_website_title">Website: </string>
+    <string name="default_website"></string>
+    <string name="default_phone_title">Phone: </string>
     <string name="default_phone"></string>
     <string name="open_title">Open Now: </string>
     <string name="default_open"></string>
-    <string name="default_phone_title">Phone: </string>
 
     <!-- ReviewActivity -->
     <string name="make_review_title">Been Here?</string>
@@ -66,6 +69,9 @@
 
 
     <!-- Strings related to Settings -->
+
+    <!-- ImageView Descriptions -->
+    <string name="imageview_description_toolbar">Toolbar Logo</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

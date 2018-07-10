@@ -1,7 +1,9 @@
 package com.example.daniel.bitbite
 
 import android.content.Context
+import android.content.res.Resources
 import android.preference.PreferenceManager
+import android.provider.Settings.Global.getString
 import android.util.Log
 import com.beust.klaxon.Klaxon
 import java.net.URL
@@ -32,12 +34,23 @@ class Times(val open_now:Boolean = true)
 /**====================================================================================================**/
 /** Place Search API Call Functions **/
 
+fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String = "" )
+        : Pair<ArrayList<Place>, String>{
+
+    return when(token){
+        "" -> streamJson(placeSearchUrlBuilder(context, user!!))
+        else -> streamJson(nextPageUrlBuilder(context, token))
+    }
+}
+
 // callPlacesAPI()
 // Gets and parses JSON response from Places API
-fun callPlacesApi(context : Context, user : MainActivity.User) : ArrayList<Place> {
-    val res = ArrayList<Place>()
-    Log.d("STREAM", placeSearchUrlBuilder(context, user))
-    val response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder(context, user)).readText())
+fun streamJson(url : String) : Pair<ArrayList<Place>, String> {
+
+    val arrayList = ArrayList<Place>()
+    Log.d("STREAM", url)
+
+    val response = Klaxon().parse<Response>(URL(url).readText())
     if(response!!.status != "OK"){ // Response invalid
         if(response.status == "ZERO_RESULTS") { // No result
             throw RuntimeException("No result. Please try again.")
@@ -49,11 +62,31 @@ fun callPlacesApi(context : Context, user : MainActivity.User) : ArrayList<Place
 
     for(i in 0 until (response.results.size)){
         val place = convertToPlace(response.results[i])
-        res.add(place)
+        arrayList.add(place)
     }
 
-    return res
+    return Pair(arrayList, response.next_page_token)
 }
+
+// convertToPlace()
+// Convert Response object to Place object
+private
+fun convertToPlace(results : Results) :  Place {
+    val photoRef = if (results.photos != null) results.photos[0].photo_reference else "DEFAULT"
+    val name = results.name
+    val placeID = results.place_id
+    val description = results.types[0]
+    val price = results.price_level
+    val rating = results.rating.toInt()
+    val openNow = results.opening_hours.open_now
+    val location = DoubleArray(2)
+    location[0] = results.geometry.location.lat
+    location[1] = results.geometry.location.lng
+    return Place(name, placeID, description, photoRef, price, rating, openNow, location)
+}
+
+/**====================================================================================================**/
+/** URL Builders **/
 
 // placeSearchUrlBuilder()
 // Builds URL for PlaceSearch API Call
@@ -98,23 +131,20 @@ fun placeSearchUrlBuilder(context : Context, user : MainActivity.User) : String 
     return url
 }
 
-// convertToPlace()
-// Convert Response object to Place object
-private
-fun convertToPlace(results : Results) :  Place {
-    val photoRef = if (results.photos != null) results.photos[0].photo_reference else "DEFAULT"
-    val name = results.name
-    val placeID = results.place_id
-    val description = results.types[0]
-    val price = results.price_level
-    val rating = results.rating.toInt()
-    val openNow = results.opening_hours.open_now
-    val location = DoubleArray(2)
-    location[0] = results.geometry.location.lat
-    location[1] = results.geometry.location.lng
-    return Place(name, placeID, description, photoRef, price, rating, openNow, location)
-}
 
+// nextPageUrlBuilder()
+// Builds URL for PlaceSearch API Call
+private
+fun nextPageUrlBuilder(context : Context, token : String) : String {
+    // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
+    // @Param
+    // pagetoken = next_page_token
+    // key = API key
+
+    return "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
+            "?key=${context.getString(R.string.google_api_key)}" +
+            "&pagetoken=$token"
+}
 
 /**====================================================================================================**/
 /** Settings Functions **/

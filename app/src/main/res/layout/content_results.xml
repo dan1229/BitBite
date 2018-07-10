@@ -7,13 +7,32 @@
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_marginBottom="4dp">
     <LinearLayout
-        android:id="@+id/layout_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:orientation="vertical"
-        tools:context=".ResultsActivity"
-        tools:showIn="@layout/activity_results" >
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/layout_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="vertical"
+            tools:context=".ResultsActivity"
+            tools:showIn="@layout/activity_results" >
 
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/show_more_button"
+            style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="6dp"
+            android:padding="12dp"
+            android:textSize="@dimen/text_normal"
+            android:textAllCaps="false"
+            android:text="@string/show_more_button"/>
     </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>

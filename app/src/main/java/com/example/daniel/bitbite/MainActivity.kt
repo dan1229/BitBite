@@ -2,16 +2,13 @@ package com.example.daniel.bitbite
 
 import android.Manifest
 import android.app.ActivityOptions
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
@@ -22,7 +19,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.KeyEvent
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -31,11 +27,10 @@ import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header.*
 import org.jetbrains.anko.*
 import java.net.URL
-import java.util.*
 import kotlin.RuntimeException
+import kotlin.collections.ArrayList
 
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
@@ -44,13 +39,13 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     /** Spinner Options **/
     val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Health", "Breakfast", "Fast Food")
-    val prices = arrayOf("Any Price", "$", "$$", "$$$", "$$$$", "$$$$$")
 
     /** Variables **/
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var mDrawerLayout: DrawerLayout
     private val locationRequestCode = 101
     var placesList = ArrayList<Place>()
+    var next_page_token = ""
     var changed = false
     var valid = false
     var style = "Random"
@@ -186,6 +181,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         if(valid) {
             val intent = Intent(this@MainActivity, ResultsActivity::class.java)
             intent.putParcelableArrayListExtra(EXTRA_PLACES_LIST, placesList)
+            intent.putExtra("TOKEN", next_page_token)
 
             // Check Android version for animation
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -220,7 +216,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     // goToAboutUs()
-    // Go to AboutUsActivity.kt
+    // Go to www.BitBite.app
     private
     fun goToAboutUs() {
         openWebPage(this, "https://www.BitBite.app")
@@ -256,12 +252,14 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             if(changed) { // If selections have changed, recall API and remake list
                 placesList.clear()
                 try {
-                    placesList = callPlacesApi(this@MainActivity, user)
+                    val (x, y) = callPlacesApi(this@MainActivity, user)
+                    placesList = x
+                    next_page_token = y
                     valid = true
                 } catch(e : RuntimeException){
                     valid = false
                     uiThread {
-                        errorAlert(e.toString().replace("java.lang.RuntimeException: ", ""))
+                        errorAlert("Technical Error. Please try again.")
                     }
                 }
                 changed = false

@@ -35,6 +35,10 @@ import android.util.Pair as UtilPair
 
 class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionListener {
 
+    var places = ArrayList<Place>()
+    var listSize = 0
+    var token = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_results)
@@ -49,9 +53,35 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         }
 
         // Get places ArrayList
-        val places = intent.getParcelableArrayListExtra<Place>(EXTRA_PLACES_LIST)
-        var listSize = places.size
+        places = intent.getParcelableArrayListExtra<Place>(EXTRA_PLACES_LIST)
+        token = intent.getStringExtra("TOKEN")
+        listSize = places.size
 
+        updateResults()
+
+
+        // Set Show More button listener
+        show_more_button.setOnClickListener {
+            doAsync {
+                val (x, y) = callPlacesApi(this@ResultsActivity, token = token)
+                places = x
+                token = y
+                listSize = places.size
+
+                uiThread {
+                    updateResults()
+                }
+            }
+        }
+    }
+
+    /**====================================================================================================**/
+    /** Updater Methods  **/
+
+    // updateResults()
+    // Updates ResultsCard fragments
+    private
+    fun updateResults() {
         for (i in 0..(listSize - 1)) {
             doAsync {
 
@@ -60,9 +90,26 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
 
 
                 uiThread {
-                    places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
+                    if(places[i].photoRef != "DEFAULT") // Lookup image
+                        places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
+                    else
+                        fragment.results_image.setImageDrawable(ContextCompat.getDrawable( // Set default image
+                                this@ResultsActivity, R.drawable.default_place_image))
                 }
             }
+        }
+
+        updateButton()
+    }
+
+    // updateButton()
+    // Updates button visibility based on token
+    private
+    fun updateButton() {
+        if(token == "") { // Token doesn't exist
+            show_more_button.visibility = View.GONE
+        } else { // Token exists
+            show_more_button.visibility = View.VISIBLE
         }
     }
 
