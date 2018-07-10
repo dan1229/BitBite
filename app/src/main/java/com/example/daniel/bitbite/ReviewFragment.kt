@@ -94,7 +94,8 @@ class ReviewFragment : Fragment() {
     // Calls update function for each segment of card
     private
     fun updateCard(view : View) {
-        view.review_text.text = review.text
+        val s = "\"${review.text}\""
+        view.review_text.text = s
         view.review_author.text = review.author_name
         view.review_rating.setImageDrawable(
                 ContextCompat.getDrawable(act, ratingConversion(review.rating)))

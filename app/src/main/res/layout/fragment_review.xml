@@ -54,7 +54,7 @@
             </LinearLayout>
             <ImageView
                 android:id="@+id/review_rating"
-                android:layout_width="128dp"
+                android:layout_width="96dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:gravity="end"
