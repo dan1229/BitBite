@@ -45,73 +45,95 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="48dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="12dp"
                 android:adjustViewBounds="true"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/style_spinner_title"
+                app:layout_constraintBottom_toBottomOf="@+id/styleLayout"
                 app:layout_constraintTop_toTopOf="@id/constraintLayoutMain"
                 app:srcCompat="@drawable/main_activity_logo" />
 
-            <TextView
-                android:id="@+id/style_spinner_title"
+            <LinearLayout
+                android:id="@+id/styleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="@string/style_spinner_header"
-                android:textSize="@dimen/text_large"
                 app:layout_constraintBottom_toBottomOf="@+id/styleSpinner"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView">
+                <TextView
+                    android:id="@+id/style_spinner_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/style_header"
+                    android:textSize="@dimen/text_large"
+                    app:layout_constraintBottom_toTopOf="@id/priceLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
+                <TextView
+                    android:id="@+id/styleDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="@dimen/text_large"
+                    android:textColor="@color/text_secondary"
+                    android:text="@string/style_display_text"/>
+            </LinearLayout>
 
             <Spinner
                 android:id="@+id/styleSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spinner_height"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp"
-                app:layout_constraintBottom_toTopOf="@id/price_title"
+                app:layout_constraintBottom_toTopOf="@id/priceLayout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/style_spinner_title" />
-
-            <TextView
-                android:id="@+id/price_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:text="@string/price_header"
-                android:textSize="@dimen/text_large"
-                app:layout_constraintBottom_toTopOf="@id/priceLayout"
-                app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
+                app:layout_constraintTop_toBottomOf="@+id/styleLayout" />
 
             <LinearLayout
                 android:id="@+id/priceLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                app:layout_constraintBottom_toTopOf="@id/submitButton"
+                android:layout_margin="12dp"
+                app:layout_constraintBottom_toTopOf="@id/priceBar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/price_title">
+                app:layout_constraintTop_toBottomOf="@+id/styleSpinner">
+                <TextView
+                    android:id="@+id/price_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price_header"
+                    android:textSize="@dimen/text_large"
+                    app:layout_constraintBottom_toTopOf="@id/priceLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
                 <TextView
                     android:id="@+id/priceDisplay"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="@dimen/text_normal"
-                    android:textColor="@color/text_secondary"
-                    android:text="@string/price_seekbar_text"/>
-                <SeekBar
-                    android:id="@+id/priceBar"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:progress="4"
-                    android:max="4"
-                    android:enabled="true" />
+                    android:layout_marginLeft="8dp"
+                    android:textSize="@dimen/text_large"
+                    android:textColor="@color/text_secondary"
+                    android:text="@string/price_display_text"/>
             </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/priceBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:progress="4"
+                android:max="4"
+                android:enabled="true"
+                app:layout_constraintBottom_toTopOf="@id/submitButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/priceLayout"/>
 
             <LinearLayout
                 android:id="@+id/submitButton"
@@ -119,10 +141,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="12dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:paddingStart="30dp"
+                android:paddingStart="18dp"
                 app:layout_constraintBottom_toTopOf="@id/feelingLuckyButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -132,13 +156,11 @@
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="4dp"
                     android:textSize="@dimen/text_x_large"
                     android:text="@string/submit_button" />
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="4dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/search_icon" />
             </LinearLayout>
@@ -148,8 +170,8 @@
                 style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:padding="16dp"
+                android:layout_marginBottom="6dp"
                 android:text="@string/feeling_lucky_button"
                 android:textSize="@dimen/text_small"
                 app:layout_constraintBottom_toBottomOf="parent"

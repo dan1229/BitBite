@@ -20,9 +20,10 @@
     <string name="title_activity_splash">SplashActivity</string>
 
     <!-- MainActivity -->
-    <string name="style_spinner_header">Style</string>
+    <string name="style_header">Style</string>
+    <string name="style_display_text">Random</string>
     <string name="price_header">Price</string>
-    <string name="price_seekbar_text">5</string>
+    <string name="price_display_text">$$$$$</string>
     <string name="submit_button">Search</string>
     <string name="feeling_lucky_button">I\'m Feeling Lucky</string>'
 

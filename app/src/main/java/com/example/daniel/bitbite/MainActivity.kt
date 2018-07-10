@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         nav_view.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             mDrawerLayout.closeDrawers()
-
+            navMenuSwitch(menuItem)
             true
         }
 
@@ -153,6 +153,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 style = styles[p2].replace(" ", "")
+                styleDisplay.text = styles[p2]
                 changed = true
             }
         }
@@ -162,7 +163,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
         changed = true
         price = progress + 1
-        priceDisplay.text = price.toString()
+        priceDisplay.text = priceConversion(price)
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -222,7 +223,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Go to AboutUsActivity.kt
     private
     fun goToAboutUs() {
-        Log.d("NAV", "aboutus menu")
+        openWebPage(this, "https://www.BitBite.app")
     }
 
     // goToFeedback()
@@ -243,32 +244,19 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
 
     /**====================================================================================================**/
-    /** Place Search API **/
-
-    // JSON Class Representations
-    class Response(val results:List<Results>, val status:String, val next_page_token:String = "")
-
-    class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null,
-                  val place_id:String="", val price_level:Int=0, val rating:Double=0.0,
-                  val opening_hours:Times, val types:Array<String>)
-
-    class Geometry(val location:LocationObj)
-
-    class LocationObj(val lat:Double, val lng:Double)
-
-    class Photos(val photo_reference:String="DEFAULT")
-
-    class Times(val open_now:Boolean = true)
+    /** Place Search API  **/
 
     // placesAsyncCall()
     // Calls Places API in Async thread and goes to another activity based on input
     private
     fun placesAsyncCall(n : Int) {
+        val user = User(style, price, lat, lng)
+
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
                 placesList.clear()
                 try {
-                    placesList = callPlacesApi()
+                    placesList = callPlacesApi(this@MainActivity, user)
                     valid = true
                 } catch(e : RuntimeException){
                     valid = false
@@ -288,89 +276,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             }
         }
     }
-
-    // callPlacesAPI()
-    // Gets and parses JSON response from Places API
-    private
-    fun callPlacesApi() : ArrayList<Place> {
-        val res = ArrayList<Place>()
-        Log.d("STREAM", placeSearchUrlBuilder())
-        val response = Klaxon().parse<Response>(URL(placeSearchUrlBuilder()).readText())
-        if(response!!.status != "OK"){ // Response invalid
-            if(response.status == "ZERO_RESULTS") { // No result
-                throw RuntimeException("No result. Please try again.")
-            }
-            else { // Other issue
-                throw RuntimeException("Technical error. Please try again.")
-            }
-        }
-
-        for(i in 0 until (response.results.size)){
-            val place = convertToPlace(response.results[i])
-            res.add(place)
-        }
-
-        return res
-    }
-
-    // placeSearchUrlBuilder()
-    // Builds URL for PlaceSearch API Call
-    private
-    fun placeSearchUrlBuilder() : String {
-        // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
-        // @Param
-        // location = lat + lng
-        // type = restaurant
-        // *radius = dist. in m
-        // *oppenow = true or false
-        // *rankby = dist. or prom.
-        // style = style spinner
-        // price = price spinner
-        // key = API key
-        // * - choose in settings
-        updateSettings()
-
-        var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-                "?location=$lat,$lng" +
-                "&type=restaurant" +
-                "&maxprice=$price"
-
-        if(OPENNOW.toString() == "true"){ // Open Now
-                url += "&opennow=$OPENNOW"
-        }
-
-        if(RANKBY == "distance") { // Rank by distance
-            url += "&rankby=$RANKBY"
-        } else{ // Rank by prominence (use radius)
-            url += "&radius=$RADIUS"
-        }
-
-        if(style != "Random"){ // Add style if not "random"
-            url += "&keyword=$style"
-        }
-
-        url += "&key=${getString(R.string.google_api_key)}"
-
-        return url
-    }
-
-    // convertToPlace()
-    // Convert Response object to Place object
-    private
-    fun convertToPlace(results : Results) :  Place {
-        val photoRef = if (results.photos != null) results.photos[0].photo_reference else "DEFAULT"
-        val name = results.name
-        val placeID = results.place_id
-        val description = results.types[0]
-        val price = results.price_level
-        val rating = results.rating.toInt()
-        val openNow = results.opening_hours.open_now
-        val location = DoubleArray(2)
-        location[0] = results.geometry.location.lat
-        location[1] = results.geometry.location.lng
-        return Place(name, placeID, description, photoRef, price, rating, openNow, location)
-    }
-
 
     /**====================================================================================================**/
     /** Geocoding API **/
@@ -500,16 +405,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         Log.d("LOCATION", "default location is " + getString(R.string.default_location))
     }
 
-    // updateSettings()
-    // Updates settings variables
-    private
-    fun updateSettings() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        RADIUS = (prefs.getInt("radius", 15) / 0.00062137)
-        OPENNOW = prefs.getBoolean("opennow", true)
-        RANKBY = prefs.getString("sortby", "distance")
-    }
-
     // onOptionsItemSelected()
     // "On click listener" for options menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -534,6 +429,14 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             "Feedback" -> goToFeedback()
         }
     }
+
+
+    /**====================================================================================================**/
+    /** Dialogs **/
+
+    // User class
+    // Stores information about the users choices
+    data class User(var style : String, var price : Int, var lat : Double, var lng : Double)
 
 
     /**====================================================================================================**/

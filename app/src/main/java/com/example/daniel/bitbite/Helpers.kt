@@ -65,8 +65,8 @@ fun ellipsizeText(input : String, max : Int = 20) : String {
 
 // openWebPage()
 // Opens web page to passed URL
-fun openWebPage(context : Context, string : String) {
-    val uris = Uri.parse(string)
+fun openWebPage(context : Context, url : String) {
+    val uris = Uri.parse(url)
     val intents = Intent(Intent.ACTION_VIEW, uris)
     val bundle = Bundle()
     bundle.putBoolean("new_window", true)
