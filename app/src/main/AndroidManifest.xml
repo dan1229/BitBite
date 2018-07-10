@@ -44,7 +44,12 @@
         <activity android:name="com.example.daniel.bitbite.LocationActivity"/>
         <activity
             android:name="com.example.daniel.bitbite.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:parentActivityName="com.example.daniel.bitbite.MainActivity"
+            android:label="@string/title_activity_settings" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.daniel.bitbite.MainActivity" />
+        </activity>
         <activity
             android:name="com.example.daniel.bitbite.ReviewActivity"/>
     </application>

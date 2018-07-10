@@ -42,6 +42,7 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         toolbar_results.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
         // Check if already instantiated
         if (savedInstanceState != null) {
             return
