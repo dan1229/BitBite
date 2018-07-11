@@ -27,6 +27,12 @@
             @transition/change_image_transform</item>
     </style>
 
+    <style name="AppTheme.ExplodeTransition">
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+    </style>
+
+
     <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

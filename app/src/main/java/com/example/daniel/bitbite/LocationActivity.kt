@@ -7,24 +7,25 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.view.View
-import android.widget.ImageView
+import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_location.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import android.util.Pair
-import org.jetbrains.anko.toolbar
+import android.view.View
+import kotlinx.android.synthetic.main.fragment_top_card.*
 
 
-class LocationActivity : AppCompatActivity() {
+class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteractionListener {
 
     /** Variables **/
     lateinit var user: MainActivity.User
     var distance = Pair("", "")
     lateinit var place:Place
     var favorites = false
+    var height = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +38,14 @@ class LocationActivity : AppCompatActivity() {
         // Update toolbar title
         toolbar_location.title = ellipsizeText(place.name, 30)
 
-        // Update photo
-        placeUpdates()
+        // Add top card fragment
+        val fragment = TopCardFragment.newInstance(place)
+        fragmentManager.beginTransaction().add(R.id.location_topcard_container, fragment).commit()
+//        height = location_topcard_container.layoutParams.height
+//        Log.d("HEIGHT", "location_topcard_height: $height")
+
+        // Update Location card
+        locationUpdates()
 
         // Place Details call
         doAsync {
@@ -60,13 +67,12 @@ class LocationActivity : AppCompatActivity() {
                 // add to favorites
                 toast("Added ${place.name} to your Favorites!")
                 favorites = true
-                updateFavorites()
             } else { // In favorites - remove
                 // remove from favorites
                 toast("Removed ${place.name} from your Favorites!")
                 favorites = false
-                updateFavorites()
             }
+            updateFavorites()
         }
 
         // Set on click listener for More Info Button -> makes views visible
@@ -93,13 +99,12 @@ class LocationActivity : AppCompatActivity() {
         intent.putExtra("fave", favorites) // Pass favorites
         intent.putExtra("distance", distance.first) // Pass distance
         intent.putExtra("duration", distance.second) // Pass distance
-        intent.putExtra("image_height", locationImage.height) // Pass image height
+        intent.putExtra("height", location_topcard_container.height) // Pass fragment height
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
-                    Pair.create<View, String>(locationTopCard, "top_card"),
-                    Pair.create<View, String>(locationImage, "place_image"))
+                    location_topcard_container, "top_card")
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)
@@ -109,56 +114,22 @@ class LocationActivity : AppCompatActivity() {
     /**====================================================================================================**/
     /** Updater Methods **/
 
-    // placeUpdates()
-    // Updates fields from place object (Place Search)
+    // locationUpdates()
+    // Updates Location card fields
     private
-    fun placeUpdates() {
-        // Top card updates
-        updatePhoto(place.photoRef)
-        updateOpennow(place.openNow)
-        updatePrice(place)
-        findViewById<TextView>(R.id.locationName).text = place.name
-        findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
-        findViewById<ImageView>(R.id.locationRating).setImageDrawable(
-                ContextCompat.getDrawable(this, place.ratingConversion()))
-
-        // Bottom card updates
+    fun locationUpdates() {
         updateFavorites()
         updateClock(place.openNow)
     }
 
     // distanceUpdates()
-    // Updates fields related to disatnce
+    // Updates fields related to distance
     private
     fun distanceUpdates(distance : String, duration : String) {
         if(distance != "")
             locationDistance.text = distance
         if(duration != "")
             locationDuration.text = duration
-    }
-
-    // updatePhoto()
-    private
-    fun updatePhoto(photoRef : String){
-        if(photoRef != "DEFAULT")
-            place.placePhotoCall(this, findViewById(R.id.locationImage)) // Fetch image
-        else
-            findViewById<ImageView>(R.id.locationImage).setImageDrawable(ContextCompat.getDrawable( // Set default image
-                    this, R.drawable.default_place_image))
-    }
-
-    // updateOpennow()
-    private
-    fun updateOpennow(bool : Boolean) {
-        if(bool){
-            findViewById<TextView>(R.id.locationOpen).text = getString(R.string.yes)
-            findViewById<TextView>(R.id.locationOpen).setTextColor(
-                    ContextCompat.getColor(this, R.color.green))
-        } else {
-            findViewById<TextView>(R.id.locationOpen).text = getString(R.string.no)
-            findViewById<TextView>(R.id.locationOpen).setTextColor(
-                    ContextCompat.getColor(this, R.color.red))
-        }
     }
 
     // updateClock()
@@ -173,13 +144,6 @@ class LocationActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.locationClock).setTextColor(
                     ContextCompat.getColor(this, R.color.red))
         }
-    }
-
-    // updatePrice()
-    private
-    fun updatePrice(place : Place) {
-        val view = findViewById<TextView>(R.id.locationPrice)
-        view.text = place.priceConversion()
     }
 
     // updateFavorites()
@@ -198,6 +162,15 @@ class LocationActivity : AppCompatActivity() {
             view.text = getString(R.string.default_already_favorited)
             view.setTextColor(ContextCompat.getColor(this, R.color.gold))
         }
+    }
+
+    /**====================================================================================================**/
+    /** Fragment Methods **/
+
+    // onFragmentInteraction()
+    // Mandatory implementation for interface
+    override fun onFragmentInteraction(uri: Uri) {
+        //
     }
 
 } /** END LocationActivity.kt **/

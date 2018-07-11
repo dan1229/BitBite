@@ -6,6 +6,8 @@ import android.util.Log
 import com.beust.klaxon.Klaxon
 import java.net.URL
 import java.util.ArrayList
+import org.jetbrains.anko.act
+import org.jetbrains.anko.support.v4.act
 
 /**====================================================================================================**/
 /** Place Search API **/

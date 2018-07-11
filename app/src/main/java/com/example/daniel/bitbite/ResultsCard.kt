@@ -167,9 +167,9 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                    Pair.create<View, String>(results_card, "card"),
-                    Pair.create<View, String>(results_image, "place_image"),
-                    Pair.create<View, String>(results_name, "place_name"))
+                    Pair.create<View, String>(results_card, "top_card"),
+                    Pair.create<View, String>(results_image, "top_card_image"),
+                    Pair.create<View, String>(results_name, "top_card_name"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)

@@ -17,9 +17,10 @@ import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import android.util.Pair
 import kotlinx.android.synthetic.main.activity_location.*
+import kotlinx.android.synthetic.main.fragment_top_card.*
 import org.jetbrains.anko.textColor
 
-class MoreInfoActivity : AppCompatActivity() {
+class MoreInfoActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteractionListener {
 
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
@@ -30,6 +31,7 @@ class MoreInfoActivity : AppCompatActivity() {
     var favorites = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme_ExplodeTransition)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_more_info)
         setSupportActionBar(toolbar_moreinfo)
@@ -39,11 +41,12 @@ class MoreInfoActivity : AppCompatActivity() {
         place = intent.getParcelableExtra("place")
         favorites = intent.getBooleanExtra("fave", false)
 
+        // Add top card fragment
+        val fragment = TopCardFragment.newInstance(place, intent.getIntExtra("height", 196))
+        fragmentManager.beginTransaction().add(R.id.moreinfo_topcard_container, fragment).commit()
+
         // Update toolbar title
         toolbar_moreinfo.title = ellipsizeText(place.name, 30)
-
-        // Update top card
-        topCardUpdates()
 
         // Place Details call
         doAsync {
@@ -161,19 +164,6 @@ class MoreInfoActivity : AppCompatActivity() {
     /**====================================================================================================**/
     /** Updater Methods **/
 
-    // topCardUpdates()
-    // Updates fields from place object (Place Search)
-    private
-    fun topCardUpdates() {
-        updatePhoto(place.photoRef)
-        updateOpennow(place.openNow)
-        updatePrice(place)
-        findViewById<TextView>(R.id.moreinfoName).text = place.name
-        findViewById<TextView>(R.id.moreinfoDescription).text = place.fixDescription()
-        findViewById<ImageView>(R.id.moreinfoRating).setImageDrawable(
-                ContextCompat.getDrawable(this, place.ratingConversion()))
-    }
-
     // responseUpdates()
     // Updates fields from detailsResponse object (Place Details)
     private
@@ -189,22 +179,6 @@ class MoreInfoActivity : AppCompatActivity() {
         updateReviews(response.result.reviews)
     }
 
-    // updatePhoto()
-    private
-    fun updatePhoto(photoRef : String){
-        var height = intent.getIntExtra("image_height", 124)
-
-        if(photoRef != "DEFAULT") {
-            place.placePhotoCall(this, findViewById(R.id.moreinfoImage)) // Fetch image
-            moreinfoImage.layoutParams.height = height
-        }
-        else {
-            findViewById<ImageView>(R.id.moreinfoImage).setImageDrawable(ContextCompat.getDrawable( // Set default image
-                    this, R.drawable.default_place_image))
-            moreinfoImage.layoutParams.height = height
-        }
-    }
-
     // distanceUpdates()
     // Updates fields related to distance
     private
@@ -213,20 +187,6 @@ class MoreInfoActivity : AppCompatActivity() {
             moreinfoDistance.text = distance
         if(duration != "")
             moreinfoDuration.text = duration
-    }
-
-    // updateOpennow()
-    private
-    fun updateOpennow(bool : Boolean) {
-        if(bool){
-            findViewById<TextView>(R.id.moreinfoOpennowText).text = getString(R.string.yes)
-            findViewById<TextView>(R.id.moreinfoOpennowText).setTextColor(
-                    ContextCompat.getColor(this, R.color.green))
-        } else {
-            findViewById<TextView>(R.id.moreinfoOpennowText).text = getString(R.string.no)
-            findViewById<TextView>(R.id.moreinfoOpennowText).setTextColor(
-                    ContextCompat.getColor(this, R.color.red))
-        }
     }
 
     // updateClock()
@@ -241,13 +201,6 @@ class MoreInfoActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.moreinfoClock).setTextColor(
                     ContextCompat.getColor(this, R.color.red))
         }
-    }
-
-    // updatePrice()
-    private
-    fun updatePrice(place : Place) {
-        val view = findViewById<TextView>(R.id.moreinfoPrice)
-        view.text = place.priceConversion()
     }
 
     // updateFavorites()
@@ -344,6 +297,16 @@ class MoreInfoActivity : AppCompatActivity() {
     fun copyReviews(input : List<Reviews>?) {
         for(i in 0..(input!!.size - 1))
             reviews.add(input[i])
+    }
+
+
+    /**====================================================================================================**/
+    /** Fragment Methods **/
+
+    // onFragmentInteraction()
+    // Mandatory implementation for interface
+    override fun onFragmentInteraction(uri: Uri) {
+        //
     }
 
 } // END CLASS MoreInfoActivity.kt
