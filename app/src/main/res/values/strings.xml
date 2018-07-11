@@ -84,6 +84,7 @@
     <!-- ImageView Descriptions -->
     <string name="imageview_description_toolbar">Toolbar Logo</string>
     <string name="imageview_description_review_rating">Toolbar Logo</string>
+    <string name="imageview_description_location_image">Location Image</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

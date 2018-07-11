@@ -33,9 +33,7 @@ class DurationObj(val text:String)
 fun callDistanceApi(context : Context, olat : Double, olng : Double, id : String) : Pair<String, String> {
 
     val origin = Pair(olat, olng)
-
     val url = distanceMatrixUrlBuilder(context, origin, id)
-    Log.d("RESPONSE", url)
 
     val response = Klaxon().parse<DistanceResponse>(URL(url).readText())
     if(response!!.status != "OK"){ // Response invalid

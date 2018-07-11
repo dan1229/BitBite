@@ -7,6 +7,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -41,7 +42,7 @@ class MoreInfoActivity : AppCompatActivity() {
         // Update toolbar title
         toolbar_moreinfo.title = ellipsizeText(place.name, 30)
 
-        // Update photo
+        // Update top card
         topCardUpdates()
 
         // Place Details call
@@ -90,7 +91,7 @@ class MoreInfoActivity : AppCompatActivity() {
         }
 
         // Set on click listener for Favorites -> Add to favorites
-        moreinfoFavorites.setOnClickListener {
+        moreinfoLayoutFavorites.setOnClickListener {
             if(!favorites) { // Not in favorites - add
                 // add to favorites
                 toast("Added ${place.name} to your Favorites!")
@@ -122,7 +123,7 @@ class MoreInfoActivity : AppCompatActivity() {
         }
 
         // Set on click listener for Call Button -> Dialer
-        moreinfoButtonShare.setOnClickListener {
+        moreinfoButtonCall.setOnClickListener {
             if (phone != "") { // Opens dialer with phone number
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel: $phone")
@@ -164,13 +165,9 @@ class MoreInfoActivity : AppCompatActivity() {
     // Updates fields from place object (Place Search)
     private
     fun topCardUpdates() {
-        // Top card updates
+        updatePhoto(place.photoRef)
         updateOpennow(place.openNow)
         updatePrice(place)
-        updateFavorites()
-        updateClock(place.openNow)
-        distanceUpdates(intent.getStringExtra("distance"), intent.getStringExtra("duration"))
-
         findViewById<TextView>(R.id.moreinfoName).text = place.name
         findViewById<TextView>(R.id.moreinfoDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.moreinfoRating).setImageDrawable(
@@ -181,15 +178,35 @@ class MoreInfoActivity : AppCompatActivity() {
     // Updates fields from detailsResponse object (Place Details)
     private
     fun responseUpdates(response : DetailsResponse?) {
-        // Update website, phone and review
+        updateFavorites()
+        updateClock(place.openNow)
+        distanceUpdates(intent.getStringExtra("distance"), intent.getStringExtra("duration"))
+
+        // Reliant on Place Details API
         updateWebsite(response!!.result.website)
         updatePhone(response.result.formatted_phone_number)
         updateAddress(response.result.formatted_address)
         updateReviews(response.result.reviews)
     }
 
+    // updatePhoto()
+    private
+    fun updatePhoto(photoRef : String){
+        var height = intent.getIntExtra("image_height", 124)
+
+        if(photoRef != "DEFAULT") {
+            place.placePhotoCall(this, findViewById(R.id.moreinfoImage)) // Fetch image
+            moreinfoImage.layoutParams.height = height
+        }
+        else {
+            findViewById<ImageView>(R.id.moreinfoImage).setImageDrawable(ContextCompat.getDrawable( // Set default image
+                    this, R.drawable.default_place_image))
+            moreinfoImage.layoutParams.height = height
+        }
+    }
+
     // distanceUpdates()
-    // Updates fields related to disatnce
+    // Updates fields related to distance
     private
     fun distanceUpdates(distance : String, duration : String) {
         if(distance != "")
@@ -239,12 +256,12 @@ class MoreInfoActivity : AppCompatActivity() {
         val view = findViewById<TextView>(R.id.moreinfoFavorites)
 
         if(!favorites) { // Not in favorites
-            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
+            moreinfoFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
                     this, R.drawable.favorites_icon))
             view.text = getString(R.string.default_favorites)
             view.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
         } else { // Already in favorites
-            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
+            moreinfoFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
                     this, R.drawable.favorites_filled_icon))
             view.text = getString(R.string.default_already_favorited)
             view.setTextColor(ContextCompat.getColor(this, R.color.gold))

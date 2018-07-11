@@ -21,8 +21,8 @@ import org.jetbrains.anko.toolbar
 class LocationActivity : AppCompatActivity() {
 
     /** Variables **/
-    lateinit var distance : Pair<String, String>
     lateinit var user: MainActivity.User
+    var distance = Pair("", "")
     lateinit var place:Place
     var favorites = false
 
@@ -93,11 +93,13 @@ class LocationActivity : AppCompatActivity() {
         intent.putExtra("fave", favorites) // Pass favorites
         intent.putExtra("distance", distance.first) // Pass distance
         intent.putExtra("duration", distance.second) // Pass distance
+        intent.putExtra("image_height", locationImage.height) // Pass image height
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
-                    Pair.create<View, String>(locationTopCard, "top_card"))
+                    Pair.create<View, String>(locationTopCard, "top_card"),
+                    Pair.create<View, String>(locationImage, "place_image"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)

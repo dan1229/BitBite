@@ -1,9 +1,7 @@
 package com.example.daniel.bitbite
 
 import android.content.Context
-import android.content.res.Resources
 import android.preference.PreferenceManager
-import android.provider.Settings.Global.getString
 import android.util.Log
 import com.beust.klaxon.Klaxon
 import java.net.URL
@@ -45,14 +43,14 @@ fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String 
         : Pair<ArrayList<Place>, String>{
 
     return when(token){
-        "" -> streamJson(placeSearchUrlBuilder(context, user!!))
-        else -> streamJson(nextPageUrlBuilder(context, token))
+        "" -> placesStreamJson(placeSearchUrlBuilder(context, user!!))
+        else -> placesStreamJson(nextPageUrlBuilder(context, token))
     }
 }
 
-// streamJson()
+// placesStreamJson()
 // Gets and parses JSON detailsResponse from Places API
-fun streamJson(url : String) : Pair<ArrayList<Place>, String> {
+fun placesStreamJson(url : String) : Pair<ArrayList<Place>, String> {
 
     val arrayList = ArrayList<Place>()
     Log.d("STREAM", url)
@@ -70,6 +68,10 @@ fun streamJson(url : String) : Pair<ArrayList<Place>, String> {
     for(i in 0 until (response.results.size)){
         val place = convertToPlace(response.results[i])
         arrayList.add(place)
+    }
+
+    if(RANKBY == "Random"){ // If random order selected, shuffle list
+        arrayList.shuffle()
     }
 
     return Pair(arrayList, response.next_page_token)
