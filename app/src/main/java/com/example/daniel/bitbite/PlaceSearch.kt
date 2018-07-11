@@ -9,6 +9,9 @@ import com.beust.klaxon.Klaxon
 import java.net.URL
 import java.util.ArrayList
 
+/**====================================================================================================**/
+/** Place Search API **/
+
 /** Settings Variables **/
 var OPENNOW = true
 var RADIUS = 15 / 0.00062137
@@ -16,6 +19,7 @@ var RANKBY = "distance"
 
 /**====================================================================================================**/
 /** JSON Object Classes **/
+
 
 class Response(val results:List<Results>, val status:String, val next_page_token:String = "")
 
@@ -34,6 +38,9 @@ class Times(val open_now:Boolean = true)
 /**====================================================================================================**/
 /** Place Search API Call Functions **/
 
+
+// callPlacesApi()
+// Calls proper API call based on search
 fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String = "" )
         : Pair<ArrayList<Place>, String>{
 
@@ -43,8 +50,8 @@ fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String 
     }
 }
 
-// callPlacesAPI()
-// Gets and parses JSON response from Places API
+// streamJson()
+// Gets and parses JSON detailsResponse from Places API
 fun streamJson(url : String) : Pair<ArrayList<Place>, String> {
 
     val arrayList = ArrayList<Place>()

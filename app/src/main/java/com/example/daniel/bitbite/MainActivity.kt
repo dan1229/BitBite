@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -26,6 +27,7 @@ import com.beust.klaxon.*
 import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import java.net.URL
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var mDrawerLayout: DrawerLayout
     private val locationRequestCode = 101
+    private lateinit var user: User
     var placesList = ArrayList<Place>()
     var next_page_token = ""
     var changed = false
@@ -182,6 +185,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             val intent = Intent(this@MainActivity, ResultsActivity::class.java)
             intent.putParcelableArrayListExtra(EXTRA_PLACES_LIST, placesList)
             intent.putExtra("TOKEN", next_page_token)
+            intent.putExtra("USER", user)
 
             // Check Android version for animation
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -240,13 +244,13 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
 
     /**====================================================================================================**/
-    /** Place Search API  **/
+    /** Place Search API Call **/
 
     // placesAsyncCall()
     // Calls Places API in Async thread and goes to another activity based on input
     private
     fun placesAsyncCall(n : Int) {
-        val user = User(style, price, lat, lng)
+        user = User(style, price, lat, lng)
 
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
@@ -371,7 +375,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     // onRequestPermissionResult()
-    // Check permission response and react accordingly
+    // Check permission detailsResponse and react accordingly
     override
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -434,7 +438,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     // User class
     // Stores information about the users choices
-    data class User(var style : String, var price : Int, var lat : Double, var lng : Double)
+    @Parcelize
+    data class User(var style : String, var price : Int, var lat : Double, var lng : Double) : Parcelable
 
 
     /**====================================================================================================**/

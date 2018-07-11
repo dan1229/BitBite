@@ -47,15 +47,22 @@
     <string name="more_info_text">More Info</string>
     <string name="button_share">Share</string>
     <string name="default_location"></string>
+    <string name="open_title">Open Now: </string>
+    <string name="default_open"></string>
+    <string name="default_duration">N/A</string>
+    <string name="default_distance">0 mi</string>
+    <string name="default_favorites">Click to add to Favorites</string>
+    <string name="default_already_favorited">Already in Favorites</string>
+    <string name="default_clock"></string>
+
+    <!-- MoreInfoActivity -->
     <string name="default_rating"></string>
-    <string name="default_address"></string>
+    <string name="review_see_more">See More >></string>
     <string name="default_website_title">Website: </string>
     <string name="default_website"></string>
     <string name="default_phone_title">Phone: </string>
     <string name="default_phone"></string>
-    <string name="open_title">Open Now: </string>
-    <string name="default_open"></string>
-    <string name="default_clock"></string>
+    <string name="default_address"></string>
 
     <!-- ReviewActivity -->
     <string name="make_review_title">Been Here?</string>

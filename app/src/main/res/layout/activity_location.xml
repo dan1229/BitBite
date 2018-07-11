@@ -9,19 +9,19 @@
     tools:context=".LocationActivity">
 
     <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar_location"
+        android:id="@+id/appbar_location"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:paddingTop="@dimen/appbar_padding_top"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_location"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:paddingTop="@dimen/appbar_padding_top"
-            android:theme="@style/AppTheme.AppBarOverlay">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:elevation="@dimen/toolbar_elevation"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="@dimen/toolbar_elevation"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -61,19 +61,21 @@
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/default_place_image" />
                 <LinearLayout
+                    android:id="@+id/locationTopCard"
+                    android:transitionName="top_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/locationName"
-                            android:transitionName="place_name"
-                            android:textSize="@dimen/text_x_large"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="start"
-                            android:singleLine="true"
-                            android:ellipsize="end"
-                            android:text="@string/default_name"/>
+                    <TextView
+                        android:id="@+id/locationName"
+                        android:transitionName="place_name"
+                        android:textSize="@dimen/text_x_large"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:text="@string/default_name"/>
                     <ImageView
                         android:id="@+id/locationRating"
                         android:transitionName="place_rating"
@@ -85,6 +87,7 @@
                         android:scaleType="fitStart"
                         app:srcCompat="@drawable/default_star" />
                     <LinearLayout
+                        android:id="@+id/open_now"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <TextView
@@ -106,11 +109,11 @@
                             android:text="@string/default_open" />
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/description_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/locationDescription"
-                            android:transitionName="place_description"
                             android:layout_marginBottom="4dp"
                             android:textSize="@dimen/text_normal"
                             android:textColor="@color/text_secondary"
@@ -134,64 +137,14 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:theme="@style/GreyLine"/>
-
-
-                <LinearLayout
-                    android:id="@+id/layoutReviews"
-                    android:visibility="gone"
-                    android:transitionName="review_card"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/locationReviews"
-                        android:transitionName="review_text"
-                        android:layout_marginBottom="4dp"
-                        android:textSize="@dimen/text_normal"
-                        android:textColor="@color/text_secondary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:gravity="start"
-                        android:text="@string/default_review" />
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp">
-                        <TextView
-                            android:id="@+id/locationReviewAuthor"
-                            android:transitionName="review_author"
-                            android:textSize="@dimen/text_normal"
-                            android:textColor="@color/text_secondary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="start"
-                            android:text="@string/default_review_author" />
-                        <ImageView
-                            android:id="@+id/locationReviewRating"
-                            android:transitionName="review_rating"
-                            android:layout_height="match_parent"
-                            android:layout_width="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitStart"
-                            app:srcCompat="@drawable/face_3" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:theme="@style/GreyLine"/>
 
                 <LinearLayout
+                    android:id="@+id/locationIconLayout"
+                    android:transitionName="icon_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -200,7 +153,7 @@
                     android:layout_gravity="start">
 
                     <LinearLayout
-                        android:id="@+id/layoutWebsite"
+                        android:id="@+id/locationLayoutDistance"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/icon_margin"
@@ -209,20 +162,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:scaleType="fitStart"
-                            android:src="@drawable/website_icon"/>
+                            android:src="@drawable/distance_icon"/>
                         <TextView
-                            android:id="@+id/locationWebsite"
+                            android:id="@+id/locationDistance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_normal"
+                            android:textSize="@dimen/text_large"
+                            android:textColor="@color/text_primary"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="@string/default_phone" />
+                            android:text="@string/default_distance" />
                     </LinearLayout>
 
-
                     <LinearLayout
-                        android:id="@+id/layoutPhone"
+                        android:id="@+id/locationLayoutDuration"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/icon_margin"
@@ -231,18 +184,20 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:scaleType="fitStart"
-                            android:src="@drawable/phone_icon"/>
+                            android:src="@drawable/car_icon"/>
                         <TextView
-                            android:id="@+id/locationPhone"
+                            android:id="@+id/locationDuration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_normal"
+                            android:textSize="@dimen/text_large"
+                            android:textColor="@color/text_primary"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="@string/default_phone" />
+                            android:text="@string/default_duration" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layoutClock"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/icon_margin"
@@ -256,10 +211,33 @@
                             android:id="@+id/locationClock"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_normal"
+                            android:textSize="@dimen/text_large"
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:text="@string/default_clock" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutFavorite"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/icon_margin"
+                        android:layout_marginBottom="@dimen/icon_margin">
+                        <ImageView
+                            android:id="@+id/locationFavoritesIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/favorites_icon"/>
+                        <TextView
+                            android:id="@+id/locationFavorites"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_large"
+                            android:textColor="@color/text_primary"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/default_favorites" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -328,34 +306,7 @@
                             android:text="@string/more_info_text"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/buttonShare"
-                        style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:padding="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center"
-                        android:orientation="horizontal" >
-                        <ImageView
-                            android:layout_width="@dimen/location_icon_height"
-                            android:layout_height="@dimen/location_icon_height"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/share_icon" />
-                        <TextView
-                            android:id="@+id/locationShare"
-                            android:textColor="@color/colorPrimary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingEnd="3dp"
-                            android:paddingStart="3dp"
-                            android:textSize="@dimen/text_normal"
-                            android:text="@string/button_share" />
-                    </LinearLayout>
                 </LinearLayout>
-
-
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </android.support.constraint.ConstraintLayout>

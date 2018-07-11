@@ -11,7 +11,9 @@ import java.net.URL
 /**====================================================================================================**/
 /** Place Details API **/
 
-// JSON Class Representations
+/**====================================================================================================**/
+/** JSON Object Classes **/
+
 @Parcelize
 class DetailsResponse(val result:DetailsResults, val status:String) : Parcelable
 
@@ -23,11 +25,17 @@ class DetailsResults(val formatted_address:String = "", val formatted_phone_numb
 class Reviews(val author_name:String = "", val profile_photo_url:String = "EMPTY",
               val text:String = "", val rating:Int = 0) : Parcelable
 
+/**====================================================================================================**/
+/** Place Details API Call Functions **/
+
 // calLDetailsAPI()
-// Calls Details API and parses response
-fun callDetailsAPI(context : Context, place : Place) : DetailsResponse? {
+// Calls Details API and parses detailsResponse
+fun callDetailsApi(context : Context, place : Place) : DetailsResponse? {
     return Klaxon().parse<DetailsResponse>(URL(detailsSearchUrlBuilder(context, place.placeID)).readText())
 }
+
+/**====================================================================================================**/
+/** URL Builders **/
 
 // detailsSearchUrlBuilder()
 // Builds URL for Details Search API call

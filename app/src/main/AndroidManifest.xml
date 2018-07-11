@@ -24,34 +24,35 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.example.daniel.bitbite.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Launcher">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.example.daniel.bitbite.ResultsActivity"
+            android:name=".ResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName="com.example.daniel.bitbite.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.daniel.bitbite.MainActivity" />
         </activity>
-        <activity android:name="com.example.daniel.bitbite.LocationActivity"/>
+        <activity android:name=".LocationActivity" />
         <activity
-            android:name="com.example.daniel.bitbite.SettingsActivity"
-            android:parentActivityName="com.example.daniel.bitbite.MainActivity"
-            android:label="@string/title_activity_settings" >
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.daniel.bitbite.MainActivity" />
         </activity>
-        <activity
-            android:name="com.example.daniel.bitbite.ReviewActivity"/>
+        <activity android:name=".ReviewActivity" />
+        <activity android:name=".MoreInfoActivity"></activity>
     </application>
 
 </manifest>

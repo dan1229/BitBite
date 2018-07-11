@@ -35,6 +35,7 @@ import android.util.Pair as UtilPair
 
 class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionListener {
 
+    lateinit var user : MainActivity.User
     var places = ArrayList<Place>()
     var listSize = 0
     var token = ""
@@ -54,6 +55,7 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
 
         // Get places ArrayList
         places = intent.getParcelableArrayListExtra<Place>(EXTRA_PLACES_LIST)
+        user = intent.getParcelableExtra("USER")
         token = intent.getStringExtra("TOKEN")
         listSize = places.size
 
@@ -85,7 +87,7 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         for (i in 0..(listSize - 1)) {
             doAsync {
 
-                val fragment = ResultsCard.newInstance(places[i])
+                val fragment = ResultsCard.newInstance(places[i], user)
                 fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
 
 

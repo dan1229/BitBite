@@ -26,6 +26,7 @@ import javax.xml.transform.Result
 class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
     private lateinit var place : Place
+    private lateinit var user : MainActivity.User
 //    private lateinit var card : ResultsCard
 //    var gDetector: GestureDetectorCompat? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -36,6 +37,7 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
 
         place = arguments.getParcelable("place")
+        user = arguments.getParcelable("user")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -100,9 +102,10 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
          * @param place - Place object for fragment
          * @return A new instance of fragment ResultsCard.
          */
-        fun newInstance(place : Place) : ResultsCard {
+        fun newInstance(place : Place, user : MainActivity.User) : ResultsCard {
             val args = Bundle()
             args.putParcelable("place", place)
+            args.putParcelable("user", user)
             val fragment = ResultsCard()
             fragment.arguments = args
             return fragment
@@ -159,6 +162,7 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         // Create Intent
         val intent = Intent(activity, LocationActivity::class.java)
         intent.putExtra("place", place)
+        intent.putExtra("user", user)
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

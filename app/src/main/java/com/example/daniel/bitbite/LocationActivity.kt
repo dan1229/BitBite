@@ -7,7 +7,6 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.util.Pair
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,22 +14,25 @@ import kotlinx.android.synthetic.main.activity_location.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import android.util.Pair
+import org.jetbrains.anko.toolbar
+
 
 class LocationActivity : AppCompatActivity() {
 
     /** Variables **/
+    lateinit var distance : Pair<String, String>
+    lateinit var user: MainActivity.User
     lateinit var place:Place
-    lateinit var response:DetailsResponse
-    var reviews = ArrayList<Reviews>(5)
-    var website = ""
-    var phone = ""
+    var favorites = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
 
-        // Get place
+        // Get intent extras
         place = intent.getParcelableExtra("place")
+        user = intent.getParcelableExtra("user")
 
         // Update toolbar title
         toolbar_location.title = ellipsizeText(place.name, 30)
@@ -40,41 +42,25 @@ class LocationActivity : AppCompatActivity() {
 
         // Place Details call
         doAsync {
-            response = callDetailsAPI(this@LocationActivity, place) as DetailsResponse
+            distance = callDistanceApi(this@LocationActivity, user.lat, user.lng, place.placeID)
 
             uiThread { // Populate Location card
-                responseUpdates(response)
+                distanceUpdates(distance.first, distance.second)
             }
         }
 
-        // Set on click listener for Reviews -> ReviewActivity.kt
-        layoutReviews.setOnClickListener{ // Go to ReviewActivity.kt
-            if(reviews.size > 0) {
-                goToReviews()
-            }
-            else {
-                toast("No reviews available.")
-            }
-        }
+        // check if in favorites
 
-        // Set on click listener for Website -> Web Browser
-        layoutWebsite.setOnClickListener {
-            if(website != "") { // Open website in browser
-                val uris = Uri.parse(website)
-                val intents = Intent(Intent.ACTION_VIEW, uris)
-                val bundle = Bundle()
-                bundle.putBoolean("new_window", true)
-                intents.putExtras(bundle)
-                this.startActivity(intents)
-            }
-        }
+        /**====================================================================================================**/
+        /** On Click Listeners **/
 
-        // Set on click listener for Phone Number -> Dialer
-        layoutPhone.setOnClickListener {
-            if (phone != "") { // Opens dialer with phone number
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel: $phone")
-                startActivity(intent)
+        // Set on click listener for Favorites -> Add to favorites
+        layoutFavorite.setOnClickListener {
+            if(!favorites) {
+                // add to favorites
+                toast("Added ${place.name} to your Favorites!")
+                favorites = true
+                updateFavorites()
             }
         }
 
@@ -83,38 +69,32 @@ class LocationActivity : AppCompatActivity() {
             place.openMapsPage(this)
         }
 
-        // Set on click listener for Share Button -> Share Menu
-        buttonShare.setOnClickListener {
-            val shareIntent = Intent()
-            shareIntent.action = Intent.ACTION_SEND
-            shareIntent.type="text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Hey, look what I found using BitBite (https://BitBite.app) :\n\n" +
-                            "${place.name}\n" +
-                            response.result.website)
-            startActivity(shareIntent)
+        // Set on click listener for More Info Button -> makes views visible
+        buttonMoreInfo.setOnClickListener {
+            goToMoreInfo()
         }
+
     }
 
     /**====================================================================================================**/
     /** Intent Makers **/
 
-    // goToReviews()
-    // Creates Intent for Reviews.kt and animates transition
+    // goToMoreInfo()
+    // Creates Intent for MoreInfo.kt and animates transition
     private
-    fun goToReviews() {
+    fun goToMoreInfo() {
         // Create Intent
-        val intent = Intent(this@LocationActivity, ReviewActivity::class.java)
-        intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
-        intent.putExtra("place_id", place.placeID) // Pass placeID
-        intent.putExtra("name", place.name) // Pass name
+        val intent = Intent(this@LocationActivity, MoreInfoActivity::class.java)
+        intent.putExtra("place", place) // Pass place
+        intent.putExtra("fave", favorites) // Pass favorites
+        intent.putExtra("distance", distance.first) // Pass distance
+        intent.putExtra("duration", distance.second) // Pass distance
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
-                    Pair.create<View, String>(layoutReviews, "review_card"),
-                    Pair.create<View, String>(locationReviewRating, "review_rating"),
-                    Pair.create<View, String>(locationReviews, "review_text"))
+                    Pair.create<View, String>(locationTopCard, "top_card"),
+                    Pair.create<View, String>(locationIconLayout, "icon_layout"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)
@@ -128,27 +108,28 @@ class LocationActivity : AppCompatActivity() {
     // Updates fields from place object (Place Search)
     private
     fun placeUpdates() {
-        // Photo and Opennow
+        // Top card updates
         updatePhoto(place.photoRef)
         updateOpennow(place.openNow)
-        updateClock(place.openNow)
         updatePrice(place)
-
-        // Name, price, description, rating
         findViewById<TextView>(R.id.locationName).text = place.name
         findViewById<TextView>(R.id.locationDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.locationRating).setImageDrawable(
                 ContextCompat.getDrawable(this, place.ratingConversion()))
+
+        // Bottom card updates
+        updateFavorites()
+        updateClock(place.openNow)
     }
 
-    // responseUpdates()
-    // Updates fields from response object (Place Details)
+    // distanceUpdates()
+    // Updates fields related to disatnce
     private
-    fun responseUpdates(response : DetailsResponse?) {
-        // Update website, phone and review
-        updateWebsite(response!!.result.website)
-        updatePhone(response.result.formatted_phone_number)
-        updateReviews(response.result.reviews)
+    fun distanceUpdates(distance : String, duration : String) {
+        if(distance != "")
+            locationDistance.text = distance
+        if(duration != "")
+            locationDuration.text = duration
     }
 
     // updatePhoto()
@@ -196,75 +177,18 @@ class LocationActivity : AppCompatActivity() {
         view.text = place.priceConversion()
     }
 
-    // updateWebsite()
+    // updateFavorites()
     private
-    fun updateWebsite(input : String) {
-        val view = findViewById<TextView>(R.id.locationWebsite)
-        if(!input.equals(""))
-            view.text = input
-        else
-            view.text = resources.getString(R.string.default_website)
-        view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        website = input
-    }
+    fun updateFavorites() {
+        val view = findViewById<TextView>(R.id.locationFavorites)
 
-    // updatePhone()
-    private
-    fun updatePhone(input : String) {
-        val view = findViewById<TextView>(R.id.locationPhone)
-        if(!input.equals(""))
-            view.text = input
-        else
-            view.text = resources.getString(R.string.default_phone)
-        view.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        phone = input
-    }
-
-    // updateReviews()
-    private
-    fun updateReviews(reviews : List<Reviews>) {
-        if(!reviews.isEmpty()) { // Reviews array is not empty
-            setNonDefaultReview(response.result.reviews[0])
-            copyReviews(response.result.reviews)
-        }
-        else { // Reviews array empty
-            setDefaultReview()
+        if(!favorites) { // If not in favorites
+            view.text = getString(R.string.default_favorites)
+        } else {
+            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
+                    this, R.drawable.favorites_filled_icon))
+            view.text = getString(R.string.default_already_favorited)
         }
     }
-
-    /**====================================================================================================**/
-    /** Helper Methods **/
-
-    // setNonDefaultReview()
-    // Sets non-default review info
-    private
-    fun setNonDefaultReview(input : Reviews) {
-
-        var s = """"""" + input.text + """""""
-        findViewById<TextView>(R.id.locationReviews).text = s
-
-        s = "- " + ellipsizeText(input.author_name)
-        findViewById<TextView>(R.id.locationReviewAuthor).text = s
-
-        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat.getDrawable(this, reviewRatingConversion(input.rating)))
-    }
-
-    // setDefaultReview()
-    // Sets default review info
-    private
-    fun setDefaultReview() {
-        findViewById<TextView>(R.id.locationReviews).text = resources.getString(R.string.default_review)
-        findViewById<TextView>(R.id.locationReviewAuthor).text = resources.getString(R.string.default_review_author)
-        findViewById<ImageView>(R.id.locationReviewRating).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.default_star))
-    }
-
-    // copyReviews()
-    // Copies reviews array to store locally
-    private
-    fun copyReviews(input : List<Reviews>?) {
-        for(i in 0..(input!!.size - 1))
-            reviews.add(input[i])
-    }
-
 
 } /** END LocationActivity.kt **/
