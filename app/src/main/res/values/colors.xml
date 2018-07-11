@@ -6,7 +6,7 @@
     <color name="colorBackground">#e0e0e0</color>
     <color name="card_light">#fafafa</color>
     <color name="text_primary">#546e7a</color>
-    <color name="text_secondary">#b0bec5</color>
+    <color name="text_secondary">#90a4ae</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="green">#64b441</color>
@@ -15,4 +15,5 @@
     <color name="dmTextSecondary">#9e9e9e</color>
     <color name="dmColorBackground">#000000</color>
     <color name="card_dark">#212121</color>
+    <color name="grey_line">#b0bec5</color>
 </resources>

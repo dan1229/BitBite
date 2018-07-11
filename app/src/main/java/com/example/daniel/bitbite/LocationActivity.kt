@@ -93,8 +93,7 @@ class LocationActivity : AppCompatActivity() {
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
-                    Pair.create<View, String>(locationTopCard, "top_card"),
-                    Pair.create<View, String>(locationIconLayout, "icon_layout"))
+                    Pair.create<View, String>(locationTopCard, "top_card"))
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)

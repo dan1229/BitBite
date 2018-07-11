@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         actionbar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu)
-            title = ""
         }
 
         // Get location
@@ -190,7 +189,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             // Check Android version for animation
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val options = ActivityOptions.makeSceneTransitionAnimation(
-                        this@MainActivity, imageView, "main_logo")
+                        this@MainActivity, mainSearch, "main_logo")
                 startActivity(intent, options.toBundle())
             } else {
                 startActivity(intent)

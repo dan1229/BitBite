@@ -28,7 +28,8 @@
                 android:elevation="@dimen/toolbar_elevation"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="">
+                app:title="Home"
+                app:titleTextColor="@color/white">
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -41,7 +42,6 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:transitionName="main_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="48dp"
@@ -152,7 +152,8 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/priceLayout"  >
                 <TextView
-                    android:id="@+id/locationShare"
+                    android:id="@+id/mainSearch"
+                    android:transitionName="main_logo"
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -58,11 +58,9 @@
     </style>
 
     <style name="GreyLine">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginBottom">@dimen/gray_bar_margin</item>
         <item name="android:layout_marginTop">@dimen/gray_bar_margin</item>
-        <item name="android:background">@color/text_primary</item>
+        <item name="android:background">@color/grey_line</item>
     </style>
 
     <style name="TextDot">
