@@ -28,11 +28,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_margin="6dp"
-            android:padding="12dp"
+            android:layout_margin="@dimen/button_margin"
+            android:padding="@dimen/button_padding"
             android:textSize="@dimen/text_normal"
             android:textAllCaps="false"
-            android:text="@string/show_more_button"/>
+            android:text="@string/button_show_more"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -17,6 +17,9 @@
     <dimen name="toolbar_elevation">10dp</dimen>
     <dimen name="location_icon_height">24dp</dimen>
     <dimen name="icon_margin">12dp</dimen>
+    <dimen name="button_margin">3dp</dimen>
+    <dimen name="button_text_padding">3dp</dimen>
+    <dimen name="button_padding">4dp</dimen>
 
     <dimen name="text_x_large"> 28sp</dimen>
     <dimen name="text_large"> 22sp</dimen>

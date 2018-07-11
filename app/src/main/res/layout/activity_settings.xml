@@ -20,14 +20,9 @@
             android:layout_weight="1"
             android:elevation="@dimen/toolbar_elevation"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        <ImageView
-            android:transitionName="main_logo"
-            android:contentDescription="@string/imageview_description_toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingBottom="10dp"
-            android:src="@drawable/toolbar_logo"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="Settings"
+            app:titleTextColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout

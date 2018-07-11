@@ -56,24 +56,28 @@ class LocationActivity : AppCompatActivity() {
 
         // Set on click listener for Favorites -> Add to favorites
         layoutFavorite.setOnClickListener {
-            if(!favorites) {
+            if(!favorites) { // Not in favorites - add
                 // add to favorites
                 toast("Added ${place.name} to your Favorites!")
                 favorites = true
                 updateFavorites()
+            } else { // In favorites - remove
+                // remove from favorites
+                toast("Removed ${place.name} from your Favorites!")
+                favorites = false
+                updateFavorites()
             }
         }
 
-        // Set on click listener for Directions Button -> Google Maps
-        buttonDirections.setOnClickListener{
-            place.openMapsPage(this)
-        }
-
         // Set on click listener for More Info Button -> makes views visible
-        buttonMoreInfo.setOnClickListener {
+        locationButtonMoreinfo.setOnClickListener {
             goToMoreInfo()
         }
 
+        // Set on click listener for Directions Button -> Google Maps
+        locationButtonDirections.setOnClickListener{
+            place.openMapsPage(this)
+        }
     }
 
     /**====================================================================================================**/
@@ -181,12 +185,16 @@ class LocationActivity : AppCompatActivity() {
     fun updateFavorites() {
         val view = findViewById<TextView>(R.id.locationFavorites)
 
-        if(!favorites) { // If not in favorites
+        if(!favorites) { // Not in favorites
+            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
+                    this, R.drawable.favorites_icon))
             view.text = getString(R.string.default_favorites)
-        } else {
+            view.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        } else { // Already in favorites
             locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
                     this, R.drawable.favorites_filled_icon))
             view.text = getString(R.string.default_already_favorited)
+            view.setTextColor(ContextCompat.getColor(this, R.color.gold))
         }
     }
 

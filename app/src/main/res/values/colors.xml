@@ -16,4 +16,5 @@
     <color name="dmColorBackground">#000000</color>
     <color name="card_dark">#212121</color>
     <color name="grey_line">#b0bec5</color>
+    <color name="gold">#F2C14F</color>
 </resources>

@@ -16,6 +16,7 @@ import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import android.util.Pair
 import kotlinx.android.synthetic.main.activity_location.*
+import org.jetbrains.anko.textColor
 
 class MoreInfoActivity : AppCompatActivity() {
 
@@ -90,10 +91,15 @@ class MoreInfoActivity : AppCompatActivity() {
 
         // Set on click listener for Favorites -> Add to favorites
         moreinfoFavorites.setOnClickListener {
-            if(!favorites) {
+            if(!favorites) { // Not in favorites - add
                 // add to favorites
                 toast("Added ${place.name} to your Favorites!")
                 favorites = true
+                updateFavorites()
+            } else { // In favorites - remove
+                // remove from favorites
+                toast("Removed ${place.name} from your Favorites!")
+                favorites = false
                 updateFavorites()
             }
         }
@@ -113,6 +119,15 @@ class MoreInfoActivity : AppCompatActivity() {
                             "${place.name}\n" +
                             detailsResponse.result.website)
             startActivity(shareIntent)
+        }
+
+        // Set on click listener for Call Button -> Dialer
+        moreinfoButtonShare.setOnClickListener {
+            if (phone != "") { // Opens dialer with phone number
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel: $phone")
+                startActivity(intent)
+            }
         }
     }
 
@@ -155,6 +170,7 @@ class MoreInfoActivity : AppCompatActivity() {
         updateFavorites()
         updateClock(place.openNow)
         distanceUpdates(intent.getStringExtra("distance"), intent.getStringExtra("duration"))
+
         findViewById<TextView>(R.id.moreinfoName).text = place.name
         findViewById<TextView>(R.id.moreinfoDescription).text = place.fixDescription()
         findViewById<ImageView>(R.id.moreinfoRating).setImageDrawable(
@@ -222,12 +238,16 @@ class MoreInfoActivity : AppCompatActivity() {
     fun updateFavorites() {
         val view = findViewById<TextView>(R.id.moreinfoFavorites)
 
-        if(!favorites) { // If not in favorites
+        if(!favorites) { // Not in favorites
+            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
+                    this, R.drawable.favorites_icon))
             view.text = getString(R.string.default_favorites)
-        } else {
-            moreinfoFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
+            view.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        } else { // Already in favorites
+            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
                     this, R.drawable.favorites_filled_icon))
             view.text = getString(R.string.default_already_favorited)
+            view.setTextColor(ContextCompat.getColor(this, R.color.gold))
         }
     }
 
