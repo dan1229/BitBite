@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true"
-    tools:context="com.example.daniel.bitbite.MainActivity">
+    tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/content_frame"
@@ -19,8 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:paddingTop="@dimen/appbar_padding_top"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:title="" >
+            android:theme="@style/AppTheme.AppBarOverlay" >
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
@@ -28,8 +27,7 @@
                 android:elevation="@dimen/toolbar_elevation"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="Home"
-                app:titleTextColor="@color/white">
+                app:titleTextColor="@color/white" >
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -179,9 +177,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/submitButton" />
-
-
-
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 

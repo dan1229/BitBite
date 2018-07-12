@@ -5,8 +5,11 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBar
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_favorites.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class FavoritesActivity : AppCompatActivity() {
@@ -19,12 +22,21 @@ class FavoritesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
+        mDrawerLayout = findViewById(R.id.favorites_drawer_layout)
+
+        // Setup Toolbar
+        setSupportActionBar(toolbar_fave as Toolbar)
+        val actionbar: ActionBar? = supportActionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu)
+        }
 
         // Get intent extras
         user = intent.getParcelableExtra("USER")
 
         // Set Nav Drawer listener
-        nav_view.setNavigationItemSelectedListener { menuItem ->
+        fave_nav_view.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             mDrawerLayout.closeDrawers()
             navMenuSwitch(menuItem)
@@ -32,7 +44,7 @@ class FavoritesActivity : AppCompatActivity() {
         }
 
         // Set Nav Footer listener
-        nav_footer.setNavigationItemSelectedListener { menuItem ->
+        fave_nav_footer.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = false
             mDrawerLayout.closeDrawers()
             navMenuSwitch(menuItem)

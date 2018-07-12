@@ -61,8 +61,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     /** User Class Declaration **/
     @Parcelize
-    data class User(var style : String = "", var price : Int = 0,
-                    var lat : Double, var lng : Double) : Parcelable
+    data class User(var lat: Double, var lng: Double,
+                    var style: String = "", var price: Int = 0) : Parcelable
 
 
     /** ON CREATE **/
@@ -177,13 +177,16 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
         price = p0!!.progress + 1
+        user.price = price
     }
 
     // setDefaultPrice()
     // Retrieves setting for default price and sets
     private
     fun setDefaultPrice() {
-        priceBar.progress = getPriceSetting(this)
+        val defaultPrice = getPriceSetting(this)
+        priceBar.progress = defaultPrice
+        price = defaultPrice
     }
 
     /**====================================================================================================**/
@@ -250,7 +253,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Calls Places API in Async thread and goes to another activity based on input
     private
     fun placesAsyncCall(n : Int) {
-        user = User(style, price, lat, lng)
+        // Update user variable
+        user = User(lat, lng, style, price)
 
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
@@ -359,6 +363,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
                 else {
                     lat = location.latitude
                     lng = location.longitude
+                    user = User(lat, lng)
                 }
             }
         } else { // PERMISSION NOT YET ASKED - prompt user for permission
@@ -488,6 +493,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         // Yes button listener
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
+            user = User(lat, lng)
             if(checkbox) { // If default location checkbox is checked, update settings
                 updateDefaultLocation(response)
             }
