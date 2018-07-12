@@ -104,7 +104,7 @@ class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteract
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
-                    location_topcard_container, "top_card")
+                    topcardCard, "top_card")
             startActivity(intent, options.toBundle())
         } else {
             startActivity(intent)

@@ -9,13 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.fragment_results_card.view.*
-import kotlinx.android.synthetic.main.fragment_review.view.*
+import kotlinx.android.synthetic.main.fragment_review_card.view.*
 import org.jetbrains.anko.act
-import org.jetbrains.anko.support.v4.act
 
 
-class ReviewFragment : Fragment() {
+class ReviewCardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var review : Reviews
     private var listener: OnFragmentInteractionListener? = null
@@ -29,7 +27,7 @@ class ReviewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val view = inflater.inflate(R.layout.fragment_review, container, false)
+        val view = inflater.inflate(R.layout.fragment_review_card, container, false)
 
         // Populate card
         updateCard(view)
@@ -76,12 +74,12 @@ class ReviewFragment : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param review Parameter 1.
-         * @return A new instance of fragment ReviewFragment.
+         * @return A new instance of fragment ReviewCardFragment.
          */
-        fun newInstance(review : Reviews) : ReviewFragment {
+        fun newInstance(review : Reviews) : ReviewCardFragment {
             val args = Bundle()
             args.putParcelable("review", review)
-            val fragment = ReviewFragment()
+            val fragment = ReviewCardFragment()
             fragment.arguments = args
             return fragment
         }

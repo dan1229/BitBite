@@ -13,9 +13,7 @@
     card_view:cardElevation="@dimen/big_card_elevation"
     card_view:cardBackgroundColor="@color/card_light">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/topcard_layout"
         android:transitionName="top_card"
         android:layout_width="match_parent"
