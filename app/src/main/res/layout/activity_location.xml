@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackground"
@@ -8,232 +8,47 @@
     android:scrollbars="vertical"
     tools:context=".LocationActivity">
 
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_location"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar_location"
+        android:layout_height="?android:attr/actionBarSize"
+        android:paddingTop="@dimen/appbar_padding_top"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_location"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:paddingTop="@dimen/appbar_padding_top"
-            android:theme="@style/AppTheme.AppBarOverlay">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:elevation="@dimen/toolbar_elevation"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        </android.support.design.widget.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="@dimen/toolbar_elevation"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorBackground"
+        android:layout_marginTop="?android:attr/actionBarSize" >
+
+        <FrameLayout
+            android:id="@+id/location_topcard_container"
+            android:transitionName="top_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="5"
-            android:orientation="vertical"
-            android:layout_marginTop="?android:attr/actionBarSize" >
-
+            android:fillViewport="true"
+            android:scrollbars="vertical"
+            tools:context=".LocationActivity">
             <FrameLayout
-                android:id="@+id/location_topcard_container"
-                android:transitionName="top_card"
+                android:id="@+id/location_bottomcard_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/locationCard"/>
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.NestedScrollView>
 
-            <FrameLayout
-                android:id="@+id/moreinfocard_container"
-                android:background="@color/colorBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/locationCard"
-                    android:transitionName="card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="@dimen/big_card_margin"
-                    card_view:cardCornerRadius="@dimen/big_card_radius"
-                    card_view:cardElevation="@dimen/big_card_elevation"
-                    card_view:cardBackgroundColor="@color/card_light">
+    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/big_card_main_layout_margin"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/locationIconLayout"
-                            android:transitionName="icon_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="4dp"
-                            android:layout_gravity="start">
-
-                            <LinearLayout
-                                android:id="@+id/locationLayoutDistance"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/icon_margin"
-                                android:layout_marginBottom="@dimen/icon_margin">
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="fitStart"
-                                    android:src="@drawable/distance_icon"/>
-                                <TextView
-                                    android:id="@+id/locationDistance"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/text_large"
-                                    android:textColor="@color/text_primary"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/default_distance" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/locationLayoutDuration"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/icon_margin"
-                                android:layout_marginBottom="@dimen/icon_margin">
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="fitStart"
-                                    android:src="@drawable/car_icon"/>
-                                <TextView
-                                    android:id="@+id/locationDuration"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/text_large"
-                                    android:textColor="@color/text_primary"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/default_duration" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/layoutClock"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/icon_margin"
-                                android:layout_marginBottom="@dimen/icon_margin">
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="fitStart"
-                                    android:src="@drawable/clock_icon"/>
-                                <TextView
-                                    android:id="@+id/locationClock"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/text_large"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/default_clock" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/layoutFavorite"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/icon_margin"
-                                android:layout_marginBottom="@dimen/icon_margin">
-                                <ImageView
-                                    android:id="@+id/locationFavoritesIcon"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="fitStart"
-                                    android:src="@drawable/favorites_icon"/>
-                                <TextView
-                                    android:id="@+id/locationFavorites"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/text_large"
-                                    android:textColor="@color/text_primary"
-                                    android:ellipsize="end"
-                                    android:singleLine="true"
-                                    android:text="@string/default_favorites" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:theme="@style/GreyLine"/>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:orientation="horizontal">
-                            <LinearLayout
-                                android:id="@+id/locationButtonMoreinfo"
-                                style="@style/AppTheme.RoundedCornerMaterialButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:padding="@dimen/button_padding"
-                                android:layout_margin="@dimen/button_margin"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:gravity="center"
-                                android:orientation="horizontal" >
-                                <ImageView
-                                    android:layout_width="@dimen/location_icon_height"
-                                    android:layout_height="@dimen/location_icon_height"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/moreinfo_icon" />
-                                <TextView
-                                    android:textColor="@color/card_light"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingEnd="@dimen/button_text_padding"
-                                    android:paddingStart="@dimen/button_text_padding"
-                                    android:textSize="@dimen/text_normal"
-                                    android:text="@string/button_moreinfo" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/locationButtonDirections"
-                                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:padding="@dimen/button_padding"
-                                android:layout_margin="@dimen/button_margin"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:gravity="center"
-                                android:orientation="horizontal" >
-                                <ImageView
-                                    android:layout_width="@dimen/location_icon_height"
-                                    android:layout_height="@dimen/location_icon_height"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/directions_icon" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/colorPrimary"
-                                    android:paddingEnd="@dimen/button_text_padding"
-                                    android:paddingStart="@dimen/button_text_padding"
-                                    android:textSize="@dimen/text_normal"
-                                    android:text="@string/button_directions" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-            </FrameLayout>
-
-        </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
-</android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

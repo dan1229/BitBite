@@ -14,7 +14,7 @@ import android.view.View
 
 
 class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListener,
-    MoreInfoCard.OnFragmentInteractionListener {
+    MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener {
 
     /** Variables **/
     lateinit var user: MainActivity.User
@@ -23,6 +23,8 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     var favorites = false
     var height = 0
 
+
+    /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
@@ -35,115 +37,12 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
         toolbar_location.title = ellipsizeText(place.name, 30)
 
         // Add top card fragment
-        val fragment = TopCard.newInstance(place)
-        fragmentManager.beginTransaction().add(R.id.location_topcard_container, fragment).commit()
+        val tfragment = TopCard.newInstance(place)
+        fragmentManager.beginTransaction().add(R.id.location_topcard_container, tfragment).commit()
 
-        // Update Location card
-        locationUpdates()
-
-        // Place Details call
-        doAsync {
-            distance = callDistanceApi(this@LocationActivity, user.lat, user.lng, place.placeID)
-
-            uiThread { // Populate Location card
-                distanceUpdates(distance.first, distance.second)
-            }
-        }
-
-        // check if in favorites
-
-        /**====================================================================================================**/
-        /** On Click Listeners **/
-
-        // Set on click listener for Favorites -> Add to favorites
-        layoutFavorite.setOnClickListener {
-            if(!favorites) { // Not in favorites - add
-                // add to favorites
-                // favorites = updateFavoritesList(place)
-                toast("Added ${place.name} to your Favorites!")
-                favorites = true
-            } else { // In favorites - remove
-                // remove from favorites
-                toast("Removed ${place.name} from your Favorites!")
-                favorites = false
-            }
-            updateFavorites()
-        }
-
-        // Set on click listener for More Info Button -> makes views visible
-        locationButtonMoreinfo.setOnClickListener {
-            createMoreInfoFragment()
-        }
-
-        // Set on click listener for Directions Button -> Google Maps
-        locationButtonDirections.setOnClickListener{
-            place.openMapsPage(this)
-        }
-    }
-
-    /**====================================================================================================**/
-    /** Fragment Makers **/
-
-    // createMoreInfoFragment()
-    // Creates MoreInfoCard fragment and adds to container
-    private
-    fun createMoreInfoFragment() {
-        val fragment = MoreInfoCard.newInstance(place, favorites, distance.first, distance.second)
-        fragmentManager.beginTransaction().add(R.id.moreinfocard_container, fragment).commit()
-        locationCard.visibility = View.GONE
-    }
-
-    /**====================================================================================================**/
-    /** Updater Methods **/
-
-    // locationUpdates()
-    // Updates Location card fields
-    private
-    fun locationUpdates() {
-        updateFavorites()
-        updateClock(place.openNow)
-    }
-
-    // distanceUpdates()
-    // Updates fields related to distance
-    private
-    fun distanceUpdates(distance : String, duration : String) {
-        if(distance != "")
-            locationDistance.text = distance
-        if(duration != "")
-            locationDuration.text = duration
-    }
-
-    // updateClock()
-    private
-    fun updateClock(bool : Boolean) {
-        if(bool){
-            findViewById<TextView>(R.id.locationClock).text = getString(R.string.open)
-            findViewById<TextView>(R.id.locationClock).setTextColor(
-                    ContextCompat.getColor(this, R.color.green))
-        } else {
-            findViewById<TextView>(R.id.locationClock).text = getString(R.string.closed)
-            findViewById<TextView>(R.id.locationClock).setTextColor(
-                    ContextCompat.getColor(this, R.color.red))
-        }
-    }
-
-    // updateFavorites()
-    private
-    fun updateFavorites() {
-        val view = findViewById<TextView>(R.id.locationFavorites)
-
-        if(!favorites) { // Not in favorites
-            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
-                    this, R.drawable.favorites_icon))
-            view.text = getString(R.string.default_favorites)
-            view.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
-        } else { // Already in favorites
-            locationFavoritesIcon.setImageDrawable(ContextCompat.getDrawable(
-                    this, R.drawable.favorites_filled_icon))
-            view.text = getString(R.string.default_already_favorited)
-            view.setTextColor(ContextCompat.getColor(this, R.color.gold))
-        }
+        // Add bottom card fragment
+        val bfragment = BottomCard.newInstance(place, user)
+        fragmentManager.beginTransaction().add(R.id.location_bottomcard_container, bfragment).commit()
     }
 
     /**====================================================================================================**/

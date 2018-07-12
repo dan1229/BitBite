@@ -26,15 +26,16 @@ import org.jetbrains.anko.act
  */
 class TopCard : Fragment() {
 
-    var height = 0
+    /** Variables **/
     private lateinit var place : Place
     private var listener: OnFragmentInteractionListener? = null
 
+
+    /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         place = arguments.getParcelable("place")
-        height = arguments.getInt("height")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,19 +46,11 @@ class TopCard : Fragment() {
         // Populate card
         updateCard(view)
 
-        // Use height passed
-        if(height != 0) {
-            view.topcard_layout.layoutParams.height = height
-            Log.d("HEIGHT", height.toString())
-        }
-
         return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+    /**====================================================================================================**/
+    /** Mandatory Methods **/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -73,36 +66,15 @@ class TopCard : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
+    /** newInstance **/
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TopCard.
-         */
-        // TODO: Rename and change types and number of parameters
-        fun newInstance(place : Place, height : Int = 0) : TopCard {
+        fun newInstance(place : Place) : TopCard {
             val args = Bundle()
             args.putParcelable("place", place)
-            args.putInt("height", height)
             val fragment = TopCard()
             fragment.arguments = args
             return fragment

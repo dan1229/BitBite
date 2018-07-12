@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_review.*
 
-class ReviewActivity : AppCompatActivity(), ReviewCardFragment.OnFragmentInteractionListener {
+class ReviewActivity : AppCompatActivity(), ReviewCard.OnFragmentInteractionListener {
 
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
@@ -27,7 +27,7 @@ class ReviewActivity : AppCompatActivity(), ReviewCardFragment.OnFragmentInterac
         placeName.text = name
 
         for(i in 0 until reviews.size){
-            val fragment = ReviewCardFragment.newInstance(reviews[i])
+            val fragment = ReviewCard.newInstance(reviews[i])
             fragmentManager.beginTransaction().add(R.id.review_container, fragment).commit()
         }
 

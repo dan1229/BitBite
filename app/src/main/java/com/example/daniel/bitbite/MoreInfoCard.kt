@@ -45,6 +45,8 @@ class MoreInfoCard : Fragment() {
     var website = ""
     var phone = ""
 
+
+    /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -147,10 +149,8 @@ class MoreInfoCard : Fragment() {
         return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+    /**====================================================================================================**/
+    /** Mandatory Methods **/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -166,31 +166,12 @@ class MoreInfoCard : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
+    /** newInstance **/
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MoreInfoCard.
-         */
         fun newInstance(place : Place, favorite : Boolean,
                         distance : String, duration : String) : MoreInfoCard {
             val args = Bundle()

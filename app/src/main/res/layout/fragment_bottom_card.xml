@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomcard_layout_root"
+    android:transitionName="card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="top"
+    android:orientation="vertical"
+    app:layout_constraintHorizontal_chainStyle="spread"
+    android:background="@color/colorBackground"
+    tools:context=".MoreInfoCard">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottomcard_card"
+        android:transitionName="review_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_card_margin"
+        card_view:cardCornerRadius="@dimen/big_card_radius"
+        card_view:cardElevation="@dimen/big_card_elevation"
+        card_view:cardBackgroundColor="@color/card_light"
+        card_view:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_card_main_layout_margin"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/bottomcard_layout_distance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/icon_margin"
+                android:layout_marginBottom="@dimen/icon_margin">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/distance_icon"/>
+                <TextView
+                    android:id="@+id/bottomcard_text_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_large"
+                    android:textColor="@color/text_primary"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/default_distance" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomcard_layout_duration"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/icon_margin"
+                android:layout_marginBottom="@dimen/icon_margin">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/car_icon"/>
+                <TextView
+                    android:id="@+id/bottomcard_text_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_large"
+                    android:textColor="@color/text_primary"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/default_duration" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomcard_layout_clock"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/icon_margin"
+                android:layout_marginBottom="@dimen/icon_margin">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/clock_icon"/>
+                <TextView
+                    android:id="@+id/bottomcard_text_clock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_large"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/default_clock" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomcard_layout_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/icon_margin"
+                android:layout_marginBottom="@dimen/icon_margin">
+                <ImageView
+                    android:id="@+id/bottomcard_icon_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/favorites_icon"/>
+                <TextView
+                    android:id="@+id/bottomcard_text_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_large"
+                    android:textColor="@color/text_primary"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/default_favorites" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/big_card_margin"
+        card_view:cardCornerRadius="@dimen/big_card_radius"
+        card_view:cardElevation="@dimen/big_card_elevation"
+        card_view:cardBackgroundColor="@color/card_light"
+        card_view:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_card_main_layout_margin"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/bottomcard_button_moreinfo"
+                style="@style/AppTheme.RoundedCornerMaterialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/button_padding"
+                android:layout_margin="@dimen/button_margin"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+                <ImageView
+                    android:layout_width="@dimen/location_icon_height"
+                    android:layout_height="@dimen/location_icon_height"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/moreinfo_icon" />
+                <TextView
+                    android:textColor="@color/card_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/button_text_padding"
+                    android:paddingStart="@dimen/button_text_padding"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/button_moreinfo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomcard_button_directions"
+                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/button_padding"
+                android:layout_margin="@dimen/button_margin"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+                <ImageView
+                    android:layout_width="@dimen/location_icon_height"
+                    android:layout_height="@dimen/location_icon_height"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/directions_icon" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:paddingEnd="@dimen/button_text_padding"
+                    android:paddingStart="@dimen/button_text_padding"
+                    android:textSize="@dimen/text_normal"
+                    android:text="@string/button_directions" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>
