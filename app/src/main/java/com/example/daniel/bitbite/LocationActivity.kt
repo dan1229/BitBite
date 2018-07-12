@@ -18,7 +18,6 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
 
     /** Variables **/
     lateinit var user: MainActivity.User
-    var distance = Pair("", "")
     lateinit var place:Place
     var favorites = false
     var height = 0
