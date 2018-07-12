@@ -6,12 +6,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_location.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
-import android.util.Pair
-import android.view.View
-
 
 class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListener,
     MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener {

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import java.net.URL
@@ -51,8 +52,36 @@ fun getRankBySetting(context: Context) : String {
 }
 
 
+/**====================================================================================================**/
+/** Intent Makers **/
+
+// goToAboutUs()
+// Go to www.BitBite.app
+fun goToAboutUs(context : Context) {
+    openWebPage(context, "https://www.BitBite.app")
+}
 
 
+// goToFeedback()
+// Go to Google Play Reviews page
+fun goToFeedback(context : Context) {
+//
+}
+
+// openWebPage()
+// Opens web page to passed URL
+fun openWebPage(context : Context, url : String) {
+    val uris = Uri.parse(url)
+    val intents = Intent(Intent.ACTION_VIEW, uris)
+    val bundle = Bundle()
+    bundle.putBoolean("new_window", true)
+    intents.putExtras(bundle)
+    context.startActivity(intents)
+}
+
+
+/**====================================================================================================**/
+/** Conversion Methods **/
 
 // ratingConversion()
 // Converts rating to drawable of stars based on value
@@ -87,6 +116,20 @@ fun priceConversion(price : Int) = when(price) {
     else -> ""
 }
 
+
+/**====================================================================================================**/
+/** URL Builders **/
+
+// mapsReviewUrlBuilder()
+// Builds URL to leave Google Maps Review
+fun mapsReviewUrlBuilder(id : String) : String {
+    return "https://search.google.com/local/writereview?placeid=$id"
+}
+
+
+/**====================================================================================================**/
+/** Misc. Methods **/
+
 // ellipsizeText()
 // Ellipsizes text
 fun ellipsizeText(input : String, max : Int = 20) : String {
@@ -97,23 +140,6 @@ fun ellipsizeText(input : String, max : Int = 20) : String {
         res = input.substring(0, max - 3) + "..."
 
     return res
-}
-
-// openWebPage()
-// Opens web page to passed URL
-fun openWebPage(context : Context, url : String) {
-    val uris = Uri.parse(url)
-    val intents = Intent(Intent.ACTION_VIEW, uris)
-    val bundle = Bundle()
-    bundle.putBoolean("new_window", true)
-    intents.putExtras(bundle)
-    context.startActivity(intents)
-}
-
-// mapsReviewUrlBuilder()
-// Builds URL to leave Google Maps Review
-fun mapsReviewUrlBuilder(id : String) : String {
-    return "https://search.google.com/local/writereview?placeid=$id"
 }
 
 // downloadPhoto()

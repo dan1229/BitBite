@@ -1,5 +1,6 @@
 package com.example.daniel.bitbite
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -10,9 +11,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class FavoritesActivity : AppCompatActivity() {
 
+    /** Variables **/
     lateinit var user : MainActivity.User
     private lateinit var mDrawerLayout: DrawerLayout
 
+    /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
@@ -48,8 +51,8 @@ class FavoritesActivity : AppCompatActivity() {
             "Home" -> goHome()
             "Favorites" -> mDrawerLayout.closeDrawers()
             "Settings" -> goToSettings()
-            "About Us" -> goToAboutUs()
-            "Feedback" -> goToFeedback()
+            "About Us" -> goToAboutUs(this)
+            "Feedback" -> goToFeedback(this)
         }
     }
 
@@ -62,20 +65,6 @@ class FavoritesActivity : AppCompatActivity() {
     fun goHome() {
         val intent = Intent(this@FavoritesActivity, MainActivity::class.java)
         startActivity(intent)
-    }
-
-    // goToAboutUs()
-    // Go to www.BitBite.app
-    private
-    fun goToAboutUs() {
-        openWebPage(this, "https://www.BitBite.app")
-    }
-
-    // goToFeedback()
-    // Go to FeedbackActivity.kt
-    private
-    fun goToFeedback() {
-        Log.d("NAV", "feedback menu")
     }
 
     // goToSettings()

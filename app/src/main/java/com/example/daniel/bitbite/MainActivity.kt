@@ -59,6 +59,13 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     /** Settings Variables **/
     var DEFAULTLOCATION = ""
 
+    /** User Class Declaration **/
+    @Parcelize
+    data class User(var style : String = "", var price : Int = 0,
+                    var lat : Double, var lng : Double) : Parcelable
+
+
+    /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(AppTheme)
         super.onCreate(savedInstanceState)
@@ -224,20 +231,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         val intent = Intent(this@MainActivity, FavoritesActivity::class.java)
         intent.putExtra("USER", user)
         startActivity(intent)
-    }
-
-    // goToAboutUs()
-    // Go to www.BitBite.app
-    private
-    fun goToAboutUs() {
-        openWebPage(this, "https://www.BitBite.app")
-    }
-
-    // goToFeedback()
-    // Go to FeedbackActivity.kt
-    private
-    fun goToFeedback() {
-        Log.d("NAV", "feedback menu")
     }
 
     // goToSettings()
@@ -434,20 +427,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             "Home" -> mDrawerLayout.closeDrawers()
             "Favorites" -> goToFavorites()
             "Settings" -> goToSettings()
-            "About Us" -> goToAboutUs()
-            "Feedback" -> goToFeedback()
+            "About Us" -> goToAboutUs(this)
+            "Feedback" -> goToFeedback(this)
         }
     }
-
-
-    /**====================================================================================================**/
-    /** Dialogs **/
-
-    // User class
-    // Stores information about the users choices
-    @Parcelize
-    data class User(var style : String = "", var price : Int = 0,
-                    var lat : Double, var lng : Double) : Parcelable
 
 
     /**====================================================================================================**/
