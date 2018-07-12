@@ -35,7 +35,6 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         super.onCreate(savedInstanceState)
 //        this.gDetector = GestureDetectorCompat(activity, this)
 
-
         place = arguments.getParcelable("place")
         user = arguments.getParcelable("user")
     }

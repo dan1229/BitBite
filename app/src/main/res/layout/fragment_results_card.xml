@@ -22,7 +22,7 @@
                 android:id="@+id/results_image"
                 android:transitionName="place_image"
                 android:layout_width="match_parent"
-                android:layout_height="156dp"
+                android:layout_height="@dimen/resultscard_image_height"
                 android:layout_marginBottom="2dp"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"

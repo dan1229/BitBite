@@ -13,20 +13,18 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_top_card.*
 import kotlinx.android.synthetic.main.fragment_top_card.view.*
 import org.jetbrains.anko.act
-import org.jetbrains.anko.support.v4.act
-
 
 
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [TopCardFragment.OnFragmentInteractionListener] interface
+ * [TopCard.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [TopCardFragment.newInstance] factory method to
+ * Use the [TopCard.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class TopCardFragment : Fragment() {
+class TopCard : Fragment() {
 
     var height = 0
     private lateinit var place : Place
@@ -98,14 +96,14 @@ class TopCardFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment TopCardFragment.
+         * @return A new instance of fragment TopCard.
          */
         // TODO: Rename and change types and number of parameters
-        fun newInstance(place : Place, height : Int = 0) : TopCardFragment {
+        fun newInstance(place : Place, height : Int = 0) : TopCard {
             val args = Bundle()
             args.putParcelable("place", place)
             args.putInt("height", height)
-            val fragment = TopCardFragment()
+            val fragment = TopCard()
             fragment.arguments = args
             return fragment
         }

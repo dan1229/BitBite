@@ -1,13 +1,9 @@
 package com.example.daniel.bitbite
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_location.*
 import org.jetbrains.anko.doAsync
@@ -15,10 +11,10 @@ import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import android.util.Pair
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_top_card.*
 
 
-class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteractionListener {
+class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListener,
+    MoreInfoCard.OnFragmentInteractionListener {
 
     /** Variables **/
     lateinit var user: MainActivity.User
@@ -39,10 +35,8 @@ class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteract
         toolbar_location.title = ellipsizeText(place.name, 30)
 
         // Add top card fragment
-        val fragment = TopCardFragment.newInstance(place)
+        val fragment = TopCard.newInstance(place)
         fragmentManager.beginTransaction().add(R.id.location_topcard_container, fragment).commit()
-//        height = location_topcard_container.layoutParams.height
-//        Log.d("HEIGHT", "location_topcard_height: $height")
 
         // Update Location card
         locationUpdates()
@@ -65,6 +59,7 @@ class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteract
         layoutFavorite.setOnClickListener {
             if(!favorites) { // Not in favorites - add
                 // add to favorites
+                // favorites = updateFavoritesList(place)
                 toast("Added ${place.name} to your Favorites!")
                 favorites = true
             } else { // In favorites - remove
@@ -77,7 +72,7 @@ class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteract
 
         // Set on click listener for More Info Button -> makes views visible
         locationButtonMoreinfo.setOnClickListener {
-            goToMoreInfo()
+            createMoreInfoFragment()
         }
 
         // Set on click listener for Directions Button -> Google Maps
@@ -87,28 +82,15 @@ class LocationActivity : AppCompatActivity(), TopCardFragment.OnFragmentInteract
     }
 
     /**====================================================================================================**/
-    /** Intent Makers **/
+    /** Fragment Makers **/
 
-    // goToMoreInfo()
-    // Creates Intent for MoreInfo.kt and animates transition
+    // createMoreInfoFragment()
+    // Creates MoreInfoCard fragment and adds to container
     private
-    fun goToMoreInfo() {
-        // Create Intent
-        val intent = Intent(this@LocationActivity, MoreInfoActivity::class.java)
-        intent.putExtra("place", place) // Pass place
-        intent.putExtra("fave", favorites) // Pass favorites
-        intent.putExtra("distance", distance.first) // Pass distance
-        intent.putExtra("duration", distance.second) // Pass distance
-        intent.putExtra("height", location_topcard_container.height) // Pass fragment height
-
-        // Check Android version for animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptions.makeSceneTransitionAnimation(this@LocationActivity,
-                    topcardCard, "top_card")
-            startActivity(intent, options.toBundle())
-        } else {
-            startActivity(intent)
-        }
+    fun createMoreInfoFragment() {
+        val fragment = MoreInfoCard.newInstance(place, favorites, distance.first, distance.second)
+        fragmentManager.beginTransaction().add(R.id.moreinfocard_container, fragment).commit()
+        locationCard.visibility = View.GONE
     }
 
     /**====================================================================================================**/
