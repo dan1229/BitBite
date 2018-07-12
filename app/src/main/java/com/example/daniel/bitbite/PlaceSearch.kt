@@ -14,7 +14,7 @@ import org.jetbrains.anko.support.v4.act
 
 /** Settings Variables **/
 var OPENNOW = true
-var RADIUS = 15 / 0.00062137
+var RADIUS = (15 / 0.00062137).toString()
 var RANKBY = "distance"
 
 /**====================================================================================================**/
@@ -158,13 +158,12 @@ fun nextPageUrlBuilder(context : Context, token : String) : String {
 }
 
 /**====================================================================================================**/
-/** Settings Functions **/
+/** Get Settings Function **/
 
 // updateSettings()
 // Updates settings variables
 fun updateSettings(context: Context) {
-    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-    RADIUS = (prefs.getInt("radius", 15) / 0.00062137)
-    OPENNOW = prefs.getBoolean("opennow", true)
-    RANKBY = prefs.getString("sortby", "distance")
+    RADIUS = getRadiusSetting(context)
+    OPENNOW = getOpenNowSetting(context)
+    RANKBY = getRankBySetting(context)
 }

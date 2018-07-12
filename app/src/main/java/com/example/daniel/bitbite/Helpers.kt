@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
 import android.widget.ImageView
@@ -17,6 +18,41 @@ import java.net.URL
 
 /**====================================================================================================**/
 /** Helper Methods **/
+
+/**====================================================================================================**/
+/** Settings Methods **/
+
+// getPriceSetting()
+// Gets and returns price setting variable
+fun getPriceSetting(context: Context) : Int {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    return prefs.getInt("default_price", 5)
+}
+
+// getRadiusSetting()
+// Gets and returns radius setting variable
+fun getRadiusSetting(context: Context) : String {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    return (prefs.getInt("radius", 15) / 0.00062137).toString()
+}
+
+// getOpenNowSetting()
+// Gets and returns open now setting variable
+fun getOpenNowSetting(context: Context) : Boolean {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    return prefs.getBoolean("opennow", true)
+}
+
+// getRankBySetting()
+// Gets and returns rank by setting variable
+fun getRankBySetting(context: Context) : String {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    return prefs.getString("sortby", "distance")
+}
+
+
+
+
 
 // ratingConversion()
 // Converts rating to drawable of stars based on value

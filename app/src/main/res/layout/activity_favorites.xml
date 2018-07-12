@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favoritesdrawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:fitsSystemWindows="true"
+    tools:context=".FavoritesActivity">
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_favorites"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:paddingTop="@dimen/appbar_padding_top"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:title="" >
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/toolbar_elevation"
+                android:theme="@style/ThemeOverlay.AppCompat.Light"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="Favorites"
+                app:titleTextColor="@color/white">
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/MARGIN_TOP_BOTTOM"
+            android:layout_marginBottom="@dimen/MARGIN_TOP_BOTTOM"
+            android:layout_marginLeft="@dimen/MARGIN_LEFT_RIGHT"
+            android:layout_marginRight="@dimen/MARGIN_LEFT_RIGHT"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:orientation="vertical"
+                tools:context=".ResultsActivity"
+                tools:showIn="@layout/activity_results" />
+
+            <Button
+                android:id="@+id/show_more_button"
+                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:padding="@dimen/button_padding"
+                android:textSize="@dimen/text_normal"
+                android:textAllCaps="false"
+                android:text="@string/button_show_more"/>
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_header"
+        app:headerLayout="@layout/nav_header">
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:menu="@menu/drawer_footer">
+        </android.support.design.widget.NavigationView>
+
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>

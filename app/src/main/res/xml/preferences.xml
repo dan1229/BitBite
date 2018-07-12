@@ -14,6 +14,15 @@
             android:summary="Switch to dark mode"
             android:defaultValue="false"/>
         <com.pavelsikun.seekbarpreference.SeekBarPreference
+            android:key="default_price"
+            android:title="Default Price Level"
+            android:enabled="true"
+            android:defaultValue="5"
+            sample:msbp_minValue="1"
+            sample:msbp_maxValue="5"
+            sample:msbp_interval="1"
+            sample:msbp_dialogEnabled="true"/>
+        <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:key="radius"
             android:title="Radius"
             android:enabled="true"

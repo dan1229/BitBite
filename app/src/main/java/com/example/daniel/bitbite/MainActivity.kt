@@ -57,9 +57,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     var lng = 0.0
 
     /** Settings Variables **/
-    var OPENNOW = true
-    var RADIUS = 15 / 0.00062137
-    var RANKBY = "distance"
     var DEFAULTLOCATION = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +77,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
         // Get location
         setupLocation()
+
+        // Set default price
+        setDefaultPrice()
 
         // Setup spinner
         setupSpinner()
@@ -172,6 +172,12 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         price = p0!!.progress + 1
     }
 
+    // setDefaultPrice()
+    // Retrieves setting for default price and sets
+    private
+    fun setDefaultPrice() {
+        priceBar.progress = getPriceSetting(this)
+    }
 
     /**====================================================================================================**/
     /** Intent Makers **/
@@ -215,7 +221,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Go to FavoritesActivity.kt
     private
     fun goToFavorites() {
-        Log.d("NAV", "favorites menu")
+        val intent = Intent(this@MainActivity, FavoritesActivity::class.java)
+        intent.putExtra("USER", user)
+        startActivity(intent)
     }
 
     // goToAboutUs()
@@ -438,7 +446,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // User class
     // Stores information about the users choices
     @Parcelize
-    data class User(var style : String, var price : Int, var lat : Double, var lng : Double) : Parcelable
+    data class User(var style : String = "", var price : Int = 0,
+                    var lat : Double, var lng : Double) : Parcelable
 
 
     /**====================================================================================================**/

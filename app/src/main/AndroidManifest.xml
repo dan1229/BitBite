@@ -52,7 +52,8 @@
                 android:value="com.example.daniel.bitbite.MainActivity" />
         </activity>
         <activity android:name=".ReviewActivity" />
-        <activity android:name=".MoreInfoActivity"></activity>
+        <activity android:name=".MoreInfoActivity" />
+        <activity android:name=".FavoritesActivity"></activity>
     </application>
 
 </manifest>
