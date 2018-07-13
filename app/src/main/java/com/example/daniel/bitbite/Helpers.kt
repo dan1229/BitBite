@@ -32,9 +32,11 @@ import java.net.URL
 // Updates and animates loading screen
 fun loadingScreen(view : View) {
     if (view.visibility == View.GONE) { // Loading screen is gone, start loading
+        view.rootView.isClickable = false
         view.visibility = View.VISIBLE
         rotate(view.findViewById(R.id.loading_image))
     } else { // Loading screen is visible, hide
+        view.rootView.isClickable = true
         view.visibility = View.GONE
     }
 }

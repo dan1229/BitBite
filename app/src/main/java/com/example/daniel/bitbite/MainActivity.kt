@@ -203,15 +203,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             intent.putParcelableArrayListExtra(EXTRA_PLACES_LIST, placesList)
             intent.putExtra("TOKEN", next_page_token)
             intent.putExtra("USER", user)
-
-            // Check Android version for animation
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                        this@MainActivity, mainSearch, "main_logo")
-                startActivity(intent, options.toBundle())
-            } else {
-                startActivity(intent)
-            }
+            startActivity(intent)
             loadingScreen(loading_main)
         }
     }
