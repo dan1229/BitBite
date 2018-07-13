@@ -26,6 +26,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.content_results.*
 import kotlinx.android.synthetic.main.content_results.view.*
 import kotlinx.android.synthetic.main.fragment_results_card.*
+import kotlinx.android.synthetic.main.loading_screen.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
@@ -39,6 +40,7 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
     var places = ArrayList<Place>()
     var listSize = 0
     var token = ""
+    var initial = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +63,10 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
 
         updateResults()
 
-
         // Set Show More button listener
         show_more_button.setOnClickListener {
+            Log.d("RESULTS", "starting loading")
+            loadingScreen(loading_results)
             doAsync {
                 val (x, y) = callPlacesApi(this@ResultsActivity, token = token)
                 places = x
@@ -90,7 +93,6 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
                 val fragment = ResultsCard.newInstance(places[i], user)
                 fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
 
-
                 uiThread {
                     if(places[i].photoRef != "DEFAULT") // Lookup image
                         places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
@@ -99,6 +101,14 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
                                 this@ResultsActivity, R.drawable.default_place_image))
                 }
             }
+        }
+
+        if(initial == 1){
+            Log.d("RESULTS", "stopping loading")
+            loadingScreen(loading_results)
+            loading_results.bringToFront()
+        } else {
+            initial = 1
         }
 
         updateButton()
@@ -113,6 +123,7 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         } else { // Token exists
             show_more_button.visibility = View.VISIBLE
         }
+
     }
 
 } /** END CLASS ResultsActivity.kt **/

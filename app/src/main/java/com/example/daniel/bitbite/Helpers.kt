@@ -1,5 +1,6 @@
 package com.example.daniel.bitbite
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -8,8 +9,12 @@ import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
+import android.view.View
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.example.daniel.bitbite.R.id.loading_image
 import java.net.URL
 
 /**
@@ -19,6 +24,28 @@ import java.net.URL
 
 /**====================================================================================================**/
 /** Helper Methods **/
+
+/**====================================================================================================**/
+/** Animations **/
+
+// loadingScreen()
+// Updates and animates loading screen
+fun loadingScreen(view : View) {
+    if (view.visibility == View.GONE) { // Loading screen is gone, start loading
+        view.visibility = View.VISIBLE
+        rotate(view.findViewById(R.id.loading_image))
+    } else { // Loading screen is visible, hide
+        view.visibility = View.GONE
+    }
+}
+
+fun rotate(view : View) {
+    val rotate = ObjectAnimator.ofFloat(view, View.ROTATION, -360f, 0f)
+    rotate.duration = 2000
+    rotate.interpolator = LinearInterpolator()
+    rotate.repeatCount = 100
+    rotate.start()
+}
 
 /**====================================================================================================**/
 /** Settings Methods **/

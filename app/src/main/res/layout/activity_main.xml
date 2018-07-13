@@ -26,8 +26,7 @@
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/toolbar_elevation"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextColor="@color/white" >
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -179,6 +178,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/submitButton" />
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
+
+    <include layout="@layout/loading_screen"
+        android:id="@+id/loading_main"
+        android:visibility="gone" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

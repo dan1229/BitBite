@@ -2,6 +2,7 @@ package com.example.daniel.bitbite
 
 import android.Manifest
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -29,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.loading_screen.*
 import org.jetbrains.anko.*
 import java.net.URL
 import kotlin.RuntimeException
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         mDrawerLayout = findViewById(R.id.drawer_layout)
         changed = true
 
-        // Setup Toolbar
+        // Setup toolbar
         setSupportActionBar(toolbar_main as Toolbar)
         val actionbar: ActionBar? = supportActionBar
         actionbar?.apply {
@@ -210,6 +212,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             } else {
                 startActivity(intent)
             }
+            loadingScreen(loading_main)
         }
     }
 
@@ -221,6 +224,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             val intent = Intent(this@MainActivity, LocationActivity::class.java)
             intent.putExtra("place", placesList[0])
             startActivity(intent)
+            loadingScreen(loading_main)
         }
     }
 
@@ -255,6 +259,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     fun placesAsyncCall(n : Int) {
         // Update user variable
         user = User(lat, lng, style, price)
+        loadingScreen(loading_main)
 
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
@@ -303,8 +308,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             geocodeGetLocationDialog()
         }
         if(isValid) { // Valid submission - call API in another thread
+            loadingScreen(loading_main)
             doAsync {
-                var response = parseGeocodeJson(text.toString())
+                val response = parseGeocodeJson(text.toString())
                 uiThread {
                     if(response != "INVALID"){
                         confirmLocationDialog(response)
@@ -478,6 +484,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Dialog to confirm user location
     private
     fun confirmLocationDialog(response : String) {
+        loadingScreen(loading_main)
+
         val view = layoutInflater.inflate(R.layout.dialog_confirmation, null)
         val textView = view.findViewById(R.id.confirmationTextView) as TextView
         var checkbox = false
@@ -522,6 +530,5 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
-
 
 }  /** END CLASS MainActivity.kt **/
