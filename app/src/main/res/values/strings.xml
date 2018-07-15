@@ -56,7 +56,7 @@
     <string name="default_already_favorited">Already in Favorites</string>
     <string name="default_clock"></string>
 
-    <!-- MoreInfoActivity -->
+    <!-- MoreInfo Fragment -->
     <string name="default_rating"></string>
     <string name="review_see_more">See More >></string>
     <string name="default_website_title">Website: </string>
@@ -64,6 +64,7 @@
     <string name="default_phone_title">Phone: </string>
     <string name="default_phone">Not Found</string>
     <string name="default_address">Not Found</string>
+    <string name="moreinfo_reviews_card_title">Reviews</string>
 
     <!-- ReviewActivity -->
     <string name="make_review_title">Been Here?</string>

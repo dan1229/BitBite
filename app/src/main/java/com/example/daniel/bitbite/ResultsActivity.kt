@@ -93,17 +93,16 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
                 val fragment = ResultsCard.newInstance(places[i], user)
                 fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
 
-                //uiThread {
+                uiThread {
                     if(places[i].photoRef != "DEFAULT") // Lookup image
                         places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
                     else
                         fragment.results_image.setImageDrawable(ContextCompat.getDrawable( // Set default image
                                 this@ResultsActivity, R.drawable.default_place_image))
-                //}
+                }
             }
         }
         stopLoading(loading_results)
-
         updateButton()
     }
 

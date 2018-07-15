@@ -32,6 +32,13 @@
             android:orientation="vertical"
             android:layout_margin="@dimen/big_card_main_layout_margin"
             android:layout_gravity="start">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_large"
+                android:layout_gravity="center"
+                android:text="@string/button_moreinfo"/>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_website"
                 android:layout_width="match_parent"
@@ -209,6 +216,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/big_card_main_layout_margin"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_large"
+                android:layout_gravity="center"
+                android:text="@string/moreinfo_reviews_card_title"/>
             <TextView
                 android:id="@+id/moreinfocard_reviews_text"
                 android:transitionName="review_text"

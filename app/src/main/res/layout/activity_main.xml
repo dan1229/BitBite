@@ -26,7 +26,8 @@
                 android:layout_height="wrap_content"
                 android:elevation="@dimen/toolbar_elevation"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="@color/white">
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
