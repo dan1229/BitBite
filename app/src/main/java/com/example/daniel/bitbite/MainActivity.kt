@@ -32,6 +32,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.loading_screen.*
 import org.jetbrains.anko.*
+import java.lang.Thread.sleep
 import java.net.URL
 import kotlin.RuntimeException
 import kotlin.collections.ArrayList
@@ -123,6 +124,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
         // Set on click listener for I'm feeling lucky button
         feelingLuckyButton.setOnClickListener {
+            val time : Long = 1000
+            rotateFast(time, feelingLuckyButton)
             startLoading(loading_main)
 
             if(placesList.isEmpty() || changed) {
@@ -218,7 +221,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     fun feelingLucky() {
         if(valid) {
             val intent = Intent(this@MainActivity, LocationActivity::class.java)
-            intent.putExtra("place", placesList[0])
+            intent.putExtra("PLACE", placesList[0])
+            intent.putExtra("USER", user)
             startActivity(intent)
         }
         stopLoading(loading_main)

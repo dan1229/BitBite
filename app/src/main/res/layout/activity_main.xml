@@ -132,52 +132,48 @@
                 app:layout_constraintRight_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/priceLayout"/>
 
+            <ImageView
+                android:id="@+id/feelingLuckyButton"
+                android:layout_width="@dimen/feeling_lucky_size"
+                android:layout_height="@dimen/feeling_lucky_size"
+                android:translationZ="8dp"
+                android:scaleType="fitEnd"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/white_donut"
+                app:layout_constraintTop_toBottomOf="@id/priceBar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
             <LinearLayout
                 android:id="@+id/submitButton"
                 style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_margin="12dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:gravity="center"
-                android:paddingStart="18dp"
-                app:layout_constraintBottom_toTopOf="@id/feelingLuckyButton"
+                android:gravity="start"
+                app:layout_constraintTop_toBottomOf="@id/priceBar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priceLayout"  >
-                <TextView
-                    android:id="@+id/mainSearch"
-                    android:transitionName="main_logo"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_x_large"
-                    android:text="@string/submit_button" />
+                app:layout_constraintRight_toRightOf="parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
+                    android:scaleType="fitStart"
                     android:src="@drawable/search_icon" />
+                <TextView
+                    android:id="@+id/mainSearch"
+                    android:transitionName="main_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_x_large"
+                    android:text="@string/submit_button" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/feelingLuckyButton"
-                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_marginBottom="6dp"
-                android:text="@string/feeling_lucky_button"
-                android:textSize="@dimen/text_small"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/submitButton" />
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 

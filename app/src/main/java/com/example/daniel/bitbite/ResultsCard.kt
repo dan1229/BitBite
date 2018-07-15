@@ -35,8 +35,8 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         super.onCreate(savedInstanceState)
 //        this.gDetector = GestureDetectorCompat(activity, this)
 
-        place = arguments.getParcelable("place")
-        user = arguments.getParcelable("user")
+        place = arguments.getParcelable("PLACE")
+        user = arguments.getParcelable("USER")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -75,17 +75,6 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragInteraction(uri: Uri)  {
@@ -94,17 +83,10 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param place - Place object for fragment
-         * @return A new instance of fragment ResultsCard.
-         */
         fun newInstance(place : Place, user : MainActivity.User) : ResultsCard {
             val args = Bundle()
-            args.putParcelable("place", place)
-            args.putParcelable("user", user)
+            args.putParcelable("PLACE", place)
+            args.putParcelable("USER", user)
             val fragment = ResultsCard()
             fragment.arguments = args
             return fragment
@@ -160,8 +142,8 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
     fun goToLocation() {
         // Create Intent
         val intent = Intent(activity, LocationActivity::class.java)
-        intent.putExtra("place", place)
-        intent.putExtra("user", user)
+        intent.putExtra("PLACE", place)
+        intent.putExtra("USER", user)
 
         // Check Android version for animation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

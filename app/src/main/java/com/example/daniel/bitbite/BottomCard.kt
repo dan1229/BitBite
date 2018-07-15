@@ -43,8 +43,8 @@ class BottomCard : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        place = arguments!!.getParcelable("place")
-        user = arguments!!.getParcelable("user")
+        place = arguments!!.getParcelable("PLACE")
+        user = arguments!!.getParcelable("USER")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -119,8 +119,8 @@ class BottomCard : Fragment() {
     companion object {
         fun newInstance(place : Place, user : MainActivity.User): BottomCard {
             val args = Bundle()
-            args.putParcelable("place", place)
-            args.putParcelable("user", user)
+            args.putParcelable("PLACE", place)
+            args.putParcelable("USER", user)
             val fragment = BottomCard()
             fragment.arguments = args
             return fragment

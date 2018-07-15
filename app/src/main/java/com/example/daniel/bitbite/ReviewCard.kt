@@ -14,14 +14,14 @@ import org.jetbrains.anko.act
 
 
 class ReviewCard : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private lateinit var review : Reviews
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        review = arguments!!.getParcelable("review")
+        review = arguments!!.getParcelable("REVIEW")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +60,7 @@ class ReviewCard : Fragment() {
     companion object {
         fun newInstance(review : Reviews) : ReviewCard {
             val args = Bundle()
-            args.putParcelable("review", review)
+            args.putParcelable("REVIEW", review)
             val fragment = ReviewCard()
             fragment.arguments = args
             return fragment

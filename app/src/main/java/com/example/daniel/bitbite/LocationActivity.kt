@@ -23,8 +23,8 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
         setContentView(R.layout.activity_location)
 
         // Get intent extras
-        place = intent.getParcelableExtra("place")
-        user = intent.getParcelableExtra("user")
+        place = intent.getParcelableExtra("PLACE")
+        user = intent.getParcelableExtra("USER")
 
         // Update toolbar title
         toolbar_location.title = ellipsizeText(place.name, 30)

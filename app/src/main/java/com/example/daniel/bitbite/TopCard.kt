@@ -14,16 +14,6 @@ import kotlinx.android.synthetic.main.fragment_top_card.*
 import kotlinx.android.synthetic.main.fragment_top_card.view.*
 import org.jetbrains.anko.act
 
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [TopCard.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [TopCard.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class TopCard : Fragment() {
 
     /** Variables **/
@@ -35,7 +25,7 @@ class TopCard : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        place = arguments.getParcelable("place")
+        place = arguments.getParcelable("PLACE")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -74,7 +64,7 @@ class TopCard : Fragment() {
     companion object {
         fun newInstance(place : Place) : TopCard {
             val args = Bundle()
-            args.putParcelable("place", place)
+            args.putParcelable("PLACE", place)
             val fragment = TopCard()
             fragment.arguments = args
             return fragment

@@ -3,6 +3,7 @@ package com.example.daniel.bitbite
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -47,11 +49,22 @@ fun stopLoading(view : View) {
     }
 }
 
+// rotate()
+// Rotates passed View
 fun rotate(view : View) {
     val rotate = ObjectAnimator.ofFloat(view, View.ROTATION, -360f, 0f)
     rotate.duration = 2000
     rotate.interpolator = LinearInterpolator()
-    rotate.repeatCount = 100
+    rotate.repeatCount = 15
+    rotate.start()
+}
+
+// rotateButton()
+// Rotates passed View fast
+fun rotateFast(time : Long, view : View) {
+    val rotate = ObjectAnimator.ofFloat(view, View.ROTATION, -1440f, 0f)
+    rotate.duration = time
+    rotate.interpolator = DecelerateInterpolator()
     rotate.start()
 }
 
