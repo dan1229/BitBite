@@ -1,15 +1,10 @@
 package com.example.daniel.bitbite
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.util.Log
-import android.view.View
 import com.beust.klaxon.Klaxon
-import kotlinx.android.synthetic.main.activity_main.*
 import java.net.URL
-import java.util.ArrayList
-import org.jetbrains.anko.act
-import org.jetbrains.anko.support.v4.act
+import java.util.*
 
 /**====================================================================================================**/
 /** Place Search API **/
@@ -133,10 +128,8 @@ fun placeSearchUrlBuilder(context : Context, user : MainActivity.User) : String 
         url += "&radius=$RADIUS"
     }
 
-    if(user.style != "Random"){ // Add style(s)
+    if(user.style != "Random" || user.style != ""){ // Add style(s)
         url += "&keyword=${user.style}"
-    } else {
-        //url += "&keyword=food"
     }
 
     url += "&key=${context.getString(R.string.google_api_key)}"

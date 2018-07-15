@@ -1,12 +1,18 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:innerRadius="0dp"
-    android:shape="ring"
-    android:thicknessRatio="2.5"
-    android:useLevel="false">
+    android:shape="rectangle"   >
 
     <solid
-        android:color="@color/colorAccent" >
+        android:color="@color/card_light" >
     </solid>
+
+    <stroke
+        android:color="@color/text_secondary"
+        android:width="8px" >
+    </stroke>
+
+    <corners
+        android:radius="24dp"   >
+    </corners>
 
 </shape>

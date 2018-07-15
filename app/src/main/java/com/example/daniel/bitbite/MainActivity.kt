@@ -1,16 +1,13 @@
 package com.example.daniel.bitbite
 
 import android.Manifest
-import android.app.ActivityOptions
-import android.content.Context
+import android.app.Fragment
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
@@ -24,26 +21,20 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import com.beust.klaxon.*
+import com.beust.klaxon.Klaxon
 import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.loading_screen.*
 import org.jetbrains.anko.*
-import java.lang.Thread.sleep
 import java.net.URL
-import kotlin.RuntimeException
-import kotlin.collections.ArrayList
 
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
-class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
-
-    /** Spinner Options **/
-    val styles = arrayOf("Random", "Hispanic", "Italian", "Asian", "Health", "Breakfast", "Fast Food")
+class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
+    StyleTag.OnFragmentInteractionListener {
 
     /** Variables **/
     private lateinit var fusedLocationClient : FusedLocationProviderClient
@@ -55,6 +46,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     var changed = false
     var valid = false
     var style = "Random"
+    var styleTags = 0
     var price = 5
     var lat = 0.0
     var lng = 0.0
@@ -73,7 +65,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         setTheme(AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        priceBar!!.setOnSeekBarChangeListener(this)
+        main_seekbar_price!!.setOnSeekBarChangeListener(this)
         mDrawerLayout = findViewById(R.id.drawer_layout)
         changed = true
 
@@ -92,7 +84,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         setDefaultPrice()
 
         // Setup spinner
-        setupSpinner()
+        setupAutocomplete()
 
         // Set Nav Drawer listener
         nav_view.setNavigationItemSelectedListener { menuItem ->
@@ -154,22 +146,62 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         }
     }
 
-    // setupSpinner()
-    // Setup spinners and listeners
+    // setupAutocomplete()
+    // Setup autocomplete text view
     private
-    fun setupSpinner() {
-        // Adapter for styleSpinner
-        styleSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, styles)
+    fun setupAutocomplete() {
+        val textView = findViewById<AutoCompleteTextView>(R.id.main_autocomplete_style)
+        val styles = resources.getStringArray(R.array.style_array)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, styles)
+        textView.setAdapter(adapter)
 
-        // Item selected listener for styleSpinner
-        styleSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        // On item selected listener
+        main_autocomplete_style.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                style = styles[p2].replace(" ", "")
-                styleDisplay.text = styles[p2]
-                changed = true
+                Log.d("TOUCH", "selected: ${adapter.getItem(p2)}")
+                autocompleteItemSelected(adapter.getItem(p2).toString().replace(" ", ""))
+                textView.text.clear()
             }
         }
+
+        // On enter key listener
+        main_autocomplete_style.setOnKeyListener { view, i, keyEvent ->
+            if((i == KeyEvent.KEYCODE_ENTER) && (!textView.text.isBlank()) ) { // If input text isn't blank and ENTER is hit, get first item
+                autocompleteItemSelected(adapter.getItem(0).toString())
+                textView.text.clear()
+            }
+            true
+        }
+    }
+
+    // autocompleteItemSelected()
+    // Takes chosen item from autocomplete and either displays or denies it
+    private
+    fun autocompleteItemSelected(s : String) {
+        Log.d("TAGS", "$styleTags")
+        if(styleTags < 3) {
+            // Add to style string
+            if(style == "Random"){
+                style = "$s"
+            } else {
+                style += "|$s"
+            }
+
+            ++styleTags
+            changed = true
+            addStyleTagFragment(s)
+        } else {
+            toast("You can only select up to 3 styles.")
+        }
+    }
+
+    // addStyleTag()
+    // Adds style tag fragment if successfully selected from list
+    private
+    fun addStyleTagFragment(s : String) {
+        val fragment = StyleTag.newInstance(s)
+        fragmentManager.beginTransaction().add(R.id.main_container_tags, fragment).commit()
     }
 
     // SeekBar Listeners
@@ -180,7 +212,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {
-        priceBar.progress = 4
+        main_seekbar_price.progress = 4
         price = 5
     }
 
@@ -194,7 +226,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     private
     fun setDefaultPrice() {
         val defaultPrice = getPriceSetting(this)
-        priceBar.progress = defaultPrice
+        main_seekbar_price.progress = defaultPrice
         price = defaultPrice
     }
 
@@ -510,5 +542,31 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
+
+
+    /**====================================================================================================**/
+    /** Fragment Methods **/
+
+    // onFragmentInteraction()
+    // Updates style string and removes fragments when clicked
+    override fun onFragmentInteraction(frag : Fragment, string : String) {
+
+        // Update style string
+        val index = style.indexOf(string)
+        style = style.removeRange(index, (index + string.length))
+        changed = true
+
+        if ((index > 0) && (style[index - 1] == '|')) {
+            style = style.removeRange(index - 1, index)
+        }
+        else if ((index < style.length) && (style[index] == '|')) {
+            style = style.removeRange(index , index + 1)
+        }
+
+        // Close fragment
+        fragmentManager.beginTransaction().remove(frag).commit()
+        --styleTags
+    }
+
 
 }  /** END CLASS MainActivity.kt **/

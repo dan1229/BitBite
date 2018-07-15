@@ -1,10 +1,8 @@
 package com.example.daniel.bitbite
 
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.widget.TextView
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_location.*
 
 class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListener,
@@ -35,7 +33,7 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
 
         // Add bottom card fragment
         val bfragment = BottomCard.newInstance(place, user)
-        fragmentManager.beginTransaction().add(R.id.location_bottomcard_container, bfragment).commit()
+        fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
     }
 
     /**====================================================================================================**/

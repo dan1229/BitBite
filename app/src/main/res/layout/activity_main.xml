@@ -56,56 +56,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/styleSpinner"
+                android:gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/main_layout_autocomplete"
                 app:layout_constraintTop_toBottomOf="@+id/imageView">
                 <TextView
                     android:id="@+id/style_spinner_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/style_header"
-                    android:textSize="@dimen/text_large"
-                    app:layout_constraintBottom_toTopOf="@id/priceLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
-                <TextView
-                    android:id="@+id/styleDisplay"
+                    android:textSize="@dimen/text_large" />
+                <HorizontalScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/text_large"
-                    android:textColor="@color/text_secondary"
-                    android:text="@string/style_display_text"/>
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/main_container_tags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/styleSpinner"
+            <LinearLayout
+                android:id="@+id/main_layout_autocomplete"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/spinner_height"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                app:layout_constraintBottom_toTopOf="@id/priceLayout"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+                android:padding="12dp"
+                android:layout_margin="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="start"
+                android:elevation="@dimen/card_elevation"
+                app:layout_constraintBottom_toTopOf="@id/main_layout_price"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/styleLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/styleLayout">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/search_icon_blue" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/main_autocomplete_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:singleLine="true"
+                    android:hint="@string/autocomplete_hint"/>
+
+            </LinearLayout>
+
 
             <LinearLayout
-                android:id="@+id/priceLayout"
+                android:id="@+id/main_layout_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                app:layout_constraintBottom_toTopOf="@id/priceBar"
+                app:layout_constraintBottom_toTopOf="@id/main_seekbar_price"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/styleSpinner">
+                app:layout_constraintTop_toBottomOf="@+id/main_layout_autocomplete">
                 <TextView
                     android:id="@+id/price_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/price_header"
-                    android:textSize="@dimen/text_large"
-                    app:layout_constraintBottom_toTopOf="@id/priceLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/styleSpinner" />
+                    android:textSize="@dimen/text_large" />
                 <TextView
                     android:id="@+id/priceDisplay"
                     android:layout_width="wrap_content"
@@ -117,7 +135,7 @@
             </LinearLayout>
 
             <SeekBar
-                android:id="@+id/priceBar"
+                android:id="@+id/main_seekbar_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -130,7 +148,7 @@
                 app:layout_constraintBottom_toTopOf="@id/submitButton"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/priceLayout"/>
+                app:layout_constraintTop_toBottomOf="@+id/main_layout_price"/>
 
             <ImageView
                 android:id="@+id/feelingLuckyButton"
@@ -141,7 +159,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:src="@drawable/white_donut"
-                app:layout_constraintTop_toBottomOf="@id/priceBar"
+                app:layout_constraintTop_toBottomOf="@id/main_seekbar_price"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
@@ -151,11 +169,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:layout_margin="12dp"
+                android:layout_margin="16dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="start"
-                app:layout_constraintTop_toBottomOf="@id/priceBar"
+                android:elevation="@dimen/card_elevation"
+                app:layout_constraintTop_toBottomOf="@id/main_seekbar_price"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">

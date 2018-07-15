@@ -28,10 +28,6 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="fill_horizontal"
                 android:src="@drawable/default_place_image" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:theme="@style/GreyLine"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,11 +1,9 @@
 package com.example.daniel.bitbite
 
 import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.*
-import android.util.Log
-import kotlinx.android.synthetic.main.activity_main.*
+import android.preference.PreferenceFragment
+import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -25,7 +23,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
         if(p1 == "default_price"){
-            priceBar.progress = p0!!.getInt(p1, 5)
+            //main_seekbar_price.progress = p0!!.getInt(p1, 5)
         }
     }
 
