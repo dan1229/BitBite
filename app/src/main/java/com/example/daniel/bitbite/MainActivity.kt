@@ -111,6 +111,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
+            startLoading(loading_main)
+
             if(placesList.isEmpty() || changed) {
                 placesAsyncCall(1)
             }
@@ -121,6 +123,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
         // Set on click listener for I'm feeling lucky button
         feelingLuckyButton.setOnClickListener {
+            startLoading(loading_main)
+
             if(placesList.isEmpty() || changed) {
                 placesAsyncCall(2)
             }
@@ -204,8 +208,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             intent.putExtra("TOKEN", next_page_token)
             intent.putExtra("USER", user)
             startActivity(intent)
-            loadingScreen(loading_main)
         }
+        stopLoading(loading_main)
     }
 
     // feelingLucky()
@@ -216,8 +220,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             val intent = Intent(this@MainActivity, LocationActivity::class.java)
             intent.putExtra("place", placesList[0])
             startActivity(intent)
-            loadingScreen(loading_main)
         }
+        stopLoading(loading_main)
     }
 
 
@@ -251,13 +255,13 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     fun placesAsyncCall(n : Int) {
         // Update user variable
         user = User(lat, lng, style, price)
-        loadingScreen(loading_main)
 
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
                 placesList.clear()
                 try {
-                    val (x, y) = callPlacesApi(this@MainActivity, user)
+                    val (x, y) = callPlacesApi(
+                            this@MainActivity, user)
                     placesList = x
                     next_page_token = y
                     valid = true
@@ -292,6 +296,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Gets user input and calls calls Async thread for call
     private
     fun geocodeInput(locationEditText : EditText) {
+        startLoading(loading_main)
+
+        // Get text, if valid input pass to
         val text = locationEditText.text
         var isValid = true
         if (text.isBlank()) { // Blank submission - try again
@@ -299,15 +306,15 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
             isValid = false
             geocodeGetLocationDialog()
         }
+
         if(isValid) { // Valid submission - call API in another thread
-            loadingScreen(loading_main)
             doAsync {
                 val response = parseGeocodeJson(text.toString())
                 uiThread {
-                    if(response != "INVALID"){
+                    if(response != "INVALID"){ // Confirm locatoin if valid response
                         confirmLocationDialog(response)
                     }
-                    else{
+                    else{ // Prompt for location again if invalid
                         toast("Invalid input. Please try again.")
                         geocodeGetLocationDialog()
                     }
@@ -389,7 +396,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
                 } else { // PERMISSION DENIED - prompt user for location
                     geocodeGetLocationDialog()
                 }
-                return
             }
         }
     }
@@ -397,18 +403,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
 
     /**====================================================================================================**/
     /** Option Menu/Settings **/
-
-    // updateDefaultLocation()
-    // Updates default location (called in confirmationDialog)
-    private
-    fun updateDefaultLocation(input : String) {
-        Log.d("LOCATION", "updating default with $input")
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val editor = prefs.edit()
-        editor.putString(DEFAULTLOCATION, input)
-        editor.apply()
-        Log.d("LOCATION", "default location is " + getString(R.string.default_location))
-    }
 
     // onOptionsItemSelected()
     // "On click listener" for options menu
@@ -443,6 +437,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Dialog to get user location
     private
     fun geocodeGetLocationDialog() {
+        stopLoading(loading_main)
         val view = layoutInflater.inflate(R.layout.dialog_location, null)
         val locationEditText = view.findViewById(R.id.locationEditText) as EditText
 
@@ -476,11 +471,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
     // Dialog to confirm user location
     private
     fun confirmLocationDialog(response : String) {
-        loadingScreen(loading_main)
-
+        stopLoading(loading_main)
         val view = layoutInflater.inflate(R.layout.dialog_confirmation, null)
         val textView = view.findViewById(R.id.confirmationTextView) as TextView
-        var checkbox = false
         textView.text = response
 
         // Build dialog box
@@ -494,21 +487,12 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener {
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
             user = User(lat, lng)
-            if(checkbox) { // If default location checkbox is checked, update settings
-                updateDefaultLocation(response)
-            }
         }
 
         // No button listener
         builder.setNegativeButton("No") { dialog, _ ->
             dialog.dismiss()
             geocodeGetLocationDialog()
-        }
-
-        // Check box listener
-        val checkboxView = view.findViewById(R.id.confirmationCheckbox) as CheckBox
-        checkboxView.setOnCheckedChangeListener { _, isChecked ->
-            checkbox = isChecked
         }
 
         builder.show()

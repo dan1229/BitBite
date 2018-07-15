@@ -3,7 +3,9 @@ package com.example.daniel.bitbite
 import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
+import android.view.View
 import com.beust.klaxon.Klaxon
+import kotlinx.android.synthetic.main.activity_main.*
 import java.net.URL
 import java.util.ArrayList
 import org.jetbrains.anko.act
@@ -41,7 +43,7 @@ class Times(val open_now:Boolean = true)
 
 // callPlacesApi()
 // Calls proper API call based on search
-fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String = "" )
+fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String = "")
         : Pair<ArrayList<Place>, String>{
 
     return when(token){

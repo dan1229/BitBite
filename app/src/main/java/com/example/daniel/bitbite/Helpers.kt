@@ -26,16 +26,22 @@ import java.net.URL
 /** Helper Methods **/
 
 /**====================================================================================================**/
-/** Animations **/
+/** Loading Screen **/
 
-// loadingScreen()
-// Updates and animates loading screen
-fun loadingScreen(view : View) {
+// startLoading()
+// Starts loading screen
+fun startLoading(view : View) {
     if (view.visibility == View.GONE) { // Loading screen is gone, start loading
         view.rootView.isClickable = false
         view.visibility = View.VISIBLE
         rotate(view.findViewById(R.id.loading_image))
-    } else { // Loading screen is visible, hide
+    }
+}
+
+// stopLoading()
+// Stops loading screen
+fun stopLoading(view : View) {
+    if (view.visibility != View.GONE) { // Loading screen is visible, hide
         view.rootView.isClickable = true
         view.visibility = View.GONE
     }

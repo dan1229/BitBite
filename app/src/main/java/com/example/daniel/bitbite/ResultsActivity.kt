@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_results.*
 import org.jetbrains.anko.toast
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_results.*
 import kotlinx.android.synthetic.main.content_results.view.*
 import kotlinx.android.synthetic.main.fragment_results_card.*
@@ -40,7 +41,6 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
     var places = ArrayList<Place>()
     var listSize = 0
     var token = ""
-    var initial = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,6 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         setSupportActionBar(toolbar_results)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_results.title = ""
-
 
         // Check if already instantiated
         if (savedInstanceState != null) {
@@ -65,8 +64,9 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
 
         // Set Show More button listener
         show_more_button.setOnClickListener {
-            Log.d("RESULTS", "starting loading")
-            loadingScreen(loading_results)
+            Log.d("LOAD", "start")
+            startLoading(loading_results)
+
             doAsync {
                 val (x, y) = callPlacesApi(this@ResultsActivity, token = token)
                 places = x
@@ -93,23 +93,16 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
                 val fragment = ResultsCard.newInstance(places[i], user)
                 fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
 
-                uiThread {
+                //uiThread {
                     if(places[i].photoRef != "DEFAULT") // Lookup image
                         places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
                     else
                         fragment.results_image.setImageDrawable(ContextCompat.getDrawable( // Set default image
                                 this@ResultsActivity, R.drawable.default_place_image))
-                }
+                //}
             }
         }
-
-        if(initial == 1){
-            Log.d("RESULTS", "stopping loading")
-            loadingScreen(loading_results)
-            loading_results.bringToFront()
-        } else {
-            initial = 1
-        }
+        stopLoading(loading_results)
 
         updateButton()
     }
@@ -123,7 +116,6 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         } else { // Token exists
             show_more_button.visibility = View.VISIBLE
         }
-
     }
 
 } /** END CLASS ResultsActivity.kt **/
