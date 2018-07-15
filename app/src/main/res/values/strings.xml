@@ -64,7 +64,8 @@
     <string name="default_phone_title">Phone: </string>
     <string name="default_phone">Not Found</string>
     <string name="default_address">Not Found</string>
-    <string name="moreinfo_reviews_card_title">Reviews</string>
+    <string name="moreinfo_reviews_card_title"><u>Reviews</u></string>
+    <string name="moreinfo_moreinfo_card_title"><u>More Info</u></string>
 
     <!-- ReviewActivity -->
     <string name="make_review_title">Been Here?</string>

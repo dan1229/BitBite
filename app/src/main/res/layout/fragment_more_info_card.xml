@@ -38,8 +38,9 @@
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/text_large"
                 android:layout_gravity="center"
-                android:layout_margin="2dp"
-                android:text="@string/button_moreinfo"/>
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/moreinfo_moreinfo_card_title"/>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_website"
                 android:layout_width="match_parent"
@@ -223,7 +224,8 @@
                 android:textColor="@color/text_primary"
                 android:textSize="@dimen/text_large"
                 android:layout_gravity="center"
-                android:layout_margin="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:text="@string/moreinfo_reviews_card_title"/>
             <TextView
                 android:id="@+id/moreinfocard_reviews_text"
