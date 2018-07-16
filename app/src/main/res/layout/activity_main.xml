@@ -85,17 +85,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/icon_margin"
-                    android:padding="4dp"
+                    android:paddingLeft="@dimen/icon_margin"
+                    android:paddingRight="@dimen/icon_margin"
                     android:clickable="true"
                     android:focusable="true"
                     android:elevation="@dimen/card_elevation"
                     app:layout_constraintBottom_toTopOf="@id/main_layout_price"
                     app:layout_constraintTop_toBottomOf="@+id/main_layout_style_header">
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:scaleType="fitStart"
-                        android:src="@drawable/search_icon_secondary" />
+
                     <AutoCompleteTextView
                         android:id="@+id/main_autocomplete_style"
                         android:layout_width="match_parent"

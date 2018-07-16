@@ -80,6 +80,7 @@
     <string name="location_edit_text">Address/Zip Code</string>
     <string name="confirmation_text">Is the location below correct?</string>
     <string name="confirmation_checkbox">Use this as my default location?</string>
+    <string name="default_technical_errors">Technical difficulties. Please try again.</string>
 
 
     <!-- Strings related to Settings -->

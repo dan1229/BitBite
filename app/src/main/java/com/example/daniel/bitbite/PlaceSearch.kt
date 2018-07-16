@@ -41,7 +41,7 @@ class Times(val open_now:Boolean = true)
 fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String = "")
         : Pair<ArrayList<Place>, String>{
 
-    return when(token){
+    return when (token) {
         "" -> placesStreamJson(placeSearchUrlBuilder(context, user!!))
         else -> placesStreamJson(nextPageUrlBuilder(context, token))
     }

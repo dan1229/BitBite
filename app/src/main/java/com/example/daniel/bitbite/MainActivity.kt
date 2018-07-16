@@ -296,15 +296,15 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
             if(changed) { // If selections have changed, recall API and remake list
                 placesList.clear()
                 try {
-                    val (x, y) = callPlacesApi(
-                            this@MainActivity, user)
+                    val (x, y) = callPlacesApi(this@MainActivity, user)
                     placesList = x
                     next_page_token = y
                     valid = true
-                } catch(e : RuntimeException){
+                } catch(e : Exception){
                     valid = false
                     uiThread {
-                        errorAlert("Technical Error. Please try again.")
+                        stopLoading(loading_main)
+                        errorAlert()
                     }
                 }
                 changed = false
@@ -536,8 +536,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
     // errorAlert()
     // Generic error dialog
-    private
-    fun errorAlert(input : String) {
+    fun errorAlert(input: String = getString(R.string.default_technical_errors)) {
         alert(input, "Uh Oh!") {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
