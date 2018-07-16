@@ -7,7 +7,8 @@
     <dimen name="gray_bar_margin">8dp</dimen>
 
     <dimen name="resultscard_image_height">156dp</dimen>
-    <dimen name="feeling_lucky_size">112dp</dimen>
+    <dimen name="feeling_lucky_size">64dp</dimen>
+    <dimen name="feeling_lucky_margin">-32dp</dimen>
 
     <dimen name="topcard_image_height">196dp</dimen>
     <dimen name="topcard_review_width">124dp</dimen>

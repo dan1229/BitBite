@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         // Set on click listener for I'm feeling lucky button
         feelingLuckyButton.setOnClickListener {
             val time : Long = 1000
-            rotateFast(time, feelingLuckyButton)
+            rotateFast(time, main_image_luckybutton)
             startLoading(loading_main)
 
             if(placesList.isEmpty() || changed) {

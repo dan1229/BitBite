@@ -168,11 +168,17 @@
         <item>Asian</item>
         <item>Health</item>
         <item>Italian</item>
-        <item>Hispanic</item>
+        <item>Latin</item>
+        <item>Mexican</item>
+        <item>Sushi</item>
+        <item>Brunch</item>
+        <item>Greek</item>
+        <item>Dessert</item>
+        <item>Cafe</item>
+        <item>Coffee</item>
+        <item>Bar</item>
+        <item>Barbeque</item>
         <item>Random</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
