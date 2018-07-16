@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.widget.*
@@ -223,7 +224,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun setDefaultPrice() {
         val defaultPrice = getPriceSetting(this)
-        main_seekbar_price.progress = defaultPrice
+        main_seekbar_price.progress = defaultPrice - 1
         price = defaultPrice
     }
 
@@ -562,6 +563,24 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         // Close fragment
         fragmentManager.beginTransaction().remove(frag).commit()
         --styleTags
+    }
+
+    /**====================================================================================================**/
+    /** Life Cycle Methods **/
+
+    // onPause()
+    // Handles when MainActivity.kt is paused
+    override fun onPause() {
+        super.onPause()
+        stopLoading(loading_main)
+    }
+
+    // onResume()
+    // Handles when MainActivity.kt resumes
+    override fun onResume() {
+        super.onResume()
+        Log.d("BITBITE", "onResume()")
+        setDefaultPrice() // Update default price
     }
 
 

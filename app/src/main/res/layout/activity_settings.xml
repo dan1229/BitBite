@@ -25,13 +25,10 @@
             app:titleTextColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/settingsContainer"
+    <FrameLayout
+        android:id="@+id/settings_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="?attr/actionBarSize"
-        android:orientation="vertical">
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/appbar_settings"/>
 
 </android.support.constraint.ConstraintLayout>
