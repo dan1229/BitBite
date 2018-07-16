@@ -68,7 +68,7 @@
                         android:textSize="@dimen/text_large" />
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content" >
                         <LinearLayout
                             android:id="@+id/main_container_tags"
                             android:layout_width="wrap_content"
@@ -85,6 +85,7 @@
                     android:layout_marginTop="@dimen/icon_margin"
                     android:paddingLeft="@dimen/icon_margin"
                     android:paddingRight="@dimen/icon_margin"
+                    android:layout_marginBottom="@dimen/card_elevation"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="start|center_vertical"
@@ -141,6 +142,7 @@
                 style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/DEFAULT_MARGIN"
                 android:padding="12dp"
                 android:clickable="true"
                 android:focusable="true"

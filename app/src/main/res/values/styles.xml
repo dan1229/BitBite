@@ -64,7 +64,6 @@
     </style>
 
     <style name="MainLayoutStyle">
-        <item name="android:layout_marginBottom">@dimen/DEFAULT_MARGIN</item>
         <item name="android:layout_marginLeft">@dimen/DEFAULT_MARGIN</item>
         <item name="android:layout_marginRight">@dimen/DEFAULT_MARGIN</item>
         <item name="android:layout_marginTop">?android:attr/actionBarSize</item>

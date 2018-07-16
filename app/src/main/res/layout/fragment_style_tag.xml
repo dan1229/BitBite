@@ -3,13 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginStart="4dp"
     tools:context=".StyleTag">
 
     <LinearLayout
         android:id="@+id/styletag_tag"
         style="@style/AppTheme.CircleButton"
         android:layout_width="wrap_content"
+        android:elevation="@dimen/card_elevation"
         android:layout_height="36dp" >
 
         <ImageView
@@ -27,8 +29,7 @@
             android:id="@+id/styletag_text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:elevation="@dimen/card_elevation"
+            android:layout_margin="6dp"
             android:textColor="@color/text_secondary"
             android:textSize="@dimen/text_normal"
             android:text="@string/style_display_text" />

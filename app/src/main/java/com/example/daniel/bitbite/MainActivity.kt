@@ -164,8 +164,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         // On enter key listener
         main_autocomplete_style.setOnKeyListener { view, i, keyEvent ->
             if((i == KeyEvent.KEYCODE_ENTER) && (!textView.text.isBlank()) ) { // If input text isn't blank and ENTER is hit, get first item
-                autocompleteItemSelected(adapter.getItem(0).toString())
-                textView.text.clear()
+                if(!adapter.isEmpty) {
+                    autocompleteItemSelected(adapter.getItem(0).toString())
+                    textView.text.clear()
+                }
             }
             true
         }
