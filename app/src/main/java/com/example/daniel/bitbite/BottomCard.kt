@@ -47,6 +47,9 @@ class BottomCard : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_bottom_card, container, false)
 
+        // Check if in favorites
+        favorites = favoritesContains(act, place.placeID)
+
         // Update card
         updateCard(view)
 
@@ -65,16 +68,15 @@ class BottomCard : Fragment() {
         // Set on click listener for Favorites -> Add to favorites
         view.bottomcard_layout_favorite.setOnClickListener {
             if(!favorites) { // Not in favorites - add
-                // add to favorites
-                // favorites = updateFavoritesList(place)
                 toast("Added ${place.name} to your Favorites!")
-                favorites = true
             } else { // In favorites - remove
-                // remove from favorites
                 toast("Removed ${place.name} from your Favorites!")
-                favorites = false
             }
+
+            // Update view and send info to LocationActivity
+            favorites = !favorites
             updateFavorites(view)
+            listener!!.onFragmentInteraction(favorites)
         }
 
         // Set on click listener for More Info Button -> makes views visible

@@ -60,10 +60,16 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     // Handles when MainActivity.kt is paused
     override fun onPause() {
         super.onPause()
+        val inList = favoritesContains(this, place.placeID)
+
         if (favorites) { // Selected to be in favorites
-            // check if in list, add if not
+            if(!inList) { // Item not in list -> add
+                addToFavorites(this, place)
+            }
         } else { // Selected to not be in favorites
-           // check if in list, remove if so
+            if(inList) { // Item in list -> remove
+                removeFromFavorites(this, place)
+            }
         }
     }
 

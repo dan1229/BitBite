@@ -105,12 +105,12 @@ class MoreInfoCard : Fragment() {
         view.moreinfocard_layout_favorites.setOnClickListener {
             if(!favorites) { // Not in favorites - add
                 toast("Added ${place.name} to your Favorites!")
-                favorites = true
             } else { // In favorites - remove
                 toast("Removed ${place.name} from your Favorites!")
-                favorites = false
             }
+
             // Update view and send info to LocationActivity
+            favorites = !favorites
             updateFavorites(view)
             listener!!.onFragmentInteraction(favorites)
         }

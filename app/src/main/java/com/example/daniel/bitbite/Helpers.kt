@@ -3,21 +3,18 @@ package com.example.daniel.bitbite
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.startActivity
-import android.util.Log
 import android.view.View
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.example.daniel.bitbite.R.id.loading_image
-import java.net.URL
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.jetbrains.anko.toast
+
 
 /**
  * Made by Daniel Nazarian
@@ -70,6 +67,81 @@ fun rotateFast(time : Long, view : View) {
 
 /**====================================================================================================**/
 /** Settings Methods **/
+
+// setFavorites()
+// Saves passed ArrayList as Favorites list
+fun setFavorites(context: Context, list: ArrayList<Place>) {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    val editor = prefs.edit()
+    val gson = Gson()
+    val json = gson.toJson(list)
+    editor.putString("FAVORITES", json)
+    editor.apply()
+}
+
+// getFavorites()
+// Returns saved Favorites list
+fun getFavorites(context: Context): ArrayList<Place>? {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+    val gson = Gson()
+    val json = prefs.getString("FAVORITES", null)
+    val type = object : TypeToken<ArrayList<Place>>(){}.getType()
+    return gson.fromJson(json, type)
+}
+
+// favoritesContains()
+// Checks if Favorites list contains a particular placeID
+fun favoritesContains(context: Context, id: String) : Boolean {
+    val list = getFavorites(context)
+    if(list != null) {
+        for(i in 0..(list.size - 1)) {
+            if(list[i].placeID == id) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+// favoritesRemove()
+// Removes place from list based on passed place's ID
+fun favoritesRemove(list: ArrayList<Place>, id: String) {
+    for(i in 0..(list.size - 1)) {
+        if(list[i].placeID == id) {
+            list.removeAt(i)
+        }
+    }
+}
+
+// addToFavorites()
+// Adds passed place to Favorites list
+fun addToFavorites(context: Context, place: Place) {
+    val list = getFavorites(context)
+    if (list != null) {
+        if (list.size >= 50) { // List too big
+            context.toast("Favorites list cannot have more than 50 places.")
+            return
+        } else {
+            list.add(place)
+            setFavorites(context, list)
+        }
+    } else{ // List is null -> make list
+        val newList = ArrayList<Place>()
+        newList.add(place)
+        setFavorites(context, newList)
+    }
+}
+
+// removeFromFavorites()
+// Removes passed place from Favorites list
+fun removeFromFavorites(context: Context, place: Place) {
+    val list = getFavorites(context)
+    if(list != null) {
+        if (list.size > 0) {
+            favoritesRemove(list, place.placeID)
+        }
+    }
+}
 
 // getPriceSetting()
 // Gets and returns price setting variable

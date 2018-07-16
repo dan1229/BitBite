@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar_fave"
@@ -31,34 +31,17 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
+
         <LinearLayout
+            android:id="@+id/favorites_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/MainLayoutStyle"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/layout_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:orientation="vertical"
-                tools:context=".ResultsActivity"
-                tools:showIn="@layout/activity_results" />
-
-            <Button
-                android:id="@+id/show_more_button"
-                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:padding="@dimen/button_padding"
-                android:textSize="@dimen/text_normal"
-                android:textAllCaps="false"
-                android:text="@string/button_show_more"/>
-        </LinearLayout>
+            android:layout_marginBottom="@dimen/DEFAULT_MARGIN"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="vertical"
+            tools:context=".ResultsActivity"
+            tools:showIn="@layout/activity_results" />
     </FrameLayout>
 
     <android.support.design.widget.NavigationView
