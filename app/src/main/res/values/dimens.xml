@@ -33,13 +33,11 @@
     <dimen name="button_text_padding">3dp</dimen>
     <dimen name="button_padding">4dp</dimen>
 
-    <dimen name="text_x_large"> 28sp</dimen>
-    <dimen name="text_large"> 22sp</dimen>
-    <dimen name="text_normal"> 16sp</dimen>
-    <dimen name="text_small"> 12sp</dimen>
+    <dimen name="text_x_large">28sp</dimen>
+    <dimen name="text_large">22sp</dimen>
+    <dimen name="text_normal">16sp</dimen>
+    <dimen name="text_small">12sp</dimen>
 
-    <dimen name="MARGIN_TOP_BOTTOM"> 6sp</dimen>
-    <dimen name="MARGIN_LEFT_RIGHT"> 8sp</dimen>
-
+    <dimen name="DEFAULT_MARGIN">8dp</dimen>
 
 </resources>

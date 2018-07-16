@@ -63,6 +63,13 @@
         <item name="android:background">@drawable/circle</item>
     </style>
 
+    <style name="MainLayoutStyle">
+        <item name="android:layout_marginBottom">@dimen/DEFAULT_MARGIN</item>
+        <item name="android:layout_marginLeft">@dimen/DEFAULT_MARGIN</item>
+        <item name="android:layout_marginRight">@dimen/DEFAULT_MARGIN</item>
+        <item name="android:layout_marginTop">?android:attr/actionBarSize</item>
+    </style>
+
     <style name="GreyLine">
         <item name="android:layout_marginBottom">@dimen/gray_bar_margin</item>
         <item name="android:layout_marginTop">@dimen/gray_bar_margin</item>
