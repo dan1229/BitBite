@@ -31,10 +31,9 @@
 
             <LinearLayout
                 android:id="@+id/bottomcard_layout_distance"
+                style="@style/IconLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -42,21 +41,20 @@
                     android:src="@drawable/distance_icon"/>
                 <TextView
                     android:id="@+id/bottomcard_text_distance"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/text_primary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_distance" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/bottomcard_layout_duration"
+                style="@style/IconLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -64,21 +62,20 @@
                     android:src="@drawable/car_icon"/>
                 <TextView
                     android:id="@+id/bottomcard_text_duration"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/text_primary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_duration" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/bottomcard_layout_clock"
+                style="@style/IconLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -86,20 +83,19 @@
                     android:src="@drawable/clock_icon"/>
                 <TextView
                     android:id="@+id/bottomcard_text_clock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_clock" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/bottomcard_layout_favorite"
+                style="@style/IconLayout.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin">
+                android:layout_height="match_parent" >
                 <ImageView
                     android:id="@+id/bottomcard_icon_favorite"
                     android:layout_width="wrap_content"
@@ -108,12 +104,12 @@
                     android:src="@drawable/favorites_icon"/>
                 <TextView
                     android:id="@+id/bottomcard_text_favorite"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/text_primary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_favorites" />
             </LinearLayout>
 
@@ -130,7 +126,6 @@
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/big_card_margin"
         android:id="@+id/bottomcard_card_buttons"
         card_view:cardCornerRadius="@dimen/big_card_radius"
         card_view:cardElevation="@dimen/big_card_elevation"

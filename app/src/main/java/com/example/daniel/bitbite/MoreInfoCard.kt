@@ -12,14 +12,10 @@ import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_more_info_card.*
 import kotlinx.android.synthetic.main.fragment_more_info_card.view.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
@@ -108,16 +104,15 @@ class MoreInfoCard : Fragment() {
         // Set on click listener for Favorites -> Add to favorites
         view.moreinfocard_layout_favorites.setOnClickListener {
             if(!favorites) { // Not in favorites - add
-                // add to favorites
                 toast("Added ${place.name} to your Favorites!")
                 favorites = true
-                updateFavorites(view)
             } else { // In favorites - remove
-                // remove from favorites
                 toast("Removed ${place.name} from your Favorites!")
                 favorites = false
-                updateFavorites(view)
             }
+            // Update view and send info to LocationActivity
+            updateFavorites(view)
+            listener!!.onFragmentInteraction(favorites)
         }
 
         // Set on click listener for Directions Button -> Google Maps
@@ -167,7 +162,7 @@ class MoreInfoCard : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentInteraction(fave: Boolean)
     }
 
     /** newInstance **/

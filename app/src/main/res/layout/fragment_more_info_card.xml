@@ -40,12 +40,9 @@
                 android:text="@string/moreinfo_moreinfo_card_title"/>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_website"
+                style="@style/IconLayout.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -53,22 +50,19 @@
                     android:src="@drawable/website_icon"/>
                 <TextView
                     android:id="@+id/moreinfocard_text_website"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/colorPrimary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_phone" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_phone"
+                style="@style/IconLayout.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -76,22 +70,19 @@
                     android:src="@drawable/phone_icon"/>
                 <TextView
                     android:id="@+id/moreinfocard_text_phone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/colorPrimary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_phone" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_address"
+                style="@style/IconLayout.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -99,20 +90,19 @@
                     android:src="@drawable/address_icon"/>
                 <TextView
                     android:id="@+id/moreinfocard_text_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/colorPrimary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_address" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_distance"
+                style="@style/IconLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -120,20 +110,19 @@
                     android:src="@drawable/distance_icon"/>
                 <TextView
                     android:id="@+id/moreinfocard_text_distance"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/text_primary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_distance" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_duration"
+                style="@style/IconLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin">
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -141,22 +130,19 @@
                     android:src="@drawable/car_icon"/>
                 <TextView
                     android:id="@+id/moreinfocard_text_duration"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/text_primary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_duration" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_favorites"
+                style="@style/IconLayout.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/icon_margin"
-                android:layout_marginBottom="@dimen/icon_margin"
-                android:clickable="true"
-                android:focusable="true">
+                android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/moreinfocard_icon_favorites"
                     android:layout_width="wrap_content"
@@ -165,31 +151,28 @@
                     android:src="@drawable/favorites_icon"/>
                 <TextView
                     android:id="@+id/moreinfocard_text_favorites"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_large"
                     android:textColor="@color/text_primary"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="@dimen/text_large"
                     android:text="@string/default_favorites" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/moreinfocard_layout_clock"
+                style="@style/IconLayout.Clickable"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/icon_margin"
-                android:layout_marginTop="@dimen/icon_margin">
-
+                android:layout_height="match_parent">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:scaleType="fitStart"
                     android:src="@drawable/clock_icon" />
-
                 <TextView
                     android:id="@+id/moreinfocard_text_clock"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"

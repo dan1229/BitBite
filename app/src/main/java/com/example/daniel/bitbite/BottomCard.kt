@@ -2,20 +2,15 @@ package com.example.daniel.bitbite
 
 import android.app.Fragment
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.android.synthetic.main.fragment_bottom_card.view.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
@@ -112,7 +107,7 @@ class BottomCard : Fragment() {
         listener = null
     }
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentInteraction(fave: Boolean)
     }
 
     /** newInstance **/

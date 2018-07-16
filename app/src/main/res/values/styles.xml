@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -52,11 +52,26 @@
     <style name="AppTheme.RoundedCornerMaterialButton" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/rounded_shape</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="AppTheme.RoundedCornerMaterialButtonOutline" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/rounded_shape_outline</item>
         <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="IconLayout">
+        <item name="android:layout_marginTop">@dimen/icon_margin</item>
+        <item name="android:layout_marginBottom">@dimen/icon_margin</item>
+    </style>
+
+    <style name="IconLayout.Clickable">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
     <style name="AppTheme.CircleButton" parent="Widget.AppCompat.Button.Colored">

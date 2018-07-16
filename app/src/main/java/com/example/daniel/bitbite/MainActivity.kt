@@ -579,7 +579,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Handles when MainActivity.kt resumes
     override fun onResume() {
         super.onResume()
-        Log.d("BITBITE", "onResume()")
+        Log.d("BITBITE", "Main onResume()")
         setDefaultPrice() // Update default price
     }
 
