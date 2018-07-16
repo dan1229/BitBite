@@ -16,10 +16,8 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
 import com.beust.klaxon.Klaxon
 import com.example.daniel.bitbite.R.style.AppTheme
@@ -156,13 +154,11 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         textView.setAdapter(adapter)
 
         // On item selected listener
-        main_autocomplete_style.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Log.d("TOUCH", "selected: ${adapter.getItem(p2)}")
-                autocompleteItemSelected(adapter.getItem(p2).toString().replace(" ", ""))
-                textView.text.clear()
-            }
+        main_autocomplete_style.onItemClickListener = AdapterView.OnItemClickListener{
+            parent,view,position,id->
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            autocompleteItemSelected(selectedItem.replace(" ", ""))
+            textView.text.clear()
         }
 
         // On enter key listener
@@ -179,11 +175,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Takes chosen item from autocomplete and either displays or denies it
     private
     fun autocompleteItemSelected(s : String) {
-        Log.d("TAGS", "$styleTags")
         if(styleTags < 3) {
             // Add to style string
             if(style == "Random"){
-                style = "$s"
+                style = s
             } else {
                 style += "|$s"
             }
@@ -192,7 +187,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
             changed = true
             addStyleTagFragment(s)
         } else {
-            toast("You can only select up to 3 styles.")
+            toast("You can only select up to 3 types.")
         }
     }
 
