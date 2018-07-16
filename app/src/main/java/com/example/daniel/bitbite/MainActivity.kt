@@ -102,9 +102,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
-            startLoading(loading_main)
 
             if(placesList.isEmpty() || changed) {
+                startLoading(loading_main)
                 placesAsyncCall(1)
             }
             else{
@@ -116,9 +116,9 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         feelingLuckyButton.setOnClickListener {
             val time : Long = 1000
             rotateFast(time, main_image_luckybutton)
-            startLoading(loading_main)
 
             if(placesList.isEmpty() || changed) {
+                startLoading(loading_main)
                 placesAsyncCall(2)
             }
             else{

@@ -7,10 +7,9 @@
     android:transitionName="card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/big_card_margin"
     android:layout_gravity="top"
-    android:layout_marginTop="@dimen/big_card_margin"
-    android:layout_marginLeft="@dimen/big_card_margin"
-    android:layout_marginRight="@dimen/big_card_margin"
+    android:translationZ="8dp"
     card_view:cardCornerRadius="@dimen/big_card_radius"
     card_view:cardElevation="@dimen/big_card_elevation"
     card_view:cardBackgroundColor="@color/card_light">
@@ -21,10 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         tools:context=".TopCard"
         android:orientation="vertical">
         <ImageView

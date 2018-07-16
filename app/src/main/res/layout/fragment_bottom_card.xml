@@ -17,10 +17,7 @@
         android:transitionName="review_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/big_card_margin"
-        android:layout_marginRight="@dimen/big_card_margin"
         android:layout_marginBottom="@dimen/big_card_margin"
-        android:layout_marginTop="12dp"
         card_view:cardCornerRadius="@dimen/big_card_radius"
         card_view:cardElevation="@dimen/big_card_elevation"
         card_view:cardBackgroundColor="@color/card_light"
@@ -29,7 +26,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/big_card_main_layout_margin"
+            android:layout_margin="@dimen/DEFAULT_MARGIN"
             android:orientation="vertical" >
 
             <LinearLayout

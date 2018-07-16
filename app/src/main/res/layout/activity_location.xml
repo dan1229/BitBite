@@ -25,11 +25,11 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
+        style="@style/MainLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorBackground"
-        android:layout_marginTop="?android:attr/actionBarSize" >
+        android:background="@color/colorBackground">
 
         <FrameLayout
             android:id="@+id/location_topcard_container"

@@ -16,10 +16,7 @@
         android:transitionName="top_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/big_card_margin"
-        android:layout_marginRight="@dimen/big_card_margin"
         android:layout_marginBottom="@dimen/big_card_margin"
-        android:layout_marginTop="12dp"
         card_view:cardCornerRadius="@dimen/big_card_radius"
         card_view:cardElevation="@dimen/big_card_elevation"
         card_view:cardBackgroundColor="@color/card_light" >
@@ -207,7 +204,7 @@
         android:transitionName="review_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/big_card_margin"
+        android:layout_marginBottom="@dimen/big_card_margin"
         card_view:cardCornerRadius="@dimen/big_card_radius"
         card_view:cardElevation="@dimen/big_card_elevation"
         card_view:cardBackgroundColor="@color/card_light">
@@ -280,7 +277,7 @@
         android:transitionName="top_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/big_card_margin"
+        android:layout_marginBottom="@dimen/big_card_margin"
         card_view:cardCornerRadius="@dimen/big_card_radius"
         card_view:cardElevation="@dimen/big_card_elevation"
         card_view:cardBackgroundColor="@color/card_light">

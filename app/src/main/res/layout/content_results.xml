@@ -28,7 +28,7 @@
 
             <Button
                 android:id="@+id/show_more_button"
-                style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
+                style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -36,6 +36,7 @@
                 android:layout_marginBottom="10dp"
                 android:padding="@dimen/button_padding"
                 android:textSize="@dimen/text_normal"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:text="@string/button_show_more"/>
 
