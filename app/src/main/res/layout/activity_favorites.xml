@@ -32,16 +32,23 @@
         </android.support.design.widget.AppBarLayout>
 
 
-        <LinearLayout
-            android:id="@+id/favorites_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <android.support.v4.widget.NestedScrollView
             style="@style/MainLayoutStyle"
-            android:layout_marginBottom="@dimen/DEFAULT_MARGIN"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical"
-            tools:context=".ResultsActivity"
-            tools:showIn="@layout/activity_results" />
+            android:paddingTop="@dimen/card_margin"
+            android:paddingBottom="@dimen/card_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:id="@+id/favorites_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:orientation="vertical"
+                tools:context=".ResultsActivity" />
+
+        </android.support.v4.widget.NestedScrollView>
+
     </FrameLayout>
 
     <android.support.design.widget.NavigationView

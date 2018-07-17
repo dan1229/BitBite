@@ -82,6 +82,7 @@
         <item name="android:layout_marginLeft">@dimen/DEFAULT_MARGIN</item>
         <item name="android:layout_marginRight">@dimen/DEFAULT_MARGIN</item>
         <item name="android:layout_marginTop">?android:attr/actionBarSize</item>
+        <item name="android:clipToPadding">false</item>
     </style>
 
     <style name="GreyLine">

@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/MainLayoutStyle"
+            android:paddingBottom="@dimen/card_margin"
             android:orientation="vertical">
 
             <LinearLayout
@@ -34,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
+                android:layout_margin="@dimen/button_margin"
                 android:padding="@dimen/button_padding"
                 android:textSize="@dimen/text_normal"
                 android:textColor="@color/white"

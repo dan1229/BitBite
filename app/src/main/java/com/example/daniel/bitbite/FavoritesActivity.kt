@@ -1,5 +1,6 @@
 package com.example.daniel.bitbite
 
+import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -7,6 +8,7 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_favorites.*
 import kotlinx.android.synthetic.main.fragment_results_card.*
@@ -19,6 +21,7 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
     /** Variables **/
     lateinit var favoritesList: ArrayList<Place>
     lateinit var user : MainActivity.User
+    var fragmentList = ArrayList<Fragment>()
     private lateinit var mDrawerLayout: DrawerLayout
     var listSize = 0
 
@@ -38,21 +41,6 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
 
         // Get intent extras
         user = intent.getParcelableExtra("USER")
-
-        // Get Favorites list
-        val list = getFavorites(this)
-
-        // Check if list is empty
-        if(list != null) {
-            // Save list size
-            favoritesList = list
-            listSize = favoritesList!!.size
-
-            // Populate cards
-            updateResults()
-        } else {
-            toast("Your favorites list is empty!")
-        }
 
         // Set Nav Drawer listener
         fave_nav_view.setNavigationItemSelectedListener { menuItem ->
@@ -77,12 +65,13 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
     // updateResults()
     // Populates ResultsCard fragments
     private
-    fun updateResults() {
-        for (i in 0..(listSize - 1)) {
+    fun updateCards() {
+        for (i in 0 until listSize) {
             doAsync {
-
+                Log.d("FAVORITES", "$i, ${favoritesList[i].name}")
                 val fragment = ResultsCard.newInstance(favoritesList[i], user)
                 fragmentManager.beginTransaction().add(R.id.favorites_container, fragment).commit()
+                fragmentList.add(fragment)
 
                 uiThread {
                     if(favoritesList[i].photoRef != "DEFAULT") // Lookup image
@@ -92,6 +81,26 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
                                 this@FavoritesActivity, R.drawable.default_place_image))
                 }
             }
+        }
+    }
+
+    // updateFavorites()
+    // Update Favorites list
+    private
+    fun updateFavorites() {
+        // Get Favorites list
+        val list = getFavorites(this)
+
+        // Check if list is empty
+        if(list != null) {
+            // Save list and size
+            favoritesList = list
+            listSize = favoritesList.size
+
+            // updateCards
+            updateCards()
+        } else {
+            toast("Your favorites list is empty!")
         }
     }
 
@@ -129,4 +138,32 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
         val intent = Intent(this@FavoritesActivity, SettingsActivity::class.java)
         startActivity(intent)
     }
-}
+
+
+    /**====================================================================================================**/
+    /** Life Cycle Methods **/
+
+    // onPause()
+    // Handles when FavoritesActivity.kt is paused
+    override fun onPause() {
+        super.onPause()
+
+        // Remove old cards
+        for(i in 0 until fragmentList.size) {
+            fragmentManager.beginTransaction().remove(fragmentList[i]).commit()
+        }
+        fragmentList.clear()
+    }
+
+    // onResume()
+    // Handles when FavoritesActivity.kt resumes
+    override fun onResume() {
+        super.onResume()
+        Log.d("BITBITE", "Favorites onResume()")
+
+        // Update Favorites list
+        updateFavorites()
+    }
+
+
+}  /** END CLASS FavoritesActivity.kt **/

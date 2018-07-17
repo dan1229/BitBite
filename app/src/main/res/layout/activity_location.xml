@@ -34,6 +34,7 @@
         <FrameLayout
             android:id="@+id/location_topcard_container"
             android:transitionName="top_card"
+            android:layout_marginTop="@dimen/card_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

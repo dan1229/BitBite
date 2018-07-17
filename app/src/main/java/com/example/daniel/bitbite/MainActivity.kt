@@ -28,6 +28,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import java.net.URL
+import java.util.*
 
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     private lateinit var user: User
     var placesList = ArrayList<Place>()
     var next_page_token = ""
-    var changed = false
+    var changed = true
     var valid = false
     var style = "Random"
     var styleTags = 0
@@ -66,7 +67,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         setContentView(R.layout.activity_main)
         main_seekbar_price!!.setOnSeekBarChangeListener(this)
         mDrawerLayout = findViewById(R.id.drawer_layout)
-        changed = true
 
         // Setup toolbar
         setSupportActionBar(toolbar_main as Toolbar)
@@ -78,9 +78,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Get location
         setupLocation()
-
-        // Set default price
-        setDefaultPrice()
 
         // Setup spinner
         setupAutocomplete()
@@ -274,8 +271,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Go to SettingsActivity.kt
     private
     fun goToSettings() {
-        changed = true
         val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+        changed = true
         startActivity(intent)
     }
 
@@ -580,7 +577,36 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     override fun onResume() {
         super.onResume()
         Log.d("BITBITE", "Main onResume()")
-        setDefaultPrice() // Update default price
+        setDefaultPrice()
+        addRandomStyleTag()
+    }
+
+    /**====================================================================================================**/
+    /** Misc. Methods **/
+
+    // addRandomStyleTag()
+    // Adds random StyleTag fragment
+    private
+    fun addRandomStyleTag() {
+        if(styleTags == 0) { // Check there's no style tags
+            val arr = resources.getStringArray(R.array.style_array)
+            var s = arr[getRandom(arr.size)]
+            while(style.contains(s) || style != ""){ // Ensures no duplicates
+                s = arr[getRandom(arr.size)]
+            }
+            autocompleteItemSelected(s)
+        }
+    }
+
+    // getRandom()
+    // Returns an int from 0 to and excluding the passed int
+    private
+    fun getRandom(n: Int) : Int {
+        var res = 0
+        if(n > 0) {
+            res = Random().nextInt(n - 1)
+        }
+        return res
     }
 
 

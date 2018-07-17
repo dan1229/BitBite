@@ -1,5 +1,6 @@
 package com.example.daniel.bitbite
 
+import android.app.Fragment
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -17,6 +18,7 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
 
     lateinit var user : MainActivity.User
     var places = ArrayList<Place>()
+    var fragmentList = ArrayList<Fragment>()
     var listSize = 0
     var token = ""
 
@@ -38,8 +40,6 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         token = intent.getStringExtra("TOKEN")
         listSize = places.size
 
-        // Populate cards
-        updateResults()
 
         // Set Show More button listener
         show_more_button.setOnClickListener {
@@ -51,11 +51,8 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
                 places = x
                 token = y
                 listSize = places.size
-
-                uiThread {
-                    updateResults()
-                }
             }
+            updateResults()
         }
     }
 
@@ -66,11 +63,11 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
     // Populates ResultsCard fragments
     private
     fun updateResults() {
-        for (i in 0..(listSize - 1)) {
+        for (i in 0 until listSize) {
             doAsync {
-
                 val fragment = ResultsCard.newInstance(places[i], user)
                 fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
+                fragmentList.add(fragment)
 
                 uiThread {
                     if(places[i].photoRef != "DEFAULT") // Lookup image
@@ -94,6 +91,31 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         } else { // Token exists
             show_more_button.visibility = View.VISIBLE
         }
+    }
+
+    /**====================================================================================================**/
+    /** Life Cycle Methods **/
+
+    // onPause()
+    // Handles when ResultsActivity.kt is paused
+    override fun onPause() {
+        super.onPause()
+
+        // Remove old cards
+        for(i in 0 until fragmentList.size) {
+            fragmentManager.beginTransaction().remove(fragmentList[i]).commit()
+        }
+        fragmentList.clear()
+    }
+
+    // onResume()
+    // Handles when ResultsActivity.kt resumes
+    override fun onResume() {
+        super.onResume()
+        Log.d("BITBITE", "Results onResume()")
+
+        // Populate cards
+        updateResults()
     }
 
 } /** END CLASS ResultsActivity.kt **/

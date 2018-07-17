@@ -68,6 +68,23 @@ fun rotateFast(time : Long, view : View) {
 /**====================================================================================================**/
 /** Settings Methods **/
 
+
+// updateFavorites()
+// Updates favorites list
+fun updateFavorites(context: Context, place: Place, favorites: Boolean) {
+    val inList = favoritesContains(context, place.placeID)
+
+    if(favorites) { // Selected to be in favorites list
+        if(!inList) { // Not in list
+            addToFavorites(context, place)
+        }
+    } else { // Not selected to be in favorites list
+        if(inList) { // In list
+            removeFromFavorites(context, place)
+        }
+    }
+}
+
 // setFavorites()
 // Saves passed ArrayList as Favorites list
 fun setFavorites(context: Context, list: ArrayList<Place>) {
@@ -103,27 +120,18 @@ fun favoritesContains(context: Context, id: String) : Boolean {
     return false
 }
 
-// favoritesRemove()
-// Removes place from list based on passed place's ID
-fun favoritesRemove(list: ArrayList<Place>, id: String) {
-    for(i in 0..(list.size - 1)) {
-        if(list[i].placeID == id) {
-            list.removeAt(i)
-        }
-    }
-}
-
 // addToFavorites()
 // Adds passed place to Favorites list
 fun addToFavorites(context: Context, place: Place) {
     val list = getFavorites(context)
     if (list != null) {
-        if (list.size >= 50) { // List too big
+        if (list.size >= 30) { // List too big
             context.toast("Favorites list cannot have more than 50 places.")
             return
         } else {
             list.add(place)
             setFavorites(context, list)
+            return
         }
     } else{ // List is null -> make list
         val newList = ArrayList<Place>()
@@ -137,8 +145,12 @@ fun addToFavorites(context: Context, place: Place) {
 fun removeFromFavorites(context: Context, place: Place) {
     val list = getFavorites(context)
     if(list != null) {
-        if (list.size > 0) {
-            favoritesRemove(list, place.placeID)
+        for(i in 0 until list.size) {
+            if(list[i].placeID == place.placeID) {
+                list.removeAt(i)
+                setFavorites(context, list)
+                return
+            }
         }
     }
 }

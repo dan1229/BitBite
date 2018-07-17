@@ -13,7 +13,6 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     lateinit var user: MainActivity.User
     lateinit var place:Place
     var favorites = false
-    var height = 0
 
 
     /** ON CREATE **/
@@ -28,17 +27,32 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
         // Update toolbar title
         toolbar_location.title = ellipsizeText(place.name, 30)
 
-        // Add top card fragment
-        val tfragment = TopCard.newInstance(place)
-        fragmentManager.beginTransaction().add(R.id.location_topcard_container, tfragment).commit()
+        // Check if in Favorites
+        favorites = favoritesContains(this, place.placeID)
 
-        // Add bottom card fragment
-        val bfragment = BottomCard.newInstance(place, user)
-        fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
+        // Add fragments
+        addTopCardFragment()
+        addBottomCardFragment()
     }
 
     /**====================================================================================================**/
     /** Fragment Methods **/
+
+    // addTopCardFragment()
+    // Adds TopCard Fragment to LocationActivity
+    private
+    fun addTopCardFragment() {
+        val tfragment = TopCard.newInstance(place)
+        fragmentManager.beginTransaction().add(R.id.location_topcard_container, tfragment).commit()
+    }
+
+    // addBottomCardFragment()
+    // Adds BottomCard Fragment to LocationActivity
+    private
+    fun addBottomCardFragment() {
+        val bfragment = BottomCard.newInstance(place, user)
+        fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
+    }
 
     // onFragmentInteraction()
     // Mandatory implementation for interface (Bottom and MoreInfo)
@@ -60,17 +74,9 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     // Handles when MainActivity.kt is paused
     override fun onPause() {
         super.onPause()
-        val inList = favoritesContains(this, place.placeID)
 
-        if (favorites) { // Selected to be in favorites
-            if(!inList) { // Item not in list -> add
-                addToFavorites(this, place)
-            }
-        } else { // Selected to not be in favorites
-            if(inList) { // Item in list -> remove
-                removeFromFavorites(this, place)
-            }
-        }
+        // Update Favorites list
+        //updateFavorites(this, place, favorites)
     }
 
     // onResume()
@@ -78,6 +84,10 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     override fun onResume() {
         super.onResume()
         Log.d("BITBITE", "Location onResume()")
+
+        // Remake top and bottom card fragments
+        addTopCardFragment()
+        addBottomCardFragment()
     }
 
 
