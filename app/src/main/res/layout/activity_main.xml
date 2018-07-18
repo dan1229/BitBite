@@ -185,7 +185,7 @@
                 app:layout_constraintTop_toBottomOf="@id/main_layout_price"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:src="@drawable/icon_loading" />
+                android:src="@drawable/blue_donut" />
         </LinearLayout>
 
     </FrameLayout>

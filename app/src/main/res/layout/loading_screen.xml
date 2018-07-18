@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:background="@color/text_primary"
         android:alpha=".6"/>
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loading_image"
         android:padding="96dp"
         android:layout_width="match_parent"

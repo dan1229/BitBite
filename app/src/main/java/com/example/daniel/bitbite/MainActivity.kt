@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     var next_page_token = ""
     var changed = true
     var valid = false
-    var style = "Random"
+    var style = ""
     var styleTags = 0
     var price = 5
     var lat = 0.0
@@ -176,16 +176,20 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun autocompleteItemSelected(s : String) {
         if(styleTags < 3) {
-            // Add to style string
-            if(style == "Random"){
-                style = s
-            } else {
-                style += "|$s"
-            }
+            if(!style.contains(s)) {
+                // Add to style string
+                if (style == "") {
+                    style = s
+                } else {
+                    style += "|$s"
+                }
 
-            ++styleTags
-            changed = true
-            addStyleTagFragment(s)
+                ++styleTags
+                changed = true
+                addStyleTagFragment(s)
+            } else {
+                toast("Already selected $s.")
+            }
         } else {
             toast("You can only select up to 3 types.")
         }
@@ -342,7 +346,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
             doAsync {
                 val response = parseGeocodeJson(text.toString())
                 uiThread {
-                    if(response != "INVALID"){ // Confirm locatoin if valid response
+                    if(response != "INVALID"){ // Confirm location if valid response
                         confirmLocationDialog(response)
                     }
                     else{ // Prompt for location again if invalid
@@ -591,7 +595,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         if(styleTags == 0) { // Check there's no style tags
             val arr = resources.getStringArray(R.array.style_array)
             var s = arr[getRandom(arr.size)]
-            while(style.contains(s) || style != ""){ // Ensures no duplicates
+            while(style.contains(s)){ // Ensures no duplicates
                 s = arr[getRandom(arr.size)]
             }
             autocompleteItemSelected(s)
