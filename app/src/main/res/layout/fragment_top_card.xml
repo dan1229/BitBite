@@ -7,11 +7,8 @@
     android:transitionName="card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/big_card_margin"
     android:layout_gravity="top"
     android:translationZ="8dp"
-    card_view:cardCornerRadius="@dimen/big_card_radius"
-    card_view:cardElevation="@dimen/big_card_elevation"
     card_view:cardBackgroundColor="@color/card_light">
 
     <android.support.constraint.ConstraintLayout
@@ -119,4 +116,9 @@
                 android:text="@string/default_price" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:background="@color/grey_line" />
 </android.support.v7.widget.CardView>

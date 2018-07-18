@@ -5,7 +5,6 @@
     android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="vertical"
     tools:context=".LocationActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -25,16 +24,15 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        style="@style/MainLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorBackground">
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/location_topcard_container"
             android:transitionName="top_card"
-            android:layout_marginTop="@dimen/card_margin"
+            android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

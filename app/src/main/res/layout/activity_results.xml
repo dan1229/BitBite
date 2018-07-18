@@ -34,6 +34,7 @@
 
     <include
         android:id="@+id/include"
+        android:layout_marginTop="?attr/actionBarSize"
         layout="@layout/content_results" />
 
 </android.support.design.widget.CoordinatorLayout>

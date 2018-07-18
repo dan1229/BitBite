@@ -13,6 +13,8 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     lateinit var user: MainActivity.User
     lateinit var place:Place
     var favorites = false
+    lateinit var topCard: TopCard
+    lateinit var bottomCard: BottomCard
 
 
     /** ON CREATE **/
@@ -43,6 +45,7 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     private
     fun addTopCardFragment() {
         val tfragment = TopCard.newInstance(place)
+        topCard = tfragment
         fragmentManager.beginTransaction().add(R.id.location_topcard_container, tfragment).commit()
     }
 
@@ -51,6 +54,7 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     private
     fun addBottomCardFragment() {
         val bfragment = BottomCard.newInstance(place, user)
+        bottomCard = bfragment
         fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
     }
 
@@ -76,7 +80,11 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
         super.onPause()
 
         // Update Favorites list
-        //updateFavorites(this, place, favorites)
+        updateFavorites(this, place, favorites)
+
+        // Delete fragments
+        fragmentManager.beginTransaction().remove(topCard).commit()
+        fragmentManager.beginTransaction().remove(bottomCard).commit()
     }
 
     // onResume()

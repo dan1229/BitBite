@@ -18,7 +18,7 @@
     <dimen name="card_radius">8dp</dimen>
     <dimen name="card_margin">6dp</dimen>
 
-    <dimen name="big_card_elevation">8dp</dimen>
+    <dimen name="big_card_elevation">4dp</dimen>
     <dimen name="big_card_margin">8dp</dimen>
     <dimen name="big_card_radius">12dp</dimen>
     <dimen name="big_card_main_layout_margin">10dp</dimen>

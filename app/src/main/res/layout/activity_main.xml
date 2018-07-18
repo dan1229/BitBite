@@ -142,7 +142,7 @@
                 style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/DEFAULT_MARGIN"
+                android:layout_marginBottom="32dp"
                 android:padding="12dp"
                 android:gravity="center"
                 android:elevation="@dimen/card_elevation"
@@ -171,7 +171,7 @@
             style="@style/AppTheme.RoundedCornerMaterialButtonOutline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/DEFAULT_MARGIN"
+            android:layout_marginBottom="32dp"
             android:layout_marginEnd="@dimen/feeling_lucky_margin"
             android:elevation="@dimen/card_elevation"
             android:layout_gravity="bottom|end">

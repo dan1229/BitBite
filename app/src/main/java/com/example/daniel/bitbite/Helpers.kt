@@ -33,7 +33,7 @@ fun startLoading(view : View) {
     if (view.visibility == View.GONE) { // Loading screen is gone, start loading
         view.rootView.isClickable = false
         view.visibility = View.VISIBLE
-        rotate(view.findViewById(R.id.loading_image))
+        //rotate(view.findViewById(R.id.loading_image))
     }
 }
 
