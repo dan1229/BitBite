@@ -10,8 +10,9 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener {
 
     /** Variables **/
+    var moreInfoCard: MoreInfoCard? = null
     lateinit var user: MainActivity.User
-    lateinit var place:Place
+    lateinit var place: Place
     var favorites = false
     lateinit var topCard: TopCard
     lateinit var bottomCard: BottomCard
@@ -53,9 +54,13 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     // Adds BottomCard Fragment to LocationActivity
     private
     fun addBottomCardFragment() {
-        val bfragment = BottomCard.newInstance(place, user)
-        bottomCard = bfragment
-        fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
+        if(moreInfoCard == null) {
+            val bfragment = BottomCard.newInstance(place, user)
+            bottomCard = bfragment
+            fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
+        } else{
+            fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, moreInfoCard).commit()
+        }
     }
 
     // onFragmentInteraction()
@@ -68,6 +73,12 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
     // Mandatory implementation for interface (Top)
     override fun onFragmentInteraction(uri: Uri) {
         //
+    }
+
+    // onMoreInfoCreation()
+    // Returns moreInfoCard when created
+    override fun onMoreInfoCreation(frag: MoreInfoCard) {
+        moreInfoCard = frag
     }
 
 

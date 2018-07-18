@@ -81,7 +81,8 @@ class BottomCard : Fragment() {
 
         // Set on click listener for More Info Button -> makes views visible
         view.bottomcard_button_moreinfo.setOnClickListener {
-            createMoreInfoFragment()
+            val frag = createMoreInfoFragment()
+            listener!!.onMoreInfoCreation(frag)
         }
 
         // Set on click listener for Directions Button -> Google Maps
@@ -110,6 +111,7 @@ class BottomCard : Fragment() {
     }
     interface OnFragmentInteractionListener {
         fun onFragmentInteraction(fave: Boolean)
+        fun onMoreInfoCreation(frag: MoreInfoCard)
     }
 
     /** newInstance **/
@@ -130,9 +132,10 @@ class BottomCard : Fragment() {
     // createMoreInfoFragment()
     // Creates MoreInfoCard fragment and adds to container
     private
-    fun createMoreInfoFragment() {
+    fun createMoreInfoFragment() : MoreInfoCard {
         val fragment = MoreInfoCard.newInstance(place, favorites, distance.first, distance.second)
         fragmentManager!!.beginTransaction().add(R.id.location_bottomcard_container, fragment).commit()
+        return fragment
     }
 
     /**====================================================================================================**/
