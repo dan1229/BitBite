@@ -134,7 +134,8 @@ class BottomCard : Fragment() {
     private
     fun createMoreInfoFragment() : MoreInfoCard {
         val fragment = MoreInfoCard.newInstance(place, favorites, distance.first, distance.second)
-        fragmentManager!!.beginTransaction().add(R.id.location_bottomcard_container, fragment).commit()
+        fragmentManager!!.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                .replace(R.id.location_bottomcard_container, fragment).commit()
         return fragment
     }
 

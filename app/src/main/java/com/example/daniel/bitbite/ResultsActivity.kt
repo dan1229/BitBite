@@ -66,7 +66,8 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
         for (i in 0 until listSize) {
             doAsync {
                 val fragment = ResultsCard.newInstance(places[i], user)
-                fragmentManager.beginTransaction().add(R.id.layout_container, fragment).commit()
+                fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_top)
+                        .add(R.id.layout_container, fragment).commit()
                 fragmentList.add(fragment)
 
                 uiThread {

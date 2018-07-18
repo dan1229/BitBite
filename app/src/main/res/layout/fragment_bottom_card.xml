@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomcard_layout_root"
-    android:transitionName="card"
+    android:transitionName="bottom_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
@@ -14,7 +14,6 @@
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/bottomcard_card"
-        android:transitionName="review_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/big_card_margin"

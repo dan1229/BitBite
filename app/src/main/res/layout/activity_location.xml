@@ -31,7 +31,6 @@
 
         <FrameLayout
             android:id="@+id/location_topcard_container"
-            android:transitionName="top_card"
             android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

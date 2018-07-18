@@ -1,8 +1,8 @@
 package com.example.daniel.bitbite
 
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_review.*
 
@@ -28,7 +28,8 @@ class ReviewActivity : AppCompatActivity(), ReviewCard.OnFragmentInteractionList
 
         for(i in 0 until reviews.size){
             val fragment = ReviewCard.newInstance(reviews[i])
-            fragmentManager.beginTransaction().add(R.id.review_container, fragment).commit()
+            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                    .add(R.id.review_container, fragment).commit()
         }
 
         // Set on click listener for making review

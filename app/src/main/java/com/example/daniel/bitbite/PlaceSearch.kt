@@ -122,9 +122,11 @@ fun placeSearchUrlBuilder(context : Context, user : MainActivity.User) : String 
         url += "&opennow=$OPENNOW"
     }
 
+    Log.d("SEARCH", RANKBY)
+
     if(RANKBY == "distance") { // Rank by distance
         url += "&rankby=$RANKBY"
-    } else{ // Rank by prominence (use radius)
+    } else{ // Rank by prominence or random (use radius)
         url += "&radius=$RADIUS"
     }
 

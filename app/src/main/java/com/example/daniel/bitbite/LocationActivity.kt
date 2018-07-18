@@ -57,9 +57,11 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
         if(moreInfoCard == null) {
             val bfragment = BottomCard.newInstance(place, user)
             bottomCard = bfragment
-            fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, bfragment).commit()
+            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                    .replace(R.id.location_bottomcard_container, bfragment).commit()
         } else{
-            fragmentManager.beginTransaction().replace(R.id.location_bottomcard_container, moreInfoCard).commit()
+            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                    .replace(R.id.location_bottomcard_container, moreInfoCard).commit()
         }
     }
 

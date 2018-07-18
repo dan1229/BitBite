@@ -160,7 +160,7 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
-    <!-- STYLE AUTOCOMPLETE OPTIONS -->
+    <!-- FOOD TYPE OPTIONS -->
     <string-array name="style_array">
         <item>Indian</item>
         <item>Fast Food</item>
@@ -170,6 +170,7 @@
         <item>Italian</item>
         <item>Latin</item>
         <item>Mexican</item>
+        <item>Spanish</item>d
         <item>Sushi</item>
         <item>Brunch</item>
         <item>Greek</item>
@@ -178,6 +179,21 @@
         <item>Coffee</item>
         <item>Bar</item>
         <item>Barbeque</item>
+        <item>American</item>
+        <item>Mediterranean</item>
+        <item>Market</item>
+        <item>Chinese</item>
+        <item>Vegetarian</item>
+        <item>Vegan</item>
+        <item>Gluten Free</item>
+        <item>Caribbean</item>
+        <item>Cuban</item>
+        <item>Hamburgers</item>
+        <item>Seafood</item>
+        <item>Pizza</item>
+        <item>Soul Food</item>
+        <item>Thai</item>
+        <item>Tavern</item>
         <item>Random</item>
     </string-array>
 
