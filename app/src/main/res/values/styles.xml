@@ -64,8 +64,8 @@
     </style>
 
     <style name="IconLayout">
-        <item name="android:layout_marginTop">@dimen/icon_margin</item>
-        <item name="android:layout_marginBottom">@dimen/icon_margin</item>
+        <item name="android:paddingTop">@dimen/icon_margin</item>
+        <item name="android:paddingBottom">@dimen/icon_margin</item>
     </style>
 
     <style name="IconLayout.Clickable">
