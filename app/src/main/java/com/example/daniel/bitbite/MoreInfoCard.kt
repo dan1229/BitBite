@@ -117,7 +117,7 @@ class MoreInfoCard : Fragment() {
 
         // Set on click listener for Directions Button -> Google Maps
         view.moreinfocard_button_directions.setOnClickListener{
-            place.openMapsPage(act)
+            directionsWarning(place, activity)
         }
 
         // Set on click listener for Share Button -> Share Menu

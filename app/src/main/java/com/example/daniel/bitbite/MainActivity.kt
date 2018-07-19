@@ -151,6 +151,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, styles)
         textView.setAdapter(adapter)
 
+        main_autocomplete_style.setOnClickListener {
+            main_autocomplete_style.showDropDown()
+        }
+
         // On item selected listener
         main_autocomplete_style.onItemClickListener = AdapterView.OnItemClickListener{
             parent,view,position,id->

@@ -250,6 +250,35 @@ fun priceConversion(price : Int) = when(price) {
 
 
 /**====================================================================================================**/
+/** Alert Dialogs **/
+
+// directionsWarning()
+// Shows dialog confirming user wants to go place that is closed
+fun directionsWarning(place: Place, context: Context) {
+    if(!place.openNow) {
+        // Build dialog box
+        val builder = android.support.v7.app.AlertDialog.Builder(context)
+        builder.setTitle("Are You Sure?")
+                .setMessage("${place.name} is closed right now, do you still want directions there?")
+
+        // Yes button listener
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            place.openMapsPage(context)
+            dialog.dismiss()
+        }
+
+        // No button listener
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    } else{
+        place.openMapsPage(context)
+    }
+}
+
+/**====================================================================================================**/
 /** URL Builders **/
 
 // mapsReviewUrlBuilder()

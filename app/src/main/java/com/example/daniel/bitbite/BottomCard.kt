@@ -87,7 +87,7 @@ class BottomCard : Fragment() {
 
         // Set on click listener for Directions Button -> Google Maps
         view.bottomcard_button_directions.setOnClickListener{
-            place.openMapsPage(activity)
+            directionsWarning(place, activity)
         }
 
         return view
