@@ -14,22 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar_fave"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:paddingTop="@dimen/appbar_padding_top"
-            android:theme="@style/AppTheme.AppBarOverlay" >
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_fave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="@dimen/toolbar_elevation"
-                android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextColor="@color/white">
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.AppBarLayout>
+        <include android:id="@+id/favorites_toolbar"
+            layout="@layout/appbar_standard" />
 
 
         <android.support.v4.widget.NestedScrollView

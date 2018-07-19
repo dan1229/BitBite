@@ -2,16 +2,14 @@ package com.example.daniel.bitbite
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_location.*
 
-class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListener,
+class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
     MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener {
 
     /** Variables **/
     var moreInfoCard: MoreInfoCard? = null
-    lateinit var user: MainActivity.User
     lateinit var place: Place
     var favorites = false
     lateinit var topCard: TopCard
@@ -28,7 +26,8 @@ class LocationActivity : AppCompatActivity(), TopCard.OnFragmentInteractionListe
         user = intent.getParcelableExtra("USER")
 
         // Update toolbar title
-        toolbar_location.title = ellipsizeText(place.name, 30)
+//        toolbarBuilderPlaceName(location_toolbar, place.name)
+        toolbarBuilderUpNavLogo(location_toolbar)
 
         // Check if in Favorites
         favorites = favoritesContains(this, place.placeID)

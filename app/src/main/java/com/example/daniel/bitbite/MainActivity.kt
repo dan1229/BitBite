@@ -7,15 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.os.Parcelable
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
@@ -24,40 +20,23 @@ import com.beust.klaxon.Klaxon
 import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.appbar_standard.view.*
 import org.jetbrains.anko.*
 import java.net.URL
-import java.util.*
 
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
-class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
+class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
     StyleTag.OnFragmentInteractionListener {
 
     /** Variables **/
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var mDrawerLayout: DrawerLayout
-    private val locationRequestCode = 101
-    private lateinit var user: User
-    var placesList = ArrayList<Place>()
-    var next_page_token = ""
+    var styleTags: MutableList<StyleTag> =  mutableListOf()
     var changed = true
     var valid = false
-    var style = ""
-    var styleTags = 0
-    var price = 5
-    var lat = 0.0
-    var lng = 0.0
-
-    /** Settings Variables **/
-    var DEFAULTLOCATION = ""
-
-    /** User Class Declaration **/
-    @Parcelize
-    data class User(var lat: Double, var lng: Double,
-                    var style: String = "", var price: Int = 0) : Parcelable
 
 
     /** ON CREATE **/
@@ -68,13 +47,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         main_seekbar_price!!.setOnSeekBarChangeListener(this)
         mDrawerLayout = findViewById(R.id.drawer_layout)
 
-        // Setup toolbar
-        setSupportActionBar(toolbar_main as Toolbar)
-        val actionbar: ActionBar? = supportActionBar
-        actionbar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_menu)
-        }
+        // Setup Toolbar
+        toolbarBuilderNavMenu(main_toolbar.toolbar, "Home")
 
         // Get location
         setupLocation()
@@ -100,26 +74,24 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
-
             if(placesList.isEmpty() || changed) {
-                startLoading(loading_main)
+                startLoading(main_loading)
                 placesAsyncCall(1)
-            }
-            else{
+            } else {
                 goToResults()
             }
         }
 
         // Set on click listener for I'm feeling lucky button
         feelingLuckyButton.setOnClickListener {
+            // Rotate donut
             val time : Long = 1000
             rotateFast(time, main_image_luckybutton)
 
             if(placesList.isEmpty() || changed) {
-                startLoading(loading_main)
+                startLoading(main_loading)
                 placesAsyncCall(2)
-            }
-            else{
+            } else {
                 feelingLucky()
             }
         }
@@ -179,16 +151,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Takes chosen item from autocomplete and either displays or denies it
     private
     fun autocompleteItemSelected(s : String) {
-        if(styleTags < 3) {
-            if(!style.contains(s)) {
-                // Add to style string
-                if (style == "") {
-                    style = s
-                } else {
-                    style += "|$s"
-                }
-
-                ++styleTags
+        if(styleTags.size < 3) {
+            if(!containsStyleTag(s)) {
                 changed = true
                 addStyleTagFragment(s)
             } else {
@@ -204,24 +168,25 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun addStyleTagFragment(s : String) {
         val fragment = StyleTag.newInstance(s)
+        styleTags.add(fragment)
         fragmentManager.beginTransaction().add(R.id.main_container_tags, fragment).commit()
     }
 
     // SeekBar Listeners
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
         changed = true
-        price = progress + 1
-        priceDisplay.text = priceConversion(price)
+        user.price = progress + 1
+        priceDisplay.text = priceConversion(user.price)
     }
 
     override fun onStartTrackingTouch(seekBar: SeekBar) {
         main_seekbar_price.progress = 4
-        price = 5
+        user.price = 5
     }
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
-        price = p0!!.progress + 1
-        user.price = price
+        user.price = p0!!.progress + 1
+        user.price = user.price
     }
 
     // setDefaultPrice()
@@ -230,7 +195,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     fun setDefaultPrice() {
         val defaultPrice = getPriceSetting(this)
         main_seekbar_price.progress = defaultPrice - 1
-        price = defaultPrice
+        user.price = defaultPrice
     }
 
     /**====================================================================================================**/
@@ -247,7 +212,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
             intent.putExtra("USER", user)
             startActivity(intent)
         }
-        stopLoading(loading_main)
+        stopLoading(main_loading)
     }
 
     // feelingLucky()
@@ -260,7 +225,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
             intent.putExtra("USER", user)
             startActivity(intent)
         }
-        stopLoading(loading_main)
+        stopLoading(main_loading)
     }
 
 
@@ -292,8 +257,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Calls Places API in Async thread and goes to another activity based on input
     private
     fun placesAsyncCall(n : Int) {
-        // Update user variable
-        user = User(lat, lng, style, price)
+        user.style = getStyleString()
 
         doAsync {
             if(changed) { // If selections have changed, recall API and remake list
@@ -306,8 +270,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
                 } catch(e : Exception){
                     valid = false
                     uiThread {
-                        stopLoading(loading_main)
-                        errorAlert()
+                        stopLoading(main_loading)
+                        errorAlert(e.toString())
                     }
                 }
                 changed = false
@@ -324,6 +288,57 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     }
 
     /**====================================================================================================**/
+    /** Location Permission **/
+
+    // setupPermissions()
+    // Check if location permission is granted already, else make request
+    private
+    fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this, // Check if permission is granted
+                Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permission == PackageManager.PERMISSION_GRANTED) { // PERMISSION ALREADY GRANTED - use sensors to get lat/lng
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if(location == null) {
+                    geocodeGetLocationDialog()
+                }
+                else {
+                    user.lat = location.latitude
+                    user.lng = location.longitude
+                }
+            }
+        } else { // PERMISSION NOT YET ASKED - prompt user for permission
+            makeRequest()
+        }
+    }
+
+    // makeRequest()
+    // Make request for location permission
+    private
+    fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
+    }
+
+    // onRequestPermissionResult()
+    // Check permission detailsResponse and react accordingly
+    override
+    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            locationRequestCode -> {
+                if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) { // PERMISSION GRANTED - use sensors to get lat/lng
+                    setupPermissions()
+                } else { // PERMISSION DENIED - prompt user for location
+                    geocodeGetLocationDialog()
+                }
+            }
+        }
+    }
+
+
+    /**====================================================================================================**/
     /** Geocoding API **/
 
     // JSON Class Representations
@@ -335,7 +350,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Gets user input and calls calls Async thread for call
     private
     fun geocodeInput(locationEditText : EditText) {
-        startLoading(loading_main)
+        startLoading(main_loading)
 
         // Get text, if valid input pass to
         val text = locationEditText.text
@@ -371,8 +386,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         if (response!!.status != "OK") {
             address = "INVALID"
         } else {
-            lat = response.results[0].geometry.location.lat
-            lng = response.results[0].geometry.location.lng
+            user.lat = response.results[0].geometry.location.lat
+            user.lng = response.results[0].geometry.location.lng
             address = response.results[0].formatted_address
         }
         return address
@@ -383,89 +398,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun geocodingUrlBuilder(input : String) : String {
         return "https://maps.googleapis.com/maps/api/geocode/json?" +
-                "address=" + input +
-                "&key=" + getString(R.string.google_api_key)
-    }
-
-
-    /**====================================================================================================**/
-    /** Location Permission **/
-
-    // setupPermissions()
-    // Check if location permission is granted already, else make request
-    private
-    fun setupPermissions() {
-        val permission = ContextCompat.checkSelfPermission(this, // Check if permission is granted
-                Manifest.permission.ACCESS_FINE_LOCATION)
-
-        if (permission == PackageManager.PERMISSION_GRANTED) { // PERMISSION ALREADY GRANTED - use sensors to get lat/lng
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if(location == null) {
-                    geocodeGetLocationDialog()
-                }
-                else {
-                    lat = location.latitude
-                    lng = location.longitude
-                    user = User(lat, lng)
-                }
-            }
-        } else { // PERMISSION NOT YET ASKED - prompt user for permission
-            makeRequest()
-        }
-    }
-
-    // makeRequest()
-    // Make request for location permission
-    private
-    fun makeRequest() {
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationRequestCode)
-    }
-
-    // onRequestPermissionResult()
-    // Check permission detailsResponse and react accordingly
-    override
-    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            locationRequestCode -> {
-                if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) { // PERMISSION GRANTED - use sensors to get lat/lng
-                    setupPermissions()
-                } else { // PERMISSION DENIED - prompt user for location
-                    geocodeGetLocationDialog()
-                }
-            }
-        }
-    }
-
-
-    /**====================================================================================================**/
-    /** Option Menu/Settings **/
-
-    // onOptionsItemSelected()
-    // "On click listener" for options menu
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                mDrawerLayout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    // navMenuSwitch()
-    // Calls appropriate function(s) based on Nav Drawer input
-    private
-    fun navMenuSwitch(menuItem: MenuItem) {
-        when(menuItem.toString()) {
-            "Home" -> mDrawerLayout.closeDrawers()
-            "Favorites" -> goToFavorites()
-            "Settings" -> goToSettings()
-            "About Us" -> goToAboutUs(this)
-            "Feedback" -> goToFeedback(this)
-        }
+                "address=$input" +
+                "&key=${getApiKey()}"
     }
 
 
@@ -476,7 +410,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Dialog to get user location
     private
     fun geocodeGetLocationDialog() {
-        stopLoading(loading_main)
+        stopLoading(main_loading)
         val view = layoutInflater.inflate(R.layout.dialog_location, null)
         val locationEditText = view.findViewById(R.id.locationEditText) as EditText
 
@@ -510,7 +444,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Dialog to confirm user location
     private
     fun confirmLocationDialog(response : String) {
-        stopLoading(loading_main)
+        stopLoading(main_loading)
         val view = layoutInflater.inflate(R.layout.dialog_confirmation, null)
         val textView = view.findViewById(R.id.confirmationTextView) as TextView
         textView.text = response
@@ -525,7 +459,6 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
         // Yes button listener
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
-            user = User(lat, lng)
         }
 
         // No button listener
@@ -547,27 +480,44 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
 
 
     /**====================================================================================================**/
+    /** Option Menu/Settings **/
+
+    // onOptionsItemSelected()
+    // "On click listener" for options menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                mDrawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    // navMenuSwitch()
+    // Calls appropriate function(s) based on Nav Drawer input
+    private
+    fun navMenuSwitch(menuItem: MenuItem) {
+        when(menuItem.toString()) {
+            "Home" -> mDrawerLayout.closeDrawers()
+            "Favorites" -> goToFavorites()
+            "Settings" -> goToSettings()
+            "About Us" -> goToAboutUs(this)
+            "Feedback" -> goToFeedback(this)
+        }
+    }
+
+
+    /**====================================================================================================**/
     /** Fragment Methods **/
 
     // onFragmentInteraction()
     // Updates style string and removes fragments when clicked
     override fun onFragmentInteraction(frag : Fragment, string : String) {
 
-        // Update style string
-        val index = style.indexOf(string)
-        style = style.removeRange(index, (index + string.length))
-        changed = true
-
-        if ((index > 0) && (style[index - 1] == '|')) {
-            style = style.removeRange(index - 1, index)
-        }
-        else if ((index < style.length) && (style[index] == '|')) {
-            style = style.removeRange(index , index + 1)
-        }
-
         // Close fragment
         fragmentManager.beginTransaction().remove(frag).commit()
-        --styleTags
+        styleTags.remove(frag)
     }
 
     /**====================================================================================================**/
@@ -577,7 +527,8 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     // Handles when MainActivity.kt is paused
     override fun onPause() {
         super.onPause()
-        stopLoading(loading_main)
+        stopLoading(main_loading)
+
     }
 
     // onResume()
@@ -590,31 +541,62 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener,
     }
 
     /**====================================================================================================**/
-    /** Misc. Methods **/
+    /** StyleTag Methods **/
 
     // addRandomStyleTag()
     // Adds random StyleTag fragment
     private
     fun addRandomStyleTag() {
-        if(styleTags == 0) { // Check there's no style tags
+        if(styleTags.isEmpty()) { // Check there's no style tags
             val arr = resources.getStringArray(R.array.style_array)
-            var s = arr[getRandom(arr.size)]
-            while(style.contains(s)){ // Ensures no duplicates
+
+            var run = true
+            var s = ""
+            while(run) {
                 s = arr[getRandom(arr.size)]
+                if(!containsStyleTag(s)) {
+                    run = false
+                }
             }
             autocompleteItemSelected(s)
         }
     }
 
-    // getRandom()
-    // Returns an int from 0 to and excluding the passed int
+    // getStyleTag()
+    // Finds tag with style matching passed string and returns tag
     private
-    fun getRandom(n: Int) : Int {
-        var res = 0
-        if(n > 0) {
-            res = Random().nextInt(n - 1)
+    fun getStyleTag(input: String): StyleTag? {
+        for(i in 0 until styleTags.size) {
+            if(styleTags[i].style == input) {
+                return styleTags[i]
+            }
         }
-        return res
+
+        return null
+    }
+
+    // containsStyleTag()
+    // Sees if tag with passed style exists
+    private
+    fun containsStyleTag(input: String) : Boolean {
+        for(i in 0 until styleTags.size) {
+            if(styleTags[i].style == input) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    // getStyleString()
+    // Returns style string based on present StyleTags
+    private
+    fun getStyleString() : String {
+        var string = ""
+        for(i in 0 until styleTags.size) {
+            string += "${styleTags[i].style}|"
+        }
+        return string.removeSuffix("|")
     }
 
 

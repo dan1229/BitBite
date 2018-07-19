@@ -8,11 +8,6 @@
             android:title="Open Now"
             android:summary="Only display places that are open"
             android:defaultValue="true"/>
-        <SwitchPreference
-            android:key="darkmode"
-            android:title="Dark Mode"
-            android:summary="Switch to dark mode"
-            android:defaultValue="false"/>
         <com.pavelsikun.seekbarpreference.SeekBarPreference
             android:defaultValue="5"
             android:enabled="true"

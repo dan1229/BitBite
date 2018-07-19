@@ -17,8 +17,8 @@
         <item name="android:windowActivityTransitions">true</item>
 
         <!-- specify enter and exit transitions -->
-        <item name="android:windowEnterTransition">@transition/fade_in</item>
-        <item name="android:windowExitTransition">@transition/fade_out</item>
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
 
         <!-- specify shared element transitions -->
         <item name="android:windowSharedElementEnterTransition">
@@ -30,18 +30,6 @@
     <style name="AppTheme.ExplodeTransition">
         <item name="android:windowEnterTransition">@transition/explode</item>
         <item name="android:windowExitTransition">@transition/explode</item>
-    </style>
-
-
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/product_sans</item>
-        <item name="android:textColor">@color/dmTextPrimary</item>
-        <item name="android:textColorSecondary">@color/dmTextSecondary</item>
-        <item name="android:colorBackground">@color/dmColorBackground</item>
-        <item name="cardBackgroundColor">@color/card_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

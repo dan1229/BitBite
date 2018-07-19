@@ -7,26 +7,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.getDrawable
-import android.support.v4.view.GestureDetectorCompat
-import android.util.Log
 import android.util.Pair
-import android.view.*
-import com.example.daniel.bitbite.R.layout.fragment_results_card
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_results_card.*
 import kotlinx.android.synthetic.main.fragment_results_card.view.*
 import org.jetbrains.anko.act
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.uiThread
-import javax.xml.transform.Result
 
 
 class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
     private lateinit var place : Place
-    private lateinit var user : MainActivity.User
+    private lateinit var user : BaseActivity.User
 //    private lateinit var card : ResultsCard
 //    var gDetector: GestureDetectorCompat? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -76,14 +70,13 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
     }
 
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragInteraction(uri: Uri)  {
 
         }
     }
 
     companion object {
-        fun newInstance(place : Place, user : MainActivity.User) : ResultsCard {
+        fun newInstance(place : Place, user : BaseActivity.User) : ResultsCard {
             val args = Bundle()
             args.putParcelable("PLACE", place)
             args.putParcelable("USER", user)

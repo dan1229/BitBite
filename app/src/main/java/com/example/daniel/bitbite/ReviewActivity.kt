@@ -2,11 +2,10 @@ package com.example.daniel.bitbite
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_review.*
 
-class ReviewActivity : AppCompatActivity(), ReviewCard.OnFragmentInteractionListener {
+class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener {
 
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
@@ -16,6 +15,9 @@ class ReviewActivity : AppCompatActivity(), ReviewCard.OnFragmentInteractionList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
+
+        // Setup Toolbar
+        toolbarBuilderUpNavLogo(review_toolbar)
 
         // Get Extras
         reviews = intent.getParcelableArrayListExtra<Reviews>("review_list")

@@ -3,7 +3,6 @@ package com.example.daniel.bitbite
 import android.app.Fragment
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_results.*
@@ -14,9 +13,8 @@ import org.jetbrains.anko.uiThread
 import android.util.Pair as UtilPair
 
 
-class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionListener {
+class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListener {
 
-    lateinit var user : MainActivity.User
     var places = ArrayList<Place>()
     var fragmentList = ArrayList<Fragment>()
     var listSize = 0
@@ -25,9 +23,9 @@ class ResultsActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_results)
-        setSupportActionBar(toolbar_results)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar_results.title = ""
+
+        // Setup Toolbar
+        toolbarBuilderUpNavLogo(results_toolbar)
 
         // Check if already instantiated
         if (savedInstanceState != null) {

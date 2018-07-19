@@ -22,7 +22,7 @@ class Response(val results:List<Results>, val status:String, val next_page_token
 
 class Results(val geometry:Geometry, val name:String="Not Available", val photos:List<Photos>? = null,
               val place_id:String="", val price_level:Int=0, val rating:Double=0.0,
-              val opening_hours:Times, val types:Array<String>)
+              val opening_hours:Times? = null, val types:Array<String>)
 
 class Geometry(val location:LocationObj)
 
@@ -38,7 +38,7 @@ class Times(val open_now:Boolean = true)
 
 // callPlacesApi()
 // Calls proper API call based on search
-fun callPlacesApi(context:Context, user:MainActivity.User? = null, token:String = "")
+fun callPlacesApi(context:Context, user:BaseActivity.User? = null, token:String = "")
         : Pair<ArrayList<Place>, String>{
 
     return when (token) {
@@ -86,7 +86,7 @@ fun convertToPlace(results : Results) :  Place {
     val description = results.types[0]
     val price = results.price_level
     val rating = results.rating.toInt()
-    val openNow = results.opening_hours.open_now
+    val openNow = if (results.opening_hours != null) results.opening_hours.open_now else false
     val location = DoubleArray(2)
     location[0] = results.geometry.location.lat
     location[1] = results.geometry.location.lng
@@ -99,7 +99,7 @@ fun convertToPlace(results : Results) :  Place {
 // placeSearchUrlBuilder()
 // Builds URL for PlaceSearch API Call
 private
-fun placeSearchUrlBuilder(context : Context, user : MainActivity.User) : String {
+fun placeSearchUrlBuilder(context : Context, user : BaseActivity.User) : String {
     // https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
     // @Param
     // location = lat + lng

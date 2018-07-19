@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
-            android:paddingBottom="@dimen/card_margin"
+            android:padding="@dimen/card_margin"
             android:orientation="vertical">
 
             <LinearLayout
@@ -22,7 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:paddingTop="@dimen/card_margin"
                 android:orientation="vertical"
                 tools:context=".ResultsActivity"
                 tools:showIn="@layout/activity_results" />

@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LocationActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_location"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:elevation="@dimen/toolbar_elevation"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,5 +31,9 @@
         </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
+
+    <include android:id="@+id/location_toolbar"
+        layout="@layout/appbar_standard" />
+
 
 </android.support.design.widget.CoordinatorLayout>

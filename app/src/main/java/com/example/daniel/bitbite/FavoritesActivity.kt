@@ -5,25 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_favorites.*
+import kotlinx.android.synthetic.main.appbar_standard.view.*
 import kotlinx.android.synthetic.main.fragment_results_card.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
-class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteractionListener {
+class FavoritesActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListener {
 
     /** Variables **/
-    lateinit var favoritesList: ArrayList<Place>
-    lateinit var user : MainActivity.User
-    var fragmentList = ArrayList<Fragment>()
     private lateinit var mDrawerLayout: DrawerLayout
-    var listSize = 0
+    lateinit var favoritesList: ArrayList<Place>
+    var fragmentList = ArrayList<Fragment>()
+    private var faveListSize = 0
 
     /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,12 +29,7 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
         mDrawerLayout = findViewById(R.id.favorites_drawer_layout)
 
         // Setup Toolbar
-        setSupportActionBar(toolbar_fave as Toolbar)
-        val actionbar: ActionBar? = supportActionBar
-        actionbar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_menu)
-        }
+        toolbarBuilderNavMenu(favorites_toolbar.toolbar, "Favorites")
 
         // Get intent extras
         user = intent.getParcelableExtra("USER")
@@ -66,7 +58,7 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
     // Populates ResultsCard fragments
     private
     fun updateCards() {
-        for (i in 0 until listSize) {
+        for (i in 0 until faveListSize) {
             doAsync {
                 Log.d("FAVORITES", "$i, ${favoritesList[i].name}")
                 val fragment = ResultsCard.newInstance(favoritesList[i], user)
@@ -95,7 +87,7 @@ class FavoritesActivity : AppCompatActivity(), ResultsCard.OnFragmentInteraction
         if(list != null) {
             // Save list and size
             favoritesList = list
-            listSize = favoritesList.size
+            faveListSize = favoritesList.size
 
             // updateCards
             updateCards()

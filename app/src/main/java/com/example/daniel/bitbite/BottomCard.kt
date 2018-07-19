@@ -30,7 +30,7 @@ class BottomCard : Fragment() {
     var favorites = false
     var distance = Pair("", "")
     private lateinit var place : Place
-    lateinit var user: MainActivity.User
+    lateinit var user: BaseActivity.User
     private var listener: BottomCard.OnFragmentInteractionListener? = null
 
 
@@ -116,7 +116,7 @@ class BottomCard : Fragment() {
 
     /** newInstance **/
     companion object {
-        fun newInstance(place : Place, user : MainActivity.User): BottomCard {
+        fun newInstance(place : Place, user : BaseActivity.User): BottomCard {
             val args = Bundle()
             args.putParcelable("PLACE", place)
             args.putParcelable("USER", user)

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_style_tag.view.*
 class StyleTag : Fragment() {
 
     /** Variables **/
-    private var style = "Random"
+    var style = "Random"
     private var listener: StyleTag.OnFragmentInteractionListener? = null
 
 
