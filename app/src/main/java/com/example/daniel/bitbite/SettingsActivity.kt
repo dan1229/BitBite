@@ -17,6 +17,7 @@ class SettingsActivity : BaseActivity() {
 
         fragmentManager.beginTransaction()
                 .replace(R.id.settings_container, SettingsFragment()).commit()
+
     }
 
     // PreferenceFragment for settings

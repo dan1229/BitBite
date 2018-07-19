@@ -2,6 +2,7 @@ package com.example.daniel.bitbite
 
 import android.Manifest
 import android.app.Fragment
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,6 +16,7 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.beust.klaxon.Klaxon
 import com.example.daniel.bitbite.R.style.AppTheme
@@ -114,12 +116,20 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
         }
     }
 
+    // closeKeyboard()
+    // Closes soft keyboard
+    private
+    fun closeKeyboard() {
+        val inputManager:InputMethodManager =getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.SHOW_FORCED)
+    }
+
     // setupAutocomplete()
     // Setup autocomplete text view
     private
     fun setupAutocomplete() {
         val textView = findViewById<AutoCompleteTextView>(R.id.main_autocomplete_style)
-        val styles = resources.getStringArray(R.array.style_array)
+        val styles = resources.getStringArray(R.array.style_array).asList().shuffled()
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, styles)
         textView.setAdapter(adapter)
 
@@ -133,6 +143,7 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
             val selectedItem = parent.getItemAtPosition(position).toString()
             autocompleteItemSelected(selectedItem.replace(" ", ""))
             textView.text.clear()
+            closeKeyboard()
         }
 
         // On enter key listener
@@ -141,6 +152,7 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
                 if(!adapter.isEmpty) {
                     autocompleteItemSelected(adapter.getItem(0).toString())
                     textView.text.clear()
+                    closeKeyboard()
                 }
             }
             true
@@ -167,6 +179,7 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
     // Adds style tag fragment if successfully selected from list
     private
     fun addStyleTagFragment(s : String) {
+        changed = true
         val fragment = StyleTag.newInstance(s)
         styleTags.add(fragment)
         fragmentManager.beginTransaction().add(R.id.main_container_tags, fragment).commit()
@@ -514,10 +527,10 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
     // onFragmentInteraction()
     // Updates style string and removes fragments when clicked
     override fun onFragmentInteraction(frag : Fragment, string : String) {
-
-        // Close fragment
+        // Close StyleTag fragment
         fragmentManager.beginTransaction().remove(frag).commit()
         styleTags.remove(frag)
+        changed = true
     }
 
     /**====================================================================================================**/

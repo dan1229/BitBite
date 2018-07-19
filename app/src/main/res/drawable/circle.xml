@@ -1,18 +1,10 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle"   >
-
-    <solid
-        android:color="@color/card_light" >
-    </solid>
-
+    <solid android:color="@color/card_light" />
     <stroke
         android:color="@color/text_secondary"
         android:width="6px" >
     </stroke>
-
-    <corners
-        android:radius="24dp"   >
-    </corners>
-
+    <corners android:radius="24dp" />
 </shape>

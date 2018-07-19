@@ -42,15 +42,6 @@ abstract class BaseActivity : AppCompatActivity() {
     /**====================================================================================================**/
     /** Toolbar Buidler Methods **/
 
-    // toolbarBuilderPlaceName()
-    // Builds toolbar with up nav and place name
-    fun toolbarBuilderPlaceName(view: View, label: String) {
-        setSupportActionBar(view.appbar.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        view.appbar.toolbar.title = ellipsizeText(label, 30)
-    }
-
     // toolbarBuilderNavMenu()
     // Builds toolbar with nav menu and label
     fun toolbarBuilderNavMenu(toolbar: Toolbar, label: String) {

@@ -41,7 +41,6 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
 
         // Set Show More button listener
         show_more_button.setOnClickListener {
-            Log.d("LOAD", "start")
             startLoading(loading_results)
 
             doAsync {

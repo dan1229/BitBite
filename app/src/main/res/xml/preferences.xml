@@ -13,7 +13,6 @@
             android:enabled="true"
             android:key="default_price"
             android:title="Default Price Level"
-            sample:msbp_dialogEnabled="true"
             sample:msbp_interval="1"
             sample:msbp_maxValue="5"
             sample:msbp_minValue="1" />
@@ -25,8 +24,7 @@
             sample:msbp_minValue="1"
             sample:msbp_maxValue="30"
             sample:msbp_interval="1"
-            sample:msbp_measurementUnit="mi"
-            sample:msbp_dialogEnabled="true"/>
+            sample:msbp_measurementUnit="mi" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Advanced Settings">
