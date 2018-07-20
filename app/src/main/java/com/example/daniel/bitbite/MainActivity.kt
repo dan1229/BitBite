@@ -528,18 +528,8 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun addRandomStyleTag() {
         if(styleTags.isEmpty()) { // Check there's no style tags
-            // Get time
-            val time = Calendar.getInstance()
-            val currentHour = time.get(Calendar.HOUR_OF_DAY)
-
-            // Pick style tag based on time
-            var arr = resources.getStringArray(R.array.styles_night_array)
-            if((currentHour < 11) && (currentHour >= 5)) { // Morning
-                arr = resources.getStringArray(R.array.styles_morning_array)
-            } else if ((currentHour < 18) && (currentHour >= 12)) { // Afternoon
-                arr = resources.getStringArray(R.array.styles_afternoon_array)
-            } // else leave array as is (night)
-
+            // Get appropriate style array
+            val arr = getStyleArray()
 
             var run = true
             var s = ""
@@ -551,6 +541,29 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
             }
             autocompleteItemSelected(s)
         }
+    }
+
+    // getStyleArray()
+    // Gets appropriate style array based on time
+    private
+    fun getStyleArray() : Array<String> {
+        // Get time
+        val time = Calendar.getInstance()
+        val currentHour = time.get(Calendar.HOUR_OF_DAY)
+
+        // Set default array (night)
+        var arr = resources.getStringArray(R.array.styles_night_array)
+
+        // Pick style tag based on time
+        if((currentHour < 11) && (currentHour >= 5)) { // Morning
+            arr = resources.getStringArray(R.array.styles_morning_array)
+        }
+        else if ((currentHour < 18) && (currentHour >= 12)) { // Afternoon
+            arr = resources.getStringArray(R.array.styles_afternoon_array)
+        }
+        // else{} leave array as is (night)
+
+        return arr
     }
 
     // containsStyleTag()
