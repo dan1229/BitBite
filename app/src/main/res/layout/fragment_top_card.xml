@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/topcardCard"
-    android:transitionName="card"
+    android:id="@+id/topcard_card"
+    android:transitionName="top_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
@@ -18,10 +18,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         tools:context=".TopCard"
-        android:orientation="vertical">
+        android:orientation="vertical" >
         <ImageView
             android:id="@+id/topcard_image"
-            android:transitionName="top_card_image"
+            android:transitionName="place_image"
             android:contentDescription="@string/imageview_description_location_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/topcard_image_height"
@@ -37,7 +37,7 @@
             android:src="@drawable/default_place_image" />
         <TextView
             android:id="@+id/topcard_name"
-            android:transitionName="top_card_name"
+            android:transitionName="place_name"
             android:textSize="@dimen/text_x_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -63,7 +63,12 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         for (i in 0 until listSize) {
             doAsync {
                 val fragment = ResultsCard.newInstance(places[i], user)
-                fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_top)
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                                R.animator.enter_from_right,
+                                R.animator.exit_to_right,
+                                R.animator.enter_from_left,
+                                R.animator.exit_to_right)
                         .add(R.id.layout_container, fragment).commit()
                 fragmentList.add(fragment)
 
@@ -79,6 +84,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         stopLoading(loading_results)
         updateButton()
     }
+
 
     // updateButton()
     // Updates button visibility based on token
@@ -114,6 +120,13 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
 
         // Populate cards
         updateResults()
+    }
+
+    /**====================================================================================================**/
+    /** Fragment Methods **/
+
+    override fun onFragInteraction() {
+        show_more_button.visibility = View.GONE
     }
 
 } /** END CLASS ResultsActivity.kt **/

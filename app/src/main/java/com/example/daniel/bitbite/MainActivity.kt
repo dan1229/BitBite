@@ -10,12 +10,9 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.KeyEvent
-import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.beust.klaxon.Klaxon
@@ -30,12 +27,11 @@ import java.net.URL
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
 
-class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
+class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     StyleTag.OnFragmentInteractionListener {
 
     /** Variables **/
     private lateinit var fusedLocationClient : FusedLocationProviderClient
-    private lateinit var mDrawerLayout: DrawerLayout
     var styleTags: MutableList<StyleTag> =  mutableListOf()
     var changed = true
     var valid = false
@@ -49,6 +45,23 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
         main_seekbar_price!!.setOnSeekBarChangeListener(this)
         mDrawerLayout = findViewById(R.id.drawer_layout)
 
+
+
+
+
+        mDrawerLayout.setOnClickListener {
+            Log.d("NAV", "clicked mDrawerLayout")
+        }
+
+        main_toolbar.setOnClickListener {
+            Log.d("NAV", "clicked toolbar")
+
+        }
+
+        content_frame.setOnClickListener {
+            Log.d("NAV", "clicked content_frame")
+        }
+
         // Setup Toolbar
         toolbarBuilderNavMenu(main_toolbar.toolbar, "Home")
 
@@ -57,22 +70,6 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Setup spinner
         setupAutocomplete()
-
-        // Set Nav Drawer listener
-        nav_view.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            true
-        }
-
-        // Set Nav Footer listener
-        nav_footer.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = false
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            false
-        }
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
@@ -241,25 +238,17 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
         stopLoading(main_loading)
     }
 
-
-    /** NAV BAR INTENT MAKERS **/
-
-    // goToFavorites()
-    // Go to FavoritesActivity.kt
-    private
-    fun goToFavorites() {
-        val intent = Intent(this@MainActivity, FavoritesActivity::class.java)
-        intent.putExtra("USER", user)
-        startActivity(intent)
-    }
-
     // goToSettings()
     // Go to SettingsActivity.kt
-    private
-    fun goToSettings() {
-        val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+    override fun goToSettings() {
         changed = true
-        startActivity(intent)
+        super.goToSettings()
+    }
+
+    // goToHome()
+    // Go to MainActivity.kt
+    override fun goToHome() {
+        mDrawerLayout.closeDrawers()
     }
 
 
@@ -491,36 +480,6 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
         }.show()
     }
 
-
-    /**====================================================================================================**/
-    /** Option Menu/Settings **/
-
-    // onOptionsItemSelected()
-    // "On click listener" for options menu
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                mDrawerLayout.openDrawer(GravityCompat.START)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    // navMenuSwitch()
-    // Calls appropriate function(s) based on Nav Drawer input
-    private
-    fun navMenuSwitch(menuItem: MenuItem) {
-        when(menuItem.toString()) {
-            "Home" -> mDrawerLayout.closeDrawers()
-            "Favorites" -> goToFavorites()
-            "Settings" -> goToSettings()
-            "About Us" -> goToAboutUs(this)
-            "Feedback" -> goToFeedback(this)
-        }
-    }
-
-
     /**====================================================================================================**/
     /** Fragment Methods **/
 
@@ -573,19 +532,6 @@ class MainActivity : BaseActivity(), SeekBar.OnSeekBarChangeListener,
             }
             autocompleteItemSelected(s)
         }
-    }
-
-    // getStyleTag()
-    // Finds tag with style matching passed string and returns tag
-    private
-    fun getStyleTag(input: String): StyleTag? {
-        for(i in 0 until styleTags.size) {
-            if(styleTags[i].style == input) {
-                return styleTags[i]
-            }
-        }
-
-        return null
     }
 
     // containsStyleTag()

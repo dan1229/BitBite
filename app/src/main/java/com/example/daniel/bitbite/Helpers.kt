@@ -2,9 +2,6 @@ package com.example.daniel.bitbite
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -83,6 +80,13 @@ fun updateFavorites(context: Context, place: Place, favorites: Boolean) {
             removeFromFavorites(context, place)
         }
     }
+}
+
+// clearFavoritesList()
+// Clears favorites list
+fun clearFavoritesList(context: Context) {
+    val list = ArrayList<Place>()
+    setFavorites(context, list)
 }
 
 // setFavorites()
@@ -185,34 +189,6 @@ fun getRankBySetting(context: Context) : String {
 
 
 /**====================================================================================================**/
-/** Intent Makers **/
-
-// goToAboutUs()
-// Go to www.BitBite.app
-fun goToAboutUs(context : Context) {
-    openWebPage(context, "https://www.BitBite.app")
-}
-
-
-// goToFeedback()
-// Go to Google Play Reviews page
-fun goToFeedback(context : Context) {
-//
-}
-
-// openWebPage()
-// Opens web page to passed URL
-fun openWebPage(context : Context, url : String) {
-    val uris = Uri.parse(url)
-    val intents = Intent(Intent.ACTION_VIEW, uris)
-    val bundle = Bundle()
-    bundle.putBoolean("new_window", true)
-    intents.putExtras(bundle)
-    context.startActivity(intents)
-}
-
-
-/**====================================================================================================**/
 /** Conversion Methods **/
 
 // ratingConversion()
@@ -258,7 +234,7 @@ fun directionsWarning(place: Place, context: Context) {
     if(!place.openNow) {
         // Build dialog box
         val builder = android.support.v7.app.AlertDialog.Builder(context)
-        builder.setTitle("Are You Sure?")
+        builder.setTitle("@string/dialog_confirmation_title")
                 .setMessage("${place.name} is closed right now, do you still want directions there?")
 
         // Yes button listener
@@ -276,6 +252,39 @@ fun directionsWarning(place: Place, context: Context) {
     } else{
         place.openMapsPage(context)
     }
+}
+
+
+// confirmClearFavorites()
+// Shows dialog confirming user wants to clear Favorites List
+fun confirmClearFavorites(context: Context): Boolean {
+    val list = getFavorites(context)
+    var confirm = false
+
+    if(list != null) {
+        // Build dialog box
+        val builder = android.support.v7.app.AlertDialog.Builder(context)
+        builder.setTitle(context.getString(R.string.dialog_confirmation_title))
+                .setMessage(context.getString(R.string.dialog_favorites_confirmation_text))
+
+        // Yes button listener
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            clearFavoritesList(context)
+            dialog.dismiss()
+            context.toast("Favorites list cleared!")
+            confirm = true
+        }
+
+        // No button listener
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+            confirm = false
+        }
+
+        builder.show()
+    }
+
+    return confirm
 }
 
 /**====================================================================================================**/

@@ -26,7 +26,6 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         user = intent.getParcelableExtra("USER")
 
         // Update toolbar title
-//        toolbarBuilderPlaceName(location_toolbar, place.name)
         toolbarBuilderUpNavLogo(location_toolbar)
 
         // Check if in Favorites
@@ -46,7 +45,8 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
     fun addTopCardFragment() {
         val tfragment = TopCard.newInstance(place)
         topCard = tfragment
-        fragmentManager.beginTransaction().add(R.id.location_topcard_container, tfragment).commit()
+        fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_top, R.animator.exit_to_left)
+                .add(R.id.location_topcard_container, tfragment).commit()
     }
 
     // addBottomCardFragment()
@@ -95,8 +95,12 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         updateFavorites(this, place, favorites)
 
         // Delete fragments
-        fragmentManager.beginTransaction().remove(topCard).commit()
-        fragmentManager.beginTransaction().remove(bottomCard).commit()
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.enter_from_left, R.animator.exit_to_right)
+                .remove(topCard).commit()
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.enter_from_left, R.animator.exit_to_right)
+                .remove(bottomCard).commit()
     }
 
     // onResume()

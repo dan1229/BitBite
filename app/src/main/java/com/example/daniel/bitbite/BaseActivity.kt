@@ -7,6 +7,8 @@ package com.example.daniel.bitbite
  */
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.v7.app.ActionBar
@@ -70,6 +72,22 @@ abstract class BaseActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.title = label
+    }
+
+
+    /**====================================================================================================**/
+    /** Intent Makers **/
+
+    // openWebPage()
+    // Opens web page to passed URL
+    protected
+    fun openWebPage(url : String) {
+        val uris = Uri.parse(url)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val bundle = Bundle()
+        bundle.putBoolean("new_window", true)
+        intents.putExtras(bundle)
+        this.startActivity(intents)
     }
 
 

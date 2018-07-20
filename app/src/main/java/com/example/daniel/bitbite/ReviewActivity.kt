@@ -37,7 +37,7 @@ class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener 
         // Set on click listener for making review
         makeReviewCard.setOnClickListener {
             if(placeId != "")
-                openWebPage(this, mapsReviewUrlBuilder(placeId))
+                openWebPage(mapsReviewUrlBuilder(placeId))
         }
     }
 

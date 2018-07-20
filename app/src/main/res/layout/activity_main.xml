@@ -7,21 +7,18 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity" >
 
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <include android:id="@+id/main_toolbar"
-            layout="@layout/appbar_standard" />
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayoutMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/MainLayoutStyle">
+            style="@style/MainLayoutStyle" >
 
             <ImageView
                 android:id="@+id/imageView"
@@ -173,30 +170,15 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/blue_donut" />
         </LinearLayout>
-
+        <include android:id="@+id/main_toolbar"
+            layout="@layout/appbar_standard" />
     </FrameLayout>
 
     <include layout="@layout/loading_screen"
         android:id="@+id/main_loading"
         android:visibility="gone" />
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_header"
-        app:headerLayout="@layout/nav_header">
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_footer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:menu="@menu/drawer_footer">
-        </android.support.design.widget.NavigationView>
-
-    </android.support.design.widget.NavigationView>
+    <include android:id="@+id/main_navdrawer"
+        layout="@layout/activity_nav" />
 
 </android.support.v4.widget.DrawerLayout>

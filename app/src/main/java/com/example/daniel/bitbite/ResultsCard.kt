@@ -4,7 +4,6 @@ import android.app.ActivityOptions
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.getDrawable
@@ -45,6 +44,7 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
         // Set on click listener for card
         view.results_card.setOnClickListener {
+            listener!!.onFragInteraction()
             goToLocation()
         }
 
@@ -70,9 +70,7 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragInteraction(uri: Uri)  {
-
-        }
+        fun onFragInteraction()  {}
     }
 
     companion object {
@@ -142,9 +140,9 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val options = ActivityOptions.makeSceneTransitionAnimation(activity,
                     Pair.create<View, String>(results_card, "top_card"),
-                    Pair.create<View, String>(results_image, "top_card_image"),
-                    Pair.create<View, String>(results_name, "top_card_name"))
-            startActivity(intent, options.toBundle())
+//                    Pair.create<View, String>(results_image, "place_image"),
+                    Pair.create<View, String>(results_name, "place_name"))
+            startActivity(intent)
         } else {
             startActivity(intent)
         }
