@@ -1,8 +1,6 @@
 package com.example.daniel.bitbite
 
-import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import kotlinx.android.synthetic.main.activity_review.*
 
 class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener {
@@ -25,30 +23,40 @@ class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener 
         name = intent.getStringExtra("name")
 
         // Update make your own review card
-        placeName.visibility = View.VISIBLE
-        placeName.text = name
+        addMakeReviewCard()
 
         for(i in 0 until reviews.size){
             val fragment = ReviewCard.newInstance(reviews[i])
-            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_right)
                     .add(R.id.review_container, fragment).commit()
-        }
-
-        // Set on click listener for making review
-        makeReviewCard.setOnClickListener {
-            if(placeId != "")
-                openWebPage(mapsReviewUrlBuilder(placeId))
         }
     }
 
 
     /**====================================================================================================**/
+    /** Updater Methods **/
+
+    // addMakeReviewCard()
+    // Adds make your own review card at the top
+    private
+    fun addMakeReviewCard() {
+        // Make Review object
+        val review = Reviews(name, "EMPTY", getString(R.string.make_review_description), 0)
+
+        // Add fragment
+        val frag = ReviewCard.newInstance(review, 2)
+        fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_top, R.animator.exit_to_right)
+                .add(R.id.review_top_container, frag).commit()
+    }
+
+    /**====================================================================================================**/
     /** Fragment Methods **/
 
     // onFragmentInteraction()
-    // Mandatory implementation for interface
-    override fun onFragmentInteraction(uri: Uri) {
-        //
+    // Launches reviews page when clicked on top card
+    override fun onFragmentInteraction() {
+        if(placeId != "")
+            openWebPage(mapsReviewUrlBuilder(placeId))
     }
 
 } /** END CLASS ReviewActivity.kt **/

@@ -66,9 +66,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(
                                 R.animator.enter_from_right,
-                                R.animator.exit_to_right,
-                                R.animator.enter_from_left,
-                                R.animator.exit_to_right)
+                                R.animator.exit_to_left)
                         .add(R.id.layout_container, fragment).commit()
                 fragmentList.add(fragment)
 

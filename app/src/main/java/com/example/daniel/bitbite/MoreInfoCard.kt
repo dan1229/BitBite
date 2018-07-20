@@ -1,18 +1,14 @@
 package com.example.daniel.bitbite
 
-import android.app.ActivityOptions
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_more_info_card.*
 import kotlinx.android.synthetic.main.fragment_more_info_card.view.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.doAsync
@@ -192,17 +188,7 @@ class MoreInfoCard : Fragment() {
         intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
         intent.putExtra("place_id", place.placeID) // Pass placeID
         intent.putExtra("name", place.name) // Pass name
-
-        // Check Android version for animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptions.makeSceneTransitionAnimation( activity,
-                    Pair.create<View, String>(moreinfocard_layout_reviews, "review_card"),
-                    Pair.create<View, String>(moreinfocard_reviews_rating, "review_rating"),
-                    Pair.create<View, String>(moreinfocard_reviews_text, "review_text"))
-            startActivity(intent, options.toBundle())
-        } else {
-            startActivity(intent)
-        }
+        startActivity(intent)
     }
 
     /**====================================================================================================**/

@@ -198,6 +198,7 @@
 
         <LinearLayout
             android:id="@+id/moreinfocard_layout_reviews"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/big_card_main_layout_margin"
