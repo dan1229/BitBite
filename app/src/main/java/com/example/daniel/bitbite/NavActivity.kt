@@ -2,13 +2,14 @@ package com.example.daniel.bitbite
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_nav.*
 
-abstract class NavActivity : BaseActivity() {
+abstract class NavActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     /** Variables **/
     lateinit var mDrawerLayout: DrawerLayout
@@ -19,23 +20,26 @@ abstract class NavActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav)
 
-        // Set Nav Drawer listener
-        nav_view.setNavigationItemSelectedListener { menuItem ->
-            Log.d("NAV", "nav selected listener header")
-            menuItem.isChecked = true
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            true
-        }
+        nav_view.setNavigationItemSelectedListener(this)
+        nav_footer.setNavigationItemSelectedListener(this)
 
-        // Set Nav Footer listener
-        nav_footer.setNavigationItemSelectedListener { menuItem ->
-            Log.d("NAV", "nav selected listener footer")
-            menuItem.isChecked = false
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            true
-        }
+//        // Set Nav Drawer listener
+//        nav_view.setNavigationItemSelectedListener { menuItem ->
+//            Log.d("NAV", "nav selected listener header")
+//            menuItem.isChecked = true
+//            mDrawerLayout.closeDrawers()
+//            navMenuSwitch(menuItem)
+//            true
+//        }
+//
+//        // Set Nav Footer listener
+//        nav_footer.setNavigationItemSelectedListener { menuItem ->
+//            Log.d("NAV", "nav selected listener footer")
+//            menuItem.isChecked = false
+//            mDrawerLayout.closeDrawers()
+//            navMenuSwitch(menuItem)
+//            true
+//        }
     }
 
     /**====================================================================================================**/
@@ -84,6 +88,8 @@ abstract class NavActivity : BaseActivity() {
     /**====================================================================================================**/
     /** Option Menu/Settings **/
 
+
+
     // onOptionsItemSelected()
     // "On click listener" for options menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -108,6 +114,18 @@ abstract class NavActivity : BaseActivity() {
             "About Us" -> goToAboutUs()
             "Feedback" -> goToFeedback()
         }
+    }
+
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_home -> goToHome()
+            R.id.nav_favorites -> goToFavorites()
+            R.id.nav_settings -> goToSettings()
+            R.id.nav_about_us -> goToAboutUs()
+            R.id.nav_feedback -> goToFeedback()
+        }
+        return true
     }
 
 

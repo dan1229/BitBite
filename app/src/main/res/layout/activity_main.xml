@@ -14,6 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+        <include android:id="@+id/main_toolbar"
+            layout="@layout/appbar_standard" />
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayoutMain"
             android:layout_width="match_parent"
@@ -170,15 +173,31 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:src="@drawable/blue_donut" />
         </LinearLayout>
-        <include android:id="@+id/main_toolbar"
-            layout="@layout/appbar_standard" />
+
+        <include layout="@layout/loading_screen"
+            android:id="@+id/main_loading"
+            android:visibility="gone" />
+
     </FrameLayout>
 
-    <include layout="@layout/loading_screen"
-        android:id="@+id/main_loading"
-        android:visibility="gone" />
+    <android.support.design.widget.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/drawer_header"
+        app:headerLayout="@layout/nav_header">
 
-    <include android:id="@+id/main_navdrawer"
-        layout="@layout/activity_nav" />
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:menu="@menu/drawer_footer">
+        </android.support.design.widget.NavigationView>
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

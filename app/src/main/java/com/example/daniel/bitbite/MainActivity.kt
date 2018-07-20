@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar_standard.view.*
 import org.jetbrains.anko.*
 import java.net.URL
+import java.util.*
 
 /** Constants **/
 const val EXTRA_PLACES_LIST = "com.example.daniel.bitbite.PLACESLIST"
@@ -48,9 +49,16 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
 
 
 
-
         mDrawerLayout.setOnClickListener {
             Log.d("NAV", "clicked mDrawerLayout")
+        }
+
+        nav_view.setOnClickListener {
+            Log.d("NAV", "clicked nav_view")
+        }
+
+        main_loading.setOnClickListener {
+            Log.d("NAV", "clicked loading")
         }
 
         main_toolbar.setOnClickListener {
@@ -520,7 +528,18 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun addRandomStyleTag() {
         if(styleTags.isEmpty()) { // Check there's no style tags
-            val arr = resources.getStringArray(R.array.style_array)
+            // Get time
+            val time = Calendar.getInstance()
+            val currentHour = time.get(Calendar.HOUR_OF_DAY)
+
+            // Pick style tag based on time
+            var arr = resources.getStringArray(R.array.styles_night_array)
+            if((currentHour < 11) && (currentHour >= 5)) { // Morning
+                arr = resources.getStringArray(R.array.styles_morning_array)
+            } else if ((currentHour < 18) && (currentHour >= 12)) { // Afternoon
+                arr = resources.getStringArray(R.array.styles_afternoon_array)
+            } // else leave array as is (night)
+
 
             var run = true
             var s = ""

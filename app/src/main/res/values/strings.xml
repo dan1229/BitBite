@@ -168,7 +168,7 @@
         <item>American</item>
         <item>Asian</item>
         <item>Bar</item>
-        <item>Barbeque</item>
+        <item>Barbecue</item>
         <item>Breakfast</item>
         <item>Brunch</item>
         <item>Cafe</item>
@@ -200,6 +200,87 @@
         <item>Thai</item>
         <item>Vegan</item>
         <item>Vegetarian</item>
+    </string-array>
+
+    <!-- Morning Styles Array -->
+    <string-array name="styles_morning_array">
+        <item>Breakfast</item>
+        <item>Brunch</item>
+        <item>Cafe</item>
+        <item>Coffee</item>
+        <item>Dessert</item>
+        <item>Fast Food</item>
+        <item>Health</item>
+        <item>Indian</item>
+        <item>Israeli</item>
+        <item>Random</item>
+    </string-array>
+
+    <!-- Afternoon Styles Array -->
+    <string-array name="styles_afternoon_array">
+        <item>American</item>
+        <item>Asian</item>
+        <item>Bar</item>
+        <item>Barbecue</item>
+        <item>Breakfast</item>
+        <item>Brunch</item>
+        <item>Cafe</item>
+        <item>Caribbean</item>
+        <item>Chinese</item>
+        <item>Coffee</item>
+        <item>Cuban</item>
+        <item>Dessert</item>
+        <item>Fast Food</item>
+        <item>French</item>
+        <item>Greek</item>
+        <item>Hamburgers</item>
+        <item>Health</item>
+        <item>Indian</item>
+        <item>Israeli</item>
+        <item>Italian</item>
+        <item>Latin</item>
+        <item>Market</item>
+        <item>Mediterranean</item>
+        <item>Mexican</item>
+        <item>Pizza</item>
+        <item>Random</item>
+        <item>Seafood</item>
+        <item>Soul Food</item>
+        <item>Spanish</item>
+        <item>Sushi</item>
+        <item>Tavern</item>
+        <item>Thai</item>
+    </string-array>
+
+    <!-- Night Styles Array -->
+    <string-array name="styles_night_array">
+        <item>American</item>
+        <item>Asian</item>
+        <item>Bar</item>
+        <item>Barbecue</item>
+        <item>Caribbean</item>
+        <item>Chinese</item>
+        <item>Cuban</item>
+        <item>Dessert</item>
+        <item>French</item>
+        <item>Greek</item>
+        <item>Hamburgers</item>
+        <item>Health</item>
+        <item>Indian</item>
+        <item>Israeli</item>
+        <item>Italian</item>
+        <item>Latin</item>
+        <item>Market</item>
+        <item>Mediterranean</item>
+        <item>Mexican</item>
+        <item>Pizza</item>
+        <item>Random</item>
+        <item>Seafood</item>
+        <item>Soul Food</item>
+        <item>Spanish</item>
+        <item>Sushi</item>
+        <item>Tavern</item>
+        <item>Thai</item>
     </string-array>
 
 </resources>
