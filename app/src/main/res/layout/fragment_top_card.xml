@@ -48,7 +48,7 @@
             app:layout_constraintBottom_toTopOf="@id/topcard_rating"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@string/default_name"/>
+            android:text="@string/place_default_name"/>
         <ImageView
             android:id="@+id/topcard_rating"
             android:layout_width="@dimen/topcard_review_width"
@@ -113,7 +113,7 @@
                 android:textColor="@color/text_secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/default_price" />
+                android:text="@string/place_default_price" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
     <View

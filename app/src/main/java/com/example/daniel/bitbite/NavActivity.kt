@@ -108,4 +108,28 @@ abstract class NavActivity : BaseActivity(), NavigationView.OnNavigationItemSele
     }
 
 
+    /**====================================================================================================**/
+    /** Setup **/
+
+    // setupNav
+    // Sets up Nav Drawer
+    protected
+    fun setupNav(header: NavigationView, footer: NavigationView) {
+        header.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            mDrawerLayout.closeDrawers()
+            navMenuSwitch(menuItem)
+            true
+        }
+
+        // Set Nav Footer listener
+        footer.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            mDrawerLayout.closeDrawers()
+            navMenuSwitch(menuItem)
+            false
+        }
+    }
+
+
 } /** END CLASS NavActivity.kt **/

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.preference.PreferenceFragment
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.appbar_standard.view.*
+import org.jetbrains.anko.act
 
 
 class SettingsActivity : BaseActivity() {
@@ -25,6 +26,11 @@ class SettingsActivity : BaseActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.preferences)
+
+            findPreference("clear_favorites").setOnPreferenceClickListener {
+                confirmClearFavorites(act)
+                true
+            }
         }
     }
 }

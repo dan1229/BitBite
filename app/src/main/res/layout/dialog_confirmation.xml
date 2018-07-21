@@ -18,10 +18,4 @@
             android:layout_margin="16dp"/>
     </android.support.design.widget.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/confirmationCheckbox"
-        android:text="@string/confirmation_checkbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"/>
 </LinearLayout>

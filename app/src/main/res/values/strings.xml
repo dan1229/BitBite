@@ -3,6 +3,7 @@
     <string name="google_api_key">AIzaSyDBAq8NetYqGh9h1rq2QeKOZgW_VPIF6JE</string>
     <string name="app_name">BitBite</string>
 
+
     <!-- Generic -->
     <string name="yes">YES</string>
     <string name="no">NO</string>
@@ -10,17 +11,29 @@
     <string name="closed">CLOSED</string>
     <string name="dot">•</string>
 
-    <!-- Options Menu -->
-    <string name="action_settings">Settings</string>
-    <string name="action_about_us">About Us</string>
-    <string name="action_rate_us">Rate Us</string>
 
-    <!-- Settings -->
+    <!-- Preferences -->
+    <string name="pref_title_radius">Radius</string>
+    <string name="pref_title_opennow">Open Now</string>
+    <string name="pref_title_defaultprice">Default Price Level</string>
+    <string name="pref_title_group2">Advanced Settings</string>
+    <string name="pref_title_sortby">Sort By</string>
+    <string name="pref_title_clearfavorites">Clear Favorites List</string>
+
+    <string name="pref_summary_opennow">Only display places that are open</string>
+    <string name="pref_summary_sortby">Click to choose what to sort by</string>
+    <string name="pref_summary_clearfavorites">Click to clear Favorites list</string>
+
+    <string name="pref_format_defaultprice">%d</string>
+    <string name="pref_format_radius">%d mi</string>
+
+
+    <!-- Favorites Options Menu -->
     <string name="title_activity_settings">Settings</string>
     <string name="favorites_menu_clearlist">Clear Favorites</string>
 
     <!-- Splash Screen -->
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="splash_title">SplashActivity</string>
 
     <!-- MainActivity -->
     <string name="style_header">Style</string>
@@ -32,17 +45,19 @@
     <string name="feeling_lucky_button">I\'m Feeling Lucky</string>
 
     <!-- Nav Bar -->
-    <string name="home">Home</string>
-    <string name="favorites">Favorites</string>
-    <string name="settings">Settings</string>
-    <string name="about_us">About Us</string>
-    <string name="feedback">Feedback</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_aboutus">About Us</string>
+    <string name="nav_feedback">Feedback</string>
 
     <!-- ResultsActivity -->
-    <string name="title_activity_results">ResultsActivity</string>
-    <string name="button_show_more">Show More</string>
-    <string name="default_name">Not Available</string>
-    <string name="default_price">$</string>
+    <string name="results_title">ResultsActivity</string>
+    <string name="results_button_showmore">Show More</string>
+
+    <!-- Place Defaults -->
+    <string name="place_default_name">Not Available</string>
+    <string name="place_default_price">$</string>
 
     <!-- LocationActivity -->
     <string name="button_directions">Directions</string>
@@ -77,13 +92,12 @@
     <string name="default_description">N/A</string>
 
     <!-- Dialogs -->
-    <string name="location_dialog">Help Us Locate You</string>
-    <string name="location_edit_text">Address/Zip Code</string>
+    <string name="dialog_geocode_title">Help Us Locate You</string>
+    <string name="dialog_geocode_edittext">Address/Zip Code</string>
     <string name="dialog_confirmation_title">Are You Sure?</string>
     <string name="dialog_favorites_confirmation_text">Are you sure you want to clear your favorites list?</string>
-    <string name="confirmation_text">Is the location below correct?</string>
-    <string name="confirmation_checkbox">Use this as my default location?</string>
-    <string name="default_technical_errors">Technical difficulties. Please try again.</string>
+    <string name="dialog_geocode_confirmation_text">Is the location below correct?</string>
+    <string name="dialog_error_default_message">Technical difficulties. Please try again.</string>
 
 
     <!-- Strings related to Settings -->
@@ -92,76 +106,6 @@
     <string name="imageview_description_toolbar">Toolbar Logo</string>
     <string name="imageview_description_review_rating">Toolbar Logo</string>
     <string name="imageview_description_location_image">Location Image</string>
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 
     <!-- FOOD TYPE OPTIONS -->
     <string-array name="style_array">
@@ -208,11 +152,8 @@
         <item>Brunch</item>
         <item>Cafe</item>
         <item>Coffee</item>
-        <item>Dessert</item>
         <item>Fast Food</item>
         <item>Health</item>
-        <item>Indian</item>
-        <item>Israeli</item>
         <item>Random</item>
     </string-array>
 

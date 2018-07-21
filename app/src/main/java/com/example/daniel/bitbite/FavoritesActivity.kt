@@ -4,6 +4,8 @@ import android.app.Fragment
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_favorites.*
 import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.appbar_standard.view.*
@@ -29,7 +31,7 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
         toolbarBuilderNavMenu(favorites_toolbar.toolbar, "Favorites")
 
         // Setup Nav Drawer
-        setupNav()
+        setupNav(nav_view, nav_footer)
 
         // Get intent extras
         user = intent.getParcelableExtra("USER")
@@ -44,9 +46,9 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
     fun updateCards() {
         for (i in 0 until faveListSize) {
             doAsync {
-                Log.d("FAVORITES", "$i, ${favoritesList[i].name}")
                 val fragment = ResultsCard.newInstance(favoritesList[i], user)
-                fragmentManager.beginTransaction().add(R.id.favorites_container, fragment).commit()
+                fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                        .add(R.id.favorites_container, fragment).commit()
                 fragmentList.add(fragment)
 
                 uiThread {
@@ -79,28 +81,27 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
         }
     }
 
-
     /**====================================================================================================**/
     /** Options Menu Methods **/
 
-    // setupNav
-    // Sets up Nav Drawer
-    private
-    fun setupNav() {
-        nav_view.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            true
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.favorites_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here.
+        val id = item.itemId
+
+        if (id == R.id.clear_list) {
+            val valid = confirmClearFavorites(this)
+            clearFavoritesList(this)
+            return true
         }
 
-        // Set Nav Footer listener
-        nav_footer.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            false
-        }
+        return super.onOptionsItemSelected(item)
+
     }
 
     /**====================================================================================================**/

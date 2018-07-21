@@ -58,8 +58,7 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         setupAutocomplete()
 
         // Set up Nav Drawer
-        setupNav()
-
+        setupNav(nav_view, nav_footer)
 
         /** On Click Listeners **/
 
@@ -190,26 +189,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         val defaultPrice = getPriceSetting(this)
         main_seekbar_price.progress = defaultPrice - 1
         user.price = defaultPrice
-    }
-
-    // setupNav
-    // Sets up Nav Drawer
-    private
-    fun setupNav() {
-        nav_view.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            true
-        }
-
-        // Set Nav Footer listener
-        nav_footer.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
-            mDrawerLayout.closeDrawers()
-            navMenuSwitch(menuItem)
-            false
-        }
     }
 
     /**====================================================================================================**/
@@ -422,7 +401,7 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Build dialog box
         val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.location_dialog))
+        builder.setTitle(getString(R.string.dialog_geocode_title))
                 .setMessage("Please enter your location")
                 .setCancelable(false)
                 .setView(view)
@@ -457,8 +436,8 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Build dialog box
         val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.location_dialog))
-                .setMessage(getString(R.string.confirmation_text))
+        builder.setTitle(getString(R.string.dialog_geocode_title))
+                .setMessage(getString(R.string.dialog_geocode_confirmation_text))
                 .setCancelable(false)
                 .setView(view)
 

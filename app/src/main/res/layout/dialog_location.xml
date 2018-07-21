@@ -15,7 +15,7 @@
             android:id="@+id/locationEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/location_edit_text"
+            android:hint="@string/dialog_geocode_edittext"
             android:layout_margin="12dp"
             android:inputType="textPostalAddress"
             />

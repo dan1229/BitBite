@@ -98,7 +98,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     // errorAlert()
     // Generic error dialog
-    fun errorAlert(input: String = getString(R.string.default_technical_errors)) {
+    fun errorAlert(input: String = getString(R.string.dialog_error_default_message)) {
         alert(input, "Uh Oh!") {
             okButton { dialog -> dialog.dismiss()  }
         }.show()

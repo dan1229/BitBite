@@ -257,9 +257,8 @@ fun directionsWarning(place: Place, context: Context) {
 
 // confirmClearFavorites()
 // Shows dialog confirming user wants to clear Favorites List
-fun confirmClearFavorites(context: Context): Boolean {
+fun confirmClearFavorites(context: Context) {
     val list = getFavorites(context)
-    var confirm = false
 
     if(list != null) {
         // Build dialog box
@@ -272,19 +271,15 @@ fun confirmClearFavorites(context: Context): Boolean {
             clearFavoritesList(context)
             dialog.dismiss()
             context.toast("Favorites list cleared!")
-            confirm = true
         }
 
         // No button listener
         builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.dismiss()
-            confirm = false
         }
 
         builder.show()
     }
-
-    return confirm
 }
 
 /**====================================================================================================**/
@@ -316,5 +311,4 @@ fun ellipsizeText(input : String, max : Int = 20) : String {
 // Downloads photo based on passed URL into passed ImageView
 fun downloadPhoto(context : Context, view : ImageView, url : String) {
     Glide.with(context).load(url).into(view)
-
 }

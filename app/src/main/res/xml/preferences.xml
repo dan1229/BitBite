@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sample="http://schemas.android.com/apk/res-auto">
+    xmlns:seekbar="http://schemas.android.com/apk/res-auto" >
 
     <PreferenceCategory android:title="Basic Settings">
         <SwitchPreference
             android:key="opennow"
-            android:title="Open Now"
-            android:summary="Only display places that are open"
+            android:title="@string/pref_title_opennow"
+            android:summary="@string/pref_summary_opennow"
             android:defaultValue="true"/>
-        <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:defaultValue="5"
-            android:enabled="true"
+        <org.anasthase.androidseekbarpreference.SeekBarPreference
             android:key="default_price"
-            android:title="Default Price Level"
-            sample:msbp_interval="1"
-            sample:msbp_maxValue="5"
-            sample:msbp_minValue="1" />
-        <com.pavelsikun.seekbarpreference.SeekBarPreference
-            android:key="radius"
-            android:title="Radius"
             android:enabled="true"
+            android:title="@string/pref_title_defaultprice"
+            seekbar:format="@string/pref_format_defaultprice"
+            android:defaultValue="5"
+            seekbar:maxValue="5"
+            seekbar:minValue="1"
+            seekbar:stepValue="1"/>
+        <org.anasthase.androidseekbarpreference.SeekBarPreference
+            android:key="radius"
+            android:enabled="true"
+            android:title="@string/pref_title_radius"
+            seekbar:format="@string/pref_format_radius"
             android:defaultValue="15"
-            sample:msbp_minValue="1"
-            sample:msbp_maxValue="30"
-            sample:msbp_interval="1"
-            sample:msbp_measurementUnit="mi" />
+            seekbar:maxValue="30"
+            seekbar:minValue="1"
+            seekbar:stepValue="1"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Advanced Settings">
+    <PreferenceCategory android:title="@string/pref_title_group2">
         <ListPreference
             android:key="sortby"
-            android:summary="Click to choose what to sort by"
-            android:title="Sort By"
+            android:title="@string/pref_title_sortby"
+            android:summary="@string/pref_summary_sortby"
             android:dialogTitle="Sort By"
             android:entries= "@array/sort_by_titles"
             android:entryValues="@array/sort_by_titles" />
+        <Preference
+            android:key="clear_favorites"
+            android:title="@string/pref_title_clearfavorites"
+            android:summary="@string/pref_summary_clearfavorites" />
     </PreferenceCategory>
 </PreferenceScreen>

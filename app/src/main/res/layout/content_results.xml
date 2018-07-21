@@ -36,7 +36,7 @@
                 android:textSize="@dimen/text_normal"
                 android:textColor="@color/white"
                 android:textAllCaps="false"
-                android:text="@string/button_show_more"/>
+                android:text="@string/results_button_showmore"/>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
