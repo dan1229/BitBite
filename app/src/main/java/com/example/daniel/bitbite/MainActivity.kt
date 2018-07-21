@@ -20,8 +20,11 @@ import com.example.daniel.bitbite.R.style.AppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_nav.*
 import kotlinx.android.synthetic.main.appbar_standard.view.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import java.net.URL
 import java.util.*
 
@@ -37,38 +40,13 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     var changed = true
     var valid = false
 
-
     /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         main_seekbar_price!!.setOnSeekBarChangeListener(this)
-        mDrawerLayout = findViewById(R.id.drawer_layout)
-
-
-
-
-        mDrawerLayout.setOnClickListener {
-            Log.d("NAV", "clicked mDrawerLayout")
-        }
-
-        nav_view.setOnClickListener {
-            Log.d("NAV", "clicked nav_view")
-        }
-
-        main_loading.setOnClickListener {
-            Log.d("NAV", "clicked loading")
-        }
-
-        main_toolbar.setOnClickListener {
-            Log.d("NAV", "clicked toolbar")
-
-        }
-
-        content_frame.setOnClickListener {
-            Log.d("NAV", "clicked content_frame")
-        }
+        mDrawerLayout = findViewById(R.id.main_drawerlayout)
 
         // Setup Toolbar
         toolbarBuilderNavMenu(main_toolbar.toolbar, "Home")
@@ -78,6 +56,12 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
 
         // Setup spinner
         setupAutocomplete()
+
+        // Set up Nav Drawer
+        setupNav()
+
+
+        /** On Click Listeners **/
 
         // Set on click listener for submitButton
         submitButton.setOnClickListener{
@@ -121,14 +105,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         }
     }
 
-    // closeKeyboard()
-    // Closes soft keyboard
-    private
-    fun closeKeyboard() {
-        val inputManager:InputMethodManager =getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.SHOW_FORCED)
-    }
-
     // setupAutocomplete()
     // Setup autocomplete text view
     private
@@ -168,8 +144,8 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     // Takes chosen item from autocomplete and either displays or denies it
     private
     fun autocompleteItemSelected(s : String) {
-        if(styleTags.size < 3) {
-            if(!containsStyleTag(s)) {
+        if(styleTags.size < 3) { // Check if too many tags
+            if(!containsStyleTag(s)) { // Check if duplicate tag
                 changed = true
                 addStyleTagFragment(s)
             } else {
@@ -180,15 +156,16 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         }
     }
 
-    // addStyleTag()
-    // Adds style tag fragment if successfully selected from list
+    // closeKeyboard()
+    // Closes soft keyboard
     private
-    fun addStyleTagFragment(s : String) {
-        changed = true
-        val fragment = StyleTag.newInstance(s)
-        styleTags.add(fragment)
-        fragmentManager.beginTransaction().add(R.id.main_container_tags, fragment).commit()
+    fun closeKeyboard() {
+        val inputManager:InputMethodManager =getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.SHOW_FORCED)
     }
+
+    /**====================================================================================================**/
+    /** Listeners / Setup **/
 
     // SeekBar Listeners
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -204,7 +181,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
 
     override fun onStopTrackingTouch(p0: SeekBar?) {
         user.price = p0!!.progress + 1
-        user.price = user.price
     }
 
     // setDefaultPrice()
@@ -214,6 +190,26 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         val defaultPrice = getPriceSetting(this)
         main_seekbar_price.progress = defaultPrice - 1
         user.price = defaultPrice
+    }
+
+    // setupNav
+    // Sets up Nav Drawer
+    private
+    fun setupNav() {
+        nav_view.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            mDrawerLayout.closeDrawers()
+            navMenuSwitch(menuItem)
+            true
+        }
+
+        // Set Nav Footer listener
+        nav_footer.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            mDrawerLayout.closeDrawers()
+            navMenuSwitch(menuItem)
+            false
+        }
     }
 
     /**====================================================================================================**/
@@ -480,14 +476,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         builder.show()
     }
 
-    // errorAlert()
-    // Generic error dialog
-    fun errorAlert(input: String = getString(R.string.default_technical_errors)) {
-        alert(input, "Uh Oh!") {
-            okButton { dialog -> dialog.dismiss()  }
-        }.show()
-    }
-
     /**====================================================================================================**/
     /** Fragment Methods **/
 
@@ -508,7 +496,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     override fun onPause() {
         super.onPause()
         stopLoading(main_loading)
-
     }
 
     // onResume()
@@ -517,7 +504,10 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         super.onResume()
         Log.d("BITBITE", "Main onResume()")
         setDefaultPrice()
-        addRandomStyleTag()
+
+        if(styleTags.size == 0) {
+            addRandomStyleTag()
+        }
     }
 
     /**====================================================================================================**/
@@ -575,7 +565,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
                 return true
             }
         }
-
         return false
     }
 
@@ -588,6 +577,16 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
             string += "${styleTags[i].style}|"
         }
         return string.removeSuffix("|")
+    }
+
+    // addStyleTag()
+    // Adds style tag fragment if successfully selected from list
+    private
+    fun addStyleTagFragment(s : String) {
+        changed = true
+        val fragment = StyleTag.newInstance(s)
+        styleTags.add(fragment)
+        fragmentManager.beginTransaction().add(R.id.main_container_tags, fragment).commit()
     }
 
 

@@ -17,6 +17,8 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.appbar_standard.view.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.okButton
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -88,6 +90,18 @@ abstract class BaseActivity : AppCompatActivity() {
         bundle.putBoolean("new_window", true)
         intents.putExtras(bundle)
         this.startActivity(intents)
+    }
+
+
+    /**====================================================================================================**/
+    /** Dialogs **/
+
+    // errorAlert()
+    // Generic error dialog
+    fun errorAlert(input: String = getString(R.string.default_technical_errors)) {
+        alert(input, "Uh Oh!") {
+            okButton { dialog -> dialog.dismiss()  }
+        }.show()
     }
 
 

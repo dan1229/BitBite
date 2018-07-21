@@ -25,7 +25,7 @@
     <!-- MainActivity -->
     <string name="style_header">Style</string>
     <string name="style_display_text">Random</string>
-    <string name="autocomplete_hint">Type of Food</string>
+    <string name="autocomplete_hint">Select Type</string>
     <string name="price_header">Price</string>
     <string name="price_display_text">$$$$$</string>
     <string name="submit_button">Search</string>

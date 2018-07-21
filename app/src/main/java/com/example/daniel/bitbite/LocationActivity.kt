@@ -46,7 +46,7 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         val tfragment = TopCard.newInstance(place)
         topCard = tfragment
         fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_top, R.animator.exit_to_top)
-                .add(R.id.location_topcard_container, tfragment).commit()
+                .replace(R.id.location_topcard_container, tfragment).commit()
     }
 
     // addBottomCardFragment()
@@ -93,10 +93,6 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
 
         // Update Favorites list
         updateFavorites(this, place, favorites)
-
-        // Delete fragments
-        fragmentManager.beginTransaction().remove(topCard).commit()
-        fragmentManager.beginTransaction().remove(bottomCard).commit()
     }
 
     // onResume()

@@ -183,7 +183,6 @@ class MoreInfoCard : Fragment() {
     // Creates Intent for Reviews.kt and animates transition
     private
     fun goToReviews() {
-        // Create Intent
         val intent = Intent(activity, ReviewActivity::class.java)
         intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
         intent.putExtra("place_id", place.placeID) // Pass placeID

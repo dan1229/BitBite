@@ -1,24 +1,20 @@
 package com.example.daniel.bitbite
 
-import android.app.ActivityOptions
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.getDrawable
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_results_card.*
 import kotlinx.android.synthetic.main.fragment_results_card.view.*
 import org.jetbrains.anko.act
 
 
 class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
-    private lateinit var place : Place
+    lateinit var place : Place
     private lateinit var user : BaseActivity.User
 //    private lateinit var card : ResultsCard
 //    var gDetector: GestureDetectorCompat? = null
@@ -42,6 +38,9 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         // Populate card
         updateCard(view)
 
+        // Update photo
+        updatePhoto(view)
+
         // Set on click listener for card
         view.results_card.setOnClickListener {
             listener!!.onFragInteraction()
@@ -49,7 +48,6 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         }
 
         return view
-
     }
 
     /**====================================================================================================**/
@@ -131,21 +129,10 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
     // Goes to LocationActivity, calls Place Details API
     private
     fun goToLocation() {
-        // Create Intent
         val intent = Intent(activity, LocationActivity::class.java)
         intent.putExtra("PLACE", place)
         intent.putExtra("USER", user)
-
-        // Check Android version for animation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                    Pair.create<View, String>(results_card, "top_card"),
-//                    Pair.create<View, String>(results_image, "place_image"),
-                    Pair.create<View, String>(results_name, "place_name"))
-            startActivity(intent)
-        } else {
-            startActivity(intent)
-        }
+        startActivity(intent)
     }
 
     /**====================================================================================================**/
@@ -159,5 +146,12 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
         view.results_price.text = place.priceConversion()
         view.results_rating.setImageDrawable(getDrawable(act, place.ratingConversion()))
         view.results_description.text = place.fixDescription()
+    }
+
+    // updatePhoto()
+    // Updates photo
+    private
+    fun updatePhoto(view : View) {
+        place.placePhotoCall(act, view.results_image)
     }
 }

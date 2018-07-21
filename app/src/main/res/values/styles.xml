@@ -14,11 +14,11 @@
         <item name="windowNoTitle">true</item>
 
         <!-- enable window content transitions -->
-        <item name="android:windowActivityTransitions">true</item>
+        <!--<item name="android:windowActivityTransitions">true</item>item-->
 
-         specify enter and exit transitions
-        <item name="android:windowEnterTransition">@transition/fade_in</item>
-        <item name="android:windowExitTransition">@transition/fade_out</item>
+         <!--specify enter and exit transitions-->
+        <!--<item name="android:windowEnterTransition">@transition/fade_in</item>-->
+        <!--<item name="android:windowExitTransition">@transition/fade_out</item>-->
         <item name="android:fragmentEnterTransition">@animator/enter_from_right</item>
         <item name="android:fragmentExitTransition">@animator/exit_to_left</item>
 

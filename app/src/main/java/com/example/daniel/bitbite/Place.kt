@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.content.ContextCompat
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -26,7 +27,13 @@ class Place (var name:String, var placeID:String, var description:String, var ph
     // placePhotoCall()
     // Calls Place Photo API and returns image
     fun placePhotoCall(context : Context, view : ImageView) {
-        Glide.with(context).load(photoCallUrlBuilder(context, this.photoRef)).into(view)
+        val ref = this.photoRef
+
+        if (ref != "DEFAULT") { // Lookup image
+            Glide.with(context).load(photoCallUrlBuilder(context, ref)).into(view)
+        } else { // Default image
+            view.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.default_place_image))
+        }
     }
 
     // Builds URL for Place Photo API call

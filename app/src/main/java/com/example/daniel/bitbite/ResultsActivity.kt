@@ -1,23 +1,18 @@
 package com.example.daniel.bitbite
 
-import android.app.Fragment
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.activity_results.*
 import kotlinx.android.synthetic.main.content_results.*
-import kotlinx.android.synthetic.main.fragment_results_card.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import android.util.Pair as UtilPair
 
 
 class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListener {
 
     var places = ArrayList<Place>()
-    var fragmentList = ArrayList<Fragment>()
-    var listSize = 0
+    var fragmentList = ArrayList<ResultsCard>()
     var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +31,6 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         places = intent.getParcelableArrayListExtra<Place>(EXTRA_PLACES_LIST)
         user = intent.getParcelableExtra("USER")
         token = intent.getStringExtra("TOKEN")
-        listSize = places.size
 
 
         // Set Show More button listener
@@ -44,10 +38,10 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
             startLoading(loading_results)
 
             doAsync {
+                places.clear()
                 val (x, y) = callPlacesApi(this@ResultsActivity, token = token)
                 places = x
                 token = y
-                listSize = places.size
             }
             updateResults()
         }
@@ -60,29 +54,17 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
     // Populates ResultsCard fragments
     private
     fun updateResults() {
-        for (i in 0 until listSize) {
-            doAsync {
-                val fragment = ResultsCard.newInstance(places[i], user)
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(
-                                R.animator.enter_from_right,
-                                R.animator.exit_to_left)
-                        .add(R.id.layout_container, fragment).commit()
-                fragmentList.add(fragment)
-
-                uiThread {
-                    if(places[i].photoRef != "DEFAULT") // Lookup image
-                        places[i].placePhotoCall(this@ResultsActivity, fragment.results_image)
-                    else
-                        fragment.results_image.setImageDrawable(ContextCompat.getDrawable( // Set default image
-                                this@ResultsActivity, R.drawable.default_place_image))
-                }
-            }
+        // Create fragments and add to layout
+        for (i in 0 until places.size) {
+            // Make fragment and add to layout
+            val fragment = ResultsCard.newInstance(places[i], user)
+            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                    .add(R.id.layout_container, fragment).commit()
         }
+
         stopLoading(loading_results)
         updateButton()
     }
-
 
     // updateButton()
     // Updates button visibility based on token
@@ -105,7 +87,8 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
 
         // Remove old cards
         for(i in 0 until fragmentList.size) {
-            fragmentManager.beginTransaction().remove(fragmentList[i]).commit()
+            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                    .remove(fragmentList[i]).commit()
         }
         fragmentList.clear()
     }
@@ -115,9 +98,15 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
     override fun onResume() {
         super.onResume()
         Log.d("BITBITE", "Results onResume()")
+    }
 
+    // onPostResume()
+    // Handles post resume
+    override fun onPostResume() {
         // Populate cards
         updateResults()
+
+        super.onPostResume()
     }
 
     /**====================================================================================================**/

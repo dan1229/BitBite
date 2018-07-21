@@ -7,7 +7,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_nav.*
 
 abstract class NavActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,26 +19,6 @@ abstract class NavActivity : BaseActivity(), NavigationView.OnNavigationItemSele
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav)
 
-        nav_view.setNavigationItemSelectedListener(this)
-        nav_footer.setNavigationItemSelectedListener(this)
-
-//        // Set Nav Drawer listener
-//        nav_view.setNavigationItemSelectedListener { menuItem ->
-//            Log.d("NAV", "nav selected listener header")
-//            menuItem.isChecked = true
-//            mDrawerLayout.closeDrawers()
-//            navMenuSwitch(menuItem)
-//            true
-//        }
-//
-//        // Set Nav Footer listener
-//        nav_footer.setNavigationItemSelectedListener { menuItem ->
-//            Log.d("NAV", "nav selected listener footer")
-//            menuItem.isChecked = false
-//            mDrawerLayout.closeDrawers()
-//            navMenuSwitch(menuItem)
-//            true
-//        }
     }
 
     /**====================================================================================================**/
@@ -105,7 +84,7 @@ abstract class NavActivity : BaseActivity(), NavigationView.OnNavigationItemSele
 
     // navMenuSwitch()
     // Calls appropriate function(s) based on Nav Drawer input
-    private
+    protected
     fun navMenuSwitch(menuItem: MenuItem) {
         when(menuItem.toString()) {
             "Home" -> goToHome()
