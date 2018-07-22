@@ -14,21 +14,13 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [BottomCard.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [BottomCard.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class BottomCard : Fragment() {
 
     /** Variables **/
+    var index = 0
     var favorites = false
-    var distance = Pair("", "")
+    var distance = ""
+    var duration = ""
     private lateinit var place : Place
     lateinit var user: BaseActivity.User
     private var listener: BottomCard.OnFragmentInteractionListener? = null
@@ -40,6 +32,8 @@ class BottomCard : Fragment() {
 
         place = arguments!!.getParcelable("PLACE")
         user = arguments!!.getParcelable("USER")
+        distance = arguments!!.getString("DISTANCE")
+        duration = arguments!!.getString("DURATION")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -53,14 +47,9 @@ class BottomCard : Fragment() {
         // Update card
         updateCard(view)
 
-        // Place Details call
-        doAsync {
-            distance = callDistanceApi(act, user.lat, user.lng, place.placeID)
-
-            uiThread { // Populate Location card
-                distanceUpdates(view, distance.first, distance.second)
-            }
-        }
+        // Matrix API call
+        if(distance == "" && distance == "")
+            callMatrixApi(view)
 
         /**====================================================================================================**/
         /** On Click Listeners **/
@@ -76,7 +65,7 @@ class BottomCard : Fragment() {
             // Update view and send info to LocationActivity
             favorites = !favorites
             updateFavorites(view)
-            listener!!.onFragmentInteraction(favorites)
+            listener!!.fragmentFavoritesChanged(favorites)
         }
 
         // Set on click listener for More Info Button -> makes views visible
@@ -110,16 +99,19 @@ class BottomCard : Fragment() {
         listener = null
     }
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(fave: Boolean)
+        fun fragmentFavoritesChanged(fave: Boolean)
         fun onMoreInfoCreation(frag: MoreInfoCard)
     }
 
     /** newInstance **/
     companion object {
-        fun newInstance(place : Place, user : BaseActivity.User): BottomCard {
+        fun newInstance(place : Place, user : BaseActivity.User,
+                        distance: String = "", duration: String = ""): BottomCard {
             val args = Bundle()
             args.putParcelable("PLACE", place)
             args.putParcelable("USER", user)
+            args.putString("DISTANCE", distance)
+            args.putString("DURATION", duration)
             val fragment = BottomCard()
             fragment.arguments = args
             return fragment
@@ -133,14 +125,33 @@ class BottomCard : Fragment() {
     // Creates MoreInfoCard fragment and adds to container
     private
     fun createMoreInfoFragment() : MoreInfoCard {
-        val fragment = MoreInfoCard.newInstance(place, favorites, distance.first, distance.second)
+        val fragment = MoreInfoCard.newInstance(place, favorites, distance, distance, user)
+        fragment.index = 0
+
         fragmentManager!!.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
                 .replace(R.id.location_bottomcard_container, fragment).commit()
+
         return fragment
     }
 
     /**====================================================================================================**/
     /** Updater Methods **/
+
+    // callMatrixApi()
+    // Calls Google Matrix API
+    private
+    fun callMatrixApi(view: View) {
+        doAsync {
+            var pair = Pair("", "")
+            pair = callDistanceApi(act, user.lat, user.lng, place.placeID)
+            distance = pair.first
+            duration = pair.second
+
+            uiThread { // Populate Location card
+                distanceUpdates(view, distance, duration)
+            }
+        }
+    }
 
     // locationUpdates()
     // Updates available card fields before Matrix API call

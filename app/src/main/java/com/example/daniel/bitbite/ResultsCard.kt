@@ -2,7 +2,6 @@ package com.example.daniel.bitbite
 
 import android.app.Fragment
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.getDrawable
 import android.view.LayoutInflater
@@ -12,17 +11,15 @@ import kotlinx.android.synthetic.main.fragment_results_card.view.*
 import org.jetbrains.anko.act
 
 
-class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
+class ResultsCard : Fragment(){
 
+    var index = 0
     lateinit var place : Place
     private lateinit var user : BaseActivity.User
-//    private lateinit var card : ResultsCard
-//    var gDetector: GestureDetectorCompat? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        this.gDetector = GestureDetectorCompat(activity, this)
 
         place = arguments.getParcelable("PLACE")
         user = arguments.getParcelable("USER")
@@ -33,8 +30,6 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
         val view = inflater.inflate(R.layout.fragment_results_card, container, false)
 
-//        card = this
-
         // Populate card
         updateCard(view)
 
@@ -43,8 +38,7 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
 
         // Set on click listener for card
         view.results_card.setOnClickListener {
-            listener!!.onFragInteraction()
-            goToLocation()
+            listener!!.resultsCardSelected(place)
         }
 
         return view
@@ -68,7 +62,7 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragInteraction()  {}
+        fun resultsCardSelected(place: Place)  {}
     }
 
     companion object {
@@ -80,59 +74,6 @@ class ResultsCard : Fragment(){//, GestureDetector.OnGestureListener {
             fragment.arguments = args
             return fragment
         }
-    }
-
-    /**====================================================================================================**/
-    /** Gestures Interface Overrides **/
-//
-//    override fun onTouchEvent(event: MotionEvent): Boolean {
-//        this.gDetector?.onTouchEvent(event)
-//        // Be sure to call the superclass implementation
-//        return super.onTouchEvent(event)
-//    }
-//
-//    // onFling()
-//    // Detects "fling" gesture events
-//    override fun onFling(event1: MotionEvent, event2: MotionEvent,
-//                         velocityX: Float, velocityY: Float): Boolean {
-//
-//        Log.d("GESTURE", "fling")
-//        getActivity().getFragmentManager().beginTransaction().remove(card).commit()
-//        return true
-//    }
-//
-//    override fun onDown(p0: MotionEvent?): Boolean {
-//        return false
-//    }
-//
-//    override fun onLongPress(p0: MotionEvent?) {
-//        //
-//    }
-//
-//    override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
-//        return false
-//    }
-//
-//    override fun onShowPress(p0: MotionEvent?) {
-//        Log.d("GESTURE", "fling")
-//
-//    }
-//
-//    override fun onSingleTapUp(p0: MotionEvent?): Boolean {
-//        return false
-//    }
-
-    /**====================================================================================================**/
-    /** Intent Makers **/
-
-    // goToLocation()
-    // Goes to LocationActivity, calls Place Details API
-    private
-    fun goToLocation() {
-        val intent = Intent(activity, LocationActivity::class.java)
-        intent.putExtra("PLACE", place)
-        intent.putExtra("USER", user)
-        startActivity(intent)
     }
 
     /**====================================================================================================**/

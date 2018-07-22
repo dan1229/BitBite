@@ -36,5 +36,4 @@
     <include android:id="@+id/location_toolbar"
         layout="@layout/appbar_standard" />
 
-
 </android.support.design.widget.CoordinatorLayout>

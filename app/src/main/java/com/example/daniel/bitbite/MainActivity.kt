@@ -200,9 +200,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     fun goToResults() {
         if(valid) {
             val intent = Intent(this@MainActivity, ResultsActivity::class.java)
-            intent.putParcelableArrayListExtra(EXTRA_PLACES_LIST, placesList)
-            intent.putExtra("TOKEN", next_page_token)
-            intent.putExtra("USER", user)
             startActivity(intent)
         }
         stopLoading(main_loading)
@@ -214,8 +211,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     fun feelingLucky() {
         if(valid) {
             val intent = Intent(this@MainActivity, LocationActivity::class.java)
-            intent.putExtra("PLACE", placesList[0])
-            intent.putExtra("USER", user)
             startActivity(intent)
         }
         stopLoading(main_loading)
@@ -250,7 +245,7 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
                 try {
                     val (x, y) = callPlacesApi(this@MainActivity, user)
                     placesList = x
-                    next_page_token = y
+                    user.token = y
                     valid = true
                 } catch(e : Exception){
                     valid = false
@@ -458,7 +453,7 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     /**====================================================================================================**/
     /** Fragment Methods **/
 
-    // onFragmentInteraction()
+    // fragmentFavoritesChanged()
     // Updates style string and removes fragments when clicked
     override fun onFragmentInteraction(frag : Fragment, string : String) {
         // Close StyleTag fragment

@@ -24,9 +24,6 @@ import java.util.*
 abstract class BaseActivity : AppCompatActivity() {
 
     val locationRequestCode = 101
-    var user = User(0.0, 0.0, "", 0)
-    var placesList = ArrayList<Place>()
-    var next_page_token = ""
 
     /** Settings Variables **/
     var DEFAULTLOCATION = ""
@@ -34,8 +31,13 @@ abstract class BaseActivity : AppCompatActivity() {
     /** User Class Declaration **/
     @Parcelize
     data class User(var lat: Double, var lng: Double,
-                    var style: String = "", var price: Int = 0) : Parcelable
+                    var style: String = "", var price: Int = 0,
+                    var token: String = "") : Parcelable
 
+    companion object {
+        var placesList = ArrayList<Place>()
+        var user = User(0.0, 0.0, "", 0, "")
+    }
 
     /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,6 +92,17 @@ abstract class BaseActivity : AppCompatActivity() {
         bundle.putBoolean("new_window", true)
         intents.putExtras(bundle)
         this.startActivity(intents)
+    }
+
+    // goToLocation()
+    // Goes to LocationActivity.kt
+    protected
+    fun goToLocation(place: Place, distance: String = "", duration: String = "") {
+        val intent = Intent(this, LocationActivity::class.java)
+        intent.putExtra("PLACE", place)
+        intent.putExtra("DISTANCE", distance)
+        intent.putExtra("DURATION", duration)
+        startActivity(intent)
     }
 
 

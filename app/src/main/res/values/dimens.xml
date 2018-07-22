@@ -10,6 +10,11 @@
     <dimen name="feeling_lucky_size">64dp</dimen>
     <dimen name="feeling_lucky_margin">-32dp</dimen>
 
+    <dimen name="otherlocation_card_height">112dp</dimen>
+    <dimen name="otherlocation_card_width">214dp</dimen>
+    <dimen name="otherlocation_image_width">72dp</dimen>
+    <dimen name="otherlocation_info_height">44dp</dimen>
+
     <dimen name="topcard_image_height">196dp</dimen>
     <dimen name="topcard_review_width">124dp</dimen>
     <dimen name="topcard_margin">4dp</dimen>

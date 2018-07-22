@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,37 +16,32 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [MoreInfoCard.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [MoreInfoCard.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class MoreInfoCard : Fragment() {
 
     /** Variables **/
+    private var listener: MoreInfoCard.OnFragmentInteractionListener? = null
+    var fragmentList = ArrayList<OtherLocationCard>()
     var reviews = ArrayList<Reviews>(5)
     lateinit var detailsResponse : DetailsResponse
+    var user = BaseActivity.User(0.0, 0.0)
     private lateinit var place : Place
     private  var favorites = false
     private var distance = ""
     private var duration = ""
-    private var listener: MoreInfoCard.OnFragmentInteractionListener? = null
     var website = ""
     var phone = ""
+    var index = 0
 
 
     /** ON CREATE **/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        place = arguments!!.getParcelable("place")
-        favorites = arguments!!.getBoolean("fave")
-        distance = arguments!!.getString("distance")
-        duration = arguments!!.getString("duration")
+        place = arguments!!.getParcelable("PLACE")
+        favorites = arguments!!.getBoolean("FAVE")
+        distance = arguments!!.getString("DISTANCE")
+        duration = arguments!!.getString("DURATION")
+        user = arguments!!.getParcelable("USER")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +56,11 @@ class MoreInfoCard : Fragment() {
             uiThread { // Populate Location card
                 updateCard(view, detailsResponse)
             }
+        }
+
+        // Setup OtherLocation Fragments
+        if(place.duplicates.isNotEmpty()) {
+            setupOtherLocation(view)
         }
 
         /**====================================================================================================**/
@@ -108,7 +109,7 @@ class MoreInfoCard : Fragment() {
             // Update view and send info to LocationActivity
             favorites = !favorites
             updateFavorites(view)
-            listener!!.onFragmentInteraction(favorites)
+            listener!!.fragmentFavoritesChanged(favorites)
         }
 
         // Set on click listener for Directions Button -> Google Maps
@@ -158,23 +159,46 @@ class MoreInfoCard : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(fave: Boolean)
+        fun fragmentFavoritesChanged(fave: Boolean)
     }
 
     /** newInstance **/
     companion object {
-        fun newInstance(place : Place, favorite : Boolean,
-                        distance : String, duration : String) : MoreInfoCard {
+        fun newInstance(place : Place, favorite : Boolean, distance : String,
+                        duration : String, user: BaseActivity.User) : MoreInfoCard {
+
             val args = Bundle()
-            args.putParcelable("place", place)
-            args.putBoolean("fave", favorite)
-            args.putString("distance", distance)
-            args.putString("duration", duration)
+
+            args.putParcelable("PLACE", place)
+            args.putBoolean("FAVE", favorite)
+            args.putString("DISTANCE", distance)
+            args.putString("DURATION", duration)
+            args.putParcelable("USER", user)
+
             val fragment = MoreInfoCard()
             fragment.arguments = args
             return fragment
         }
     }
+
+    /**====================================================================================================**/
+    /** Other Locations Fragments Handling **/
+
+    // setupOtherLocation()
+    // Sets up OtherLocation section
+    private
+    fun setupOtherLocation(view: View) {
+        // Make scroll view visible
+        view.moreinfocard_card_otherlocations.visibility = View.VISIBLE
+
+        // Create fragments and add to layout
+        for(i in 0 until place.duplicates.size) {
+            val fragment = OtherLocationCard.newInstance(place.duplicates[i], user)
+            Log.d("DUPLICATES", place.name)
+            fragmentManager.beginTransaction().add(R.id.moreinfocard_otherlocationcard_container, fragment).commit()
+        }
+    }
+
 
     /**====================================================================================================**/
     /** Intent Makers **/
@@ -185,8 +209,7 @@ class MoreInfoCard : Fragment() {
     fun goToReviews() {
         val intent = Intent(activity, ReviewActivity::class.java)
         intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
-        intent.putExtra("place_id", place.placeID) // Pass placeID
-        intent.putExtra("name", place.name) // Pass name
+        intent.putExtra("PLACE", place) // pass place
         startActivity(intent)
     }
 
@@ -324,4 +347,8 @@ class MoreInfoCard : Fragment() {
         for(i in 0..(input!!.size - 1))
             reviews.add(input[i])
     }
+
+    /**====================================================================================================**/
+    /** Life Cycle Methods **/
+
 }

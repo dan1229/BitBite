@@ -35,7 +35,7 @@
             android:summary="@string/pref_summary_sortby"
             android:dialogTitle="Sort By"
             android:entries= "@array/sort_by_titles"
-            android:entryValues="@array/sort_by_titles" />
+            android:entryValues="@array/sort_by_values" />
         <Preference
             android:key="clear_favorites"
             android:title="@string/pref_title_clearfavorites"

@@ -7,8 +7,10 @@ class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener 
 
     /** Variables **/
     var reviews = ArrayList<Reviews>(5)
+    lateinit var place: Place
     var placeId = ""
     var name = ""
+    var index = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,15 +20,17 @@ class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener 
         toolbarBuilderUpNavLogo(review_toolbar)
 
         // Get Extras
+        place = intent.getParcelableExtra("PLACE")
         reviews = intent.getParcelableArrayListExtra<Reviews>("review_list")
-        placeId = intent.getStringExtra("place_id")
-        name = intent.getStringExtra("name")
+        placeId = place.placeID
+        name = place.name
 
         // Update make your own review card
         addMakeReviewCard()
 
         for(i in 0 until reviews.size){
             val fragment = ReviewCard.newInstance(reviews[i])
+
             fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_right)
                     .add(R.id.review_container, fragment).commit()
         }
@@ -52,7 +56,7 @@ class ReviewActivity : BaseActivity(), ReviewCard.OnFragmentInteractionListener 
     /**====================================================================================================**/
     /** Fragment Methods **/
 
-    // onFragmentInteraction()
+    // fragmentFavoritesChanged()
     // Launches reviews page when clicked on top card
     override fun onFragmentInteraction() {
         if(placeId != "")

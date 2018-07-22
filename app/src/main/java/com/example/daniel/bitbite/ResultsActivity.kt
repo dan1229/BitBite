@@ -11,9 +11,7 @@ import android.util.Pair as UtilPair
 
 class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListener {
 
-    var places = ArrayList<Place>()
     var fragmentList = ArrayList<ResultsCard>()
-    var token = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,22 +25,30 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
             return
         }
 
-        // Get places ArrayList
-        places = intent.getParcelableArrayListExtra<Place>(EXTRA_PLACES_LIST)
-        user = intent.getParcelableExtra("USER")
-        token = intent.getStringExtra("TOKEN")
+        // Check for duplicates
+        checkDuplicates()
 
+        // Create ResultsCard Fragments
+        createResultsCardFragments()
 
         // Set Show More button listener
         show_more_button.setOnClickListener {
             startLoading(loading_results)
 
             doAsync {
-                places.clear()
-                val (x, y) = callPlacesApi(this@ResultsActivity, token = token)
-                places = x
-                token = y
+                placesList.clear()
+                val (x, y) = callPlacesApi(this@ResultsActivity, token = user.token)
+                placesList = x
+                user.token = y
+
             }
+            // Check for duplicates
+            checkDuplicates()
+
+            // Create fragments
+            createResultsCardFragments()
+
+            // Populate Activity
             updateResults()
         }
     }
@@ -50,30 +56,75 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
     /**====================================================================================================**/
     /** Updater Methods  **/
 
+    // createResultsCardFragments()
+    // Creates Results Card fragments and handles fragmentList
+    private
+    fun createResultsCardFragments() {
+        fragmentList.clear()
+
+        for(i in 0 until placesList.size) {
+            val fragment = ResultsCard.newInstance(placesList[i], user)
+            fragment.index = i
+            fragmentList.add(i, fragment)
+        }
+    }
+
     // updateResults()
     // Populates ResultsCard fragments
     private
     fun updateResults() {
-        // Create fragments and add to layout
-        for (i in 0 until places.size) {
-            // Make fragment and add to layout
-            val fragment = ResultsCard.newInstance(places[i], user)
+        // Add fragment to layout
+        for (i in 0 until placesList.size) {
             fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
-                    .add(R.id.layout_container, fragment).commit()
+                    .add(R.id.layout_container, fragmentList[i]).commit()
         }
 
         stopLoading(loading_results)
         updateButton()
     }
 
+    // removeResults()
+    // Removes all ResultsCard fragments
+    private
+    fun removeResults() {
+        for(i in 0 until fragmentList.size) {
+            fragmentManager.beginTransaction().remove(fragmentList[i]).commit()
+        }
+    }
+
     // updateButton()
     // Updates button visibility based on token
     private
     fun updateButton() {
-        if(token == "") { // Token doesn't exist
+        if(user.token == "") { // Token doesn't exist
             show_more_button.visibility = View.GONE
         } else { // Token exists
             show_more_button.visibility = View.VISIBLE
+        }
+    }
+
+
+    /**====================================================================================================**/
+    /** Duplicate Methods **/
+
+    // checkDuplicates()
+    // Scans current list for duplicates
+    private
+    fun checkDuplicates() {
+        var size = placesList.size
+
+        for(i in 0 until size) {
+            for(j in (i + 1) until size) {
+                if (j < size) {
+                    if (placesList[i].name == placesList[j].name) { // Names match
+                        Log.d("DUPLICATES", "match: ${placesList[j].name}, i: $j")
+
+                        placesList[i].duplicates.add(placesList[j]) // Add to duplicates
+                        placesList.removeAt(j) // Remove duplicate from placesList
+                        --size
+                    }
+                }
+            }
         }
     }
 
@@ -86,11 +137,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         super.onPause()
 
         // Remove old cards
-        for(i in 0 until fragmentList.size) {
-            fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
-                    .remove(fragmentList[i]).commit()
-        }
-        fragmentList.clear()
+        removeResults()
     }
 
     // onResume()
@@ -103,17 +150,19 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
     // onPostResume()
     // Handles post resume
     override fun onPostResume() {
+        super.onPostResume()
+
         // Populate cards
         updateResults()
-
-        super.onPostResume()
     }
 
     /**====================================================================================================**/
     /** Fragment Methods **/
 
-    override fun onFragInteraction() {
-        show_more_button.visibility = View.GONE
+    // resultsCardSelected
+    // Handles clicks on ResultsCard
+    override fun resultsCardSelected(place: Place) {
+        goToLocation(place)
     }
 
 } /** END CLASS ResultsActivity.kt **/

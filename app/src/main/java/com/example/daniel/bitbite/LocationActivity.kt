@@ -3,17 +3,22 @@ package com.example.daniel.bitbite
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.util.Pair
 import kotlinx.android.synthetic.main.activity_location.*
 
 class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
-    MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener {
+    MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener,
+    OtherLocationCard.OnFragmentInteractionListener {
 
     /** Variables **/
-    var moreInfoCard: MoreInfoCard? = null
+    var distance = ""
+    var duration = ""
     lateinit var place: Place
     var favorites = false
+    var index = 0
     lateinit var topCard: TopCard
     lateinit var bottomCard: BottomCard
+    var moreInfoCard: MoreInfoCard? = null
 
 
     /** ON CREATE **/
@@ -21,9 +26,12 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location)
 
-        // Get intent extras
+        // Get Place
         place = intent.getParcelableExtra("PLACE")
-        user = intent.getParcelableExtra("USER")
+
+        // Get distance pair
+        distance = intent.getStringExtra("DISTANCE")
+        duration = intent.getStringExtra("DURATION")
 
         // Update toolbar title
         toolbarBuilderUpNavLogo(location_toolbar)
@@ -54,7 +62,9 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
     private
     fun addBottomCardFragment() {
         if(moreInfoCard == null) {
-            val bfragment = BottomCard.newInstance(place, user)
+            val bfragment = BottomCard.newInstance(place, user, distance, duration)
+            bfragment.index = index
+
             bottomCard = bfragment
             fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
                     .replace(R.id.location_bottomcard_container, bfragment).commit()
@@ -64,13 +74,13 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         }
     }
 
-    // onFragmentInteraction()
+    // fragmentFavoritesChanged()
     // Mandatory implementation for interface (Bottom and MoreInfo)
-    override fun onFragmentInteraction(fave: Boolean) {
+    override fun fragmentFavoritesChanged(fave: Boolean) {
         favorites = fave
     }
 
-    // onFragmentInteraction()
+    // fragmentFavoritesChanged()
     // Mandatory implementation for interface (Top)
     override fun onFragmentInteraction(uri: Uri) {
         //
@@ -80,6 +90,12 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
     // Returns moreInfoCard when created
     override fun onMoreInfoCreation(frag: MoreInfoCard) {
         moreInfoCard = frag
+    }
+
+    // otherLocationFragmentSelected()
+    // Handles clicks on OtherLocationCard fragments
+    override fun otherLocationFragmentSelected(place: Place, distance: Pair<String, String>) {
+        goToLocation(place, distance.first, distance.second)
     }
 
 

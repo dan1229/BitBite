@@ -83,6 +83,7 @@
     <string name="default_address">Not Found</string>
     <string name="moreinfo_reviews_card_title"><u>Reviews</u></string>
     <string name="moreinfo_moreinfo_card_title"><u>More Info</u></string>
+    <string name="moreinfo_otherlocation_title"><u>Other Locations</u></string>
 
     <!-- ReviewActivity -->
     <string name="make_review_title">Been Here?</string>
@@ -120,6 +121,7 @@
         <item>Chinese</item>
         <item>Coffee</item>
         <item>Cuban</item>
+        <item>Delivery</item>
         <item>Dessert</item>
         <item>Fast Food</item>
         <item>French</item>
@@ -170,6 +172,7 @@
         <item>Chinese</item>
         <item>Coffee</item>
         <item>Cuban</item>
+        <item>Delivery</item>
         <item>Dessert</item>
         <item>Fast Food</item>
         <item>French</item>
@@ -202,6 +205,7 @@
         <item>Caribbean</item>
         <item>Chinese</item>
         <item>Cuban</item>
+        <item>Delivery</item>
         <item>Dessert</item>
         <item>French</item>
         <item>Greek</item>
@@ -211,7 +215,6 @@
         <item>Israeli</item>
         <item>Italian</item>
         <item>Latin</item>
-        <item>Market</item>
         <item>Mediterranean</item>
         <item>Mexican</item>
         <item>Pizza</item>

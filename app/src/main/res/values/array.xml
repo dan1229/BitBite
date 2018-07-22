@@ -3,6 +3,11 @@
 
     <string-array name="sort_by_titles">
         <item>Distance</item>
+        <item>Popularity</item>
+        <item>Random</item>
+    </string-array>
+    <string-array name="sort_by_values">
+        <item>Distance</item>
         <item>Prominence</item>
         <item>Random</item>
     </string-array>

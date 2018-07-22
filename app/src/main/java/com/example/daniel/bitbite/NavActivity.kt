@@ -124,10 +124,10 @@ abstract class NavActivity : BaseActivity(), NavigationView.OnNavigationItemSele
 
         // Set Nav Footer listener
         footer.setNavigationItemSelectedListener { menuItem ->
-            menuItem.isChecked = true
+            menuItem.isChecked = false
             mDrawerLayout.closeDrawers()
             navMenuSwitch(menuItem)
-            false
+            true
         }
     }
 
