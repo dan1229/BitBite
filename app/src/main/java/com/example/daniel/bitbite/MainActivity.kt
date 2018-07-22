@@ -118,8 +118,7 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         }
 
         // On item selected listener
-        main_autocomplete_style.onItemClickListener = AdapterView.OnItemClickListener{
-            parent,view,position,id->
+        main_autocomplete_style.onItemClickListener = AdapterView.OnItemClickListener{ parent, view, position, id->
             val selectedItem = parent.getItemAtPosition(position).toString()
             autocompleteItemSelected(selectedItem.replace(" ", ""))
             textView.text.clear()
@@ -210,8 +209,7 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun feelingLucky() {
         if(valid) {
-            val intent = Intent(this@MainActivity, LocationActivity::class.java)
-            startActivity(intent)
+            goToLocation(placesList[0])
         }
         stopLoading(main_loading)
     }
@@ -453,10 +451,9 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     /**====================================================================================================**/
     /** Fragment Methods **/
 
-    // fragmentFavoritesChanged()
-    // Updates style string and removes fragments when clicked
-    override fun onFragmentInteraction(frag : Fragment, string : String) {
-        // Close StyleTag fragment
+    // styleTagTouched()
+    // Removes StyleTag when clicked
+    override fun styleTagTouched(frag : Fragment, string : String) {
         fragmentManager.beginTransaction().remove(frag).commit()
         styleTags.remove(frag)
         changed = true
@@ -492,7 +489,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     private
     fun addRandomStyleTag() {
         if(styleTags.isEmpty()) { // Check there's no style tags
-            // Get appropriate style array
             val arr = getStyleArray()
 
             var run = true

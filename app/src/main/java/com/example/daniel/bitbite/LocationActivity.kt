@@ -1,18 +1,14 @@
 package com.example.daniel.bitbite
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.util.Pair
 import kotlinx.android.synthetic.main.activity_location.*
 
-class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
-    MoreInfoCard.OnFragmentInteractionListener, BottomCard.OnFragmentInteractionListener,
+class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListener,
+    BottomCard.OnFragmentInteractionListener,
     OtherLocationCard.OnFragmentInteractionListener {
 
     /** Variables **/
-    var distance = ""
-    var duration = ""
     lateinit var place: Place
     var favorites = false
     var index = 0
@@ -29,9 +25,8 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         // Get Place
         place = intent.getParcelableExtra("PLACE")
 
-        // Get distance pair
-        distance = intent.getStringExtra("DISTANCE")
-        duration = intent.getStringExtra("DURATION")
+        if(place.duplicates.isNotEmpty())
+            Log.d("OTHER", "DUPLICATES NOT EMPTY")
 
         // Update toolbar title
         toolbarBuilderUpNavLogo(location_toolbar)
@@ -45,7 +40,7 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
     }
 
     /**====================================================================================================**/
-    /** Fragment Methods **/
+    /** Add Fragment Methods **/
 
     // addTopCardFragment()
     // Adds TopCard Fragment to LocationActivity
@@ -74,30 +69,51 @@ class LocationActivity : BaseActivity(), TopCard.OnFragmentInteractionListener,
         }
     }
 
+
+    /**====================================================================================================**/
+    /** Fragment Interaction Methods **/
+
+
+    /** BottomCard **/
+    // addMoreInfoCard()
+    // Adds MoreInfoCard Fragment to LocationActivity
+    override fun addMoreInfoCard() {
+        val fragment = MoreInfoCard.newInstance(place, favorites, distance, duration, user)
+        fragment.index = index
+
+        fragmentManager!!.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                .replace(R.id.location_bottomcard_container, fragment).commit()
+    }
+
     // fragmentFavoritesChanged()
-    // Mandatory implementation for interface (Bottom and MoreInfo)
+    // Handles when Favorites is changed (Bottom and MoreInfo)
     override fun fragmentFavoritesChanged(fave: Boolean) {
         favorites = fave
     }
 
-    // fragmentFavoritesChanged()
-    // Mandatory implementation for interface (Top)
-    override fun onFragmentInteraction(uri: Uri) {
-        //
+    // distanceCalled()
+    // Stores distance and duration when API called
+    override fun distanceCalled(dist: String, dur: String) {
+        distance = dist
+        duration = dur
     }
 
-    // onMoreInfoCreation()
-    // Returns moreInfoCard when created
-    override fun onMoreInfoCreation(frag: MoreInfoCard) {
-        moreInfoCard = frag
+    /** MoreInfoCard **/
+    // onReviewCardInteraction
+    // Handles clicks on Reviews section
+    override fun onReviewCardInteraction(reviews: ArrayList<Reviews>, place: Place) {
+        goToReviews(reviews, place)
     }
 
+    /** OtherLocationCard **/
     // otherLocationFragmentSelected()
     // Handles clicks on OtherLocationCard fragments
-    override fun otherLocationFragmentSelected(place: Place, distance: Pair<String, String>) {
-        goToLocation(place, distance.first, distance.second)
+    override fun otherLocationFragmentSelected(dupIndex: Int, dist: String, dur: String) {
+        distance = dist
+        duration = dur
+        finish()
+        goToLocation(placesList[index].duplicates[dupIndex])
     }
-
 
     /**====================================================================================================**/
     /** Life Cycle Methods **/

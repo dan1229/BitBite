@@ -36,13 +36,14 @@
     <string name="splash_title">SplashActivity</string>
 
     <!-- MainActivity -->
-    <string name="style_header">Style</string>
+    <string name="style_header">Let\'s Eat!</string>
     <string name="style_display_text">Random</string>
-    <string name="autocomplete_hint">Select Type</string>
+    <string name="autocomplete_hint">Select 0-3 Types</string>
     <string name="price_header">Price</string>
     <string name="price_display_text">$$$$$</string>
     <string name="submit_button">Search</string>
     <string name="feeling_lucky_button">I\'m Feeling Lucky</string>
+
 
     <!-- Nav Bar -->
     <string name="nav_home">Home</string>
@@ -51,13 +52,16 @@
     <string name="nav_aboutus">About Us</string>
     <string name="nav_feedback">Feedback</string>
 
-    <!-- ResultsActivity -->
-    <string name="results_title">ResultsActivity</string>
-    <string name="results_button_showmore">Show More</string>
 
     <!-- Place Defaults -->
     <string name="place_default_name">Not Available</string>
     <string name="place_default_price">$</string>
+
+
+    <!-- ResultsActivity -->
+    <string name="results_title">ResultsActivity</string>
+    <string name="results_button_showmore">Show More</string>
+
 
     <!-- LocationActivity -->
     <string name="button_directions">Directions</string>
@@ -81,12 +85,12 @@
     <string name="default_phone_title">Phone: </string>
     <string name="default_phone">Not Found</string>
     <string name="default_address">Not Found</string>
-    <string name="moreinfo_reviews_card_title"><u>Reviews</u></string>
-    <string name="moreinfo_moreinfo_card_title"><u>More Info</u></string>
+    <string name="moreinfo_moreinfo_card_title"><u>Information</u></string>
     <string name="moreinfo_otherlocation_title"><u>Other Locations</u></string>
+    <string name="moreinfo_reviews_card_title"><u>Reviews</u></string>
 
     <!-- ReviewActivity -->
-    <string name="make_review_title">Been Here?</string>
+    <string name="review_title_makereview">Been Here?</string>
     <string name="make_review_description">Leave your own review!</string>
     <string name="default_review">"No reviews available."</string>
     <string name="default_review_author">"N/A"</string>
@@ -103,10 +107,11 @@
 
     <!-- Strings related to Settings -->
 
+
     <!-- ImageView Descriptions -->
     <string name="imageview_description_toolbar">Toolbar Logo</string>
-    <string name="imageview_description_review_rating">Toolbar Logo</string>
-    <string name="imageview_description_location_image">Location Image</string>
+    <string name="imageview_description_review_rating">Review Rating</string>
+    <string name="imageview_description_place_image">Place Image</string>
 
     <!-- FOOD TYPE OPTIONS -->
     <string-array name="style_array">

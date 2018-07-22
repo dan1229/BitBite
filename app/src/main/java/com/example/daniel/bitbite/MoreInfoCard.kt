@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ class MoreInfoCard : Fragment() {
 
     /** Variables **/
     private var listener: MoreInfoCard.OnFragmentInteractionListener? = null
-    var fragmentList = ArrayList<OtherLocationCard>()
     var reviews = ArrayList<Reviews>(5)
     lateinit var detailsResponse : DetailsResponse
     var user = BaseActivity.User(0.0, 0.0)
@@ -28,6 +26,7 @@ class MoreInfoCard : Fragment() {
     private  var favorites = false
     private var distance = ""
     private var duration = ""
+    var address = ""
     var website = ""
     var phone = ""
     var index = 0
@@ -53,8 +52,13 @@ class MoreInfoCard : Fragment() {
         doAsync {
             detailsResponse = callDetailsApi(act, place) as DetailsResponse
 
+            // Store important info
+            website = detailsResponse.result.website
+            phone = detailsResponse.result.formatted_phone_number
+            address = detailsResponse.result.formatted_address
+
             uiThread { // Populate Location card
-                updateCard(view, detailsResponse)
+                updateMoreInfoCard(view)
             }
         }
 
@@ -69,7 +73,7 @@ class MoreInfoCard : Fragment() {
         // Set on click listener for Reviews -> ReviewActivity.kt
         view.moreinfocard_layout_reviews.setOnClickListener{ // Go to ReviewActivity.kt
             if(reviews.isNotEmpty())
-                goToReviews()
+                listener!!.onReviewCardInteraction(reviews, place)
         }
 
         // Set on click listener for Website -> Web Browser
@@ -160,6 +164,7 @@ class MoreInfoCard : Fragment() {
 
     interface OnFragmentInteractionListener {
         fun fragmentFavoritesChanged(fave: Boolean)
+        fun onReviewCardInteraction(reviews: ArrayList<Reviews>, place: Place)
     }
 
     /** newInstance **/
@@ -194,63 +199,41 @@ class MoreInfoCard : Fragment() {
         // Create fragments and add to layout
         for(i in 0 until place.duplicates.size) {
             val fragment = OtherLocationCard.newInstance(place.duplicates[i], user)
-            Log.d("DUPLICATES", place.name)
+            fragment.dupIndex = i
             fragmentManager.beginTransaction().add(R.id.moreinfocard_otherlocationcard_container, fragment).commit()
         }
-    }
-
-
-    /**====================================================================================================**/
-    /** Intent Makers **/
-
-    // goToReviews()
-    // Creates Intent for Reviews.kt and animates transition
-    private
-    fun goToReviews() {
-        val intent = Intent(activity, ReviewActivity::class.java)
-        intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
-        intent.putExtra("PLACE", place) // pass place
-        startActivity(intent)
     }
 
     /**====================================================================================================**/
     /** Updater Methods **/
 
-    // updateCard()
+    // updateMoreInfoCard()
     // Calls update function for each segment of card
     private
-    fun updateCard(view : View, response : DetailsResponse) {
-        updateDistance(view, distance, duration)
-        updateClock(view, place.openNow)
+    fun updateMoreInfoCard(view : View) {
+        // Update Distance
+        updateDistance(view.moreinfocard_text_distance, distance)
+
+        // Update Duration
+        updateDuration(view.moreinfocard_text_duration, duration)
+
+        // Update Clock
+        updateClock(act, view.moreinfocard_text_clock, place.openNow)
+
+        // Update Website
+        updateWebsite(view.moreinfocard_text_website, website)
+
+        // Update Phone
+        updatePhone(view.moreinfocard_text_phone, phone)
+
+        // Update Address
+        updateAddress(view.moreinfocard_text_address, address)
+
+        // Update Reviews
+        updateReviews(view, detailsResponse.result.reviews)
+
+        // Update Favorites
         updateFavorites(view)
-
-        // Reliant on Place Details API
-        updateWebsite(view, response.result.website)
-        updatePhone(view, response.result.formatted_phone_number)
-        updateAddress(view, response.result.formatted_address)
-        updateReviews(view, response.result.reviews)
-    }
-
-    // updateDistance()
-    // Updates fields related to distance
-    private
-    fun updateDistance(view : View, distance : String, duration : String) {
-        if(distance != "")
-            view.moreinfocard_text_distance.text = distance
-        if(duration != "")
-            view.moreinfocard_text_duration.text = duration
-    }
-
-    // updateClock()
-    private
-    fun updateClock(view : View, bool : Boolean) {
-        if(bool){
-            view.moreinfocard_text_clock.text = getString(R.string.open)
-            view.moreinfocard_text_clock.setTextColor(ContextCompat.getColor(act, R.color.green))
-        } else {
-            view.moreinfocard_text_clock.text = getString(R.string.closed)
-            view.moreinfocard_text_clock.setTextColor(ContextCompat.getColor(act, R.color.red))
-        }
     }
 
     // updateFavorites()
@@ -271,44 +254,13 @@ class MoreInfoCard : Fragment() {
         }
     }
 
-    // updateWebsite()
-    private
-    fun updateWebsite(view : View, input : String) {
-        val txtView = view.moreinfocard_text_website
-        if(!input.equals(""))
-            txtView.text = input
-        else
-            txtView.text = resources.getString(R.string.default_website)
-        website = input
-    }
-
-    // updatePhone()
-    private
-    fun updatePhone(view : View, input : String) {
-        val txtView = view.moreinfocard_text_phone
-        if(!input.equals(""))
-            txtView.text = input
-        else
-            txtView.text = resources.getString(R.string.default_phone)
-        phone = input
-    }
-
-    // updateAddress()
-    private
-    fun updateAddress(view : View, input : String) {
-        if(input != "")
-            view.moreinfocard_text_address.text = input
-    }
 
     // updateReviews()
     private
     fun updateReviews(view : View, reviews : List<Reviews>) {
-        if(!reviews.isEmpty()) { // Reviews array is not empty
+        if(reviews.isNotEmpty()) { // Reviews array is not empty
             setNonDefaultReview(view, detailsResponse.result.reviews[0])
             copyReviews(detailsResponse.result.reviews)
-        }
-        else { // Reviews array empty
-            setDefaultReview(view)
         }
     }
 
@@ -320,24 +272,16 @@ class MoreInfoCard : Fragment() {
     private
     fun setNonDefaultReview(view : View, input : Reviews) {
 
+        // Set Review text
         var s = """"""" + input.text + """""""
         view.moreinfocard_reviews_text.text = s
 
-        s = "- " + ellipsizeText(input.author_name)
+        // Set Author Name
+        s = "— " + ellipsizeText(input.author_name)
         view.moreinfocard_reviews_author.text = s
 
         view.moreinfocard_reviews_rating.setImageDrawable(ContextCompat.getDrawable(
                 act, reviewRatingConversion(input.rating)))
-    }
-
-    // setDefaultReview()
-    // Sets default review info
-    private
-    fun setDefaultReview(view : View) {
-        view.moreinfocard_reviews_text.text = resources.getString(R.string.default_review)
-        view.moreinfocard_reviews_author.text = resources.getString(R.string.default_review_author)
-        view.moreinfocard_reviews_rating.setImageDrawable(ContextCompat.getDrawable(
-                act, R.drawable.default_star))
     }
 
     // copyReviews()
@@ -347,8 +291,4 @@ class MoreInfoCard : Fragment() {
         for(i in 0..(input!!.size - 1))
             reviews.add(input[i])
     }
-
-    /**====================================================================================================**/
-    /** Life Cycle Methods **/
-
 }

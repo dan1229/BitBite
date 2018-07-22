@@ -105,27 +105,52 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
 
 
     /**====================================================================================================**/
-    /** Duplicate Methods **/
+    /** Duplicate Checker Methods **/
 
     // checkDuplicates()
     // Scans current list for duplicates
     private
     fun checkDuplicates() {
         var size = placesList.size
+        var run = true
+        var leftIndex = 0
+        var i: Int
 
-        for(i in 0 until size) {
-            for(j in (i + 1) until size) {
-                if (j < size) {
-                    if (placesList[i].name == placesList[j].name) { // Names match
-                        Log.d("DUPLICATES", "match: ${placesList[j].name}, i: $j")
+        while(run) {
+            i = leftIndex + 1
+            if(i < size) {
+                val name = splitName(placesList[leftIndex].name)
 
-                        placesList[i].duplicates.add(placesList[j]) // Add to duplicates
-                        placesList.removeAt(j) // Remove duplicate from placesList
+                while(i < size) {
+                    val temp = splitName(placesList[i].name)
+                    if (name == temp) { // Names match
+                        // Duplicate found - add to duplicates list and remove from placesList
+                        placesList[leftIndex].duplicates.add(placesList[i])
+                        placesList.removeAt(i)
                         --size
+                    } else {
+                        ++i
                     }
                 }
+
+                ++leftIndex
+            }
+            else {
+                run = false
             }
         }
+    }
+
+    // splitName()
+    // Gets first two words of name if available for duplicates checking
+    private
+    fun splitName(input: String) : String {
+        var res = input
+
+        if(input.contains(' ')) { // Contains space
+            res = res.split(' ').first()
+        }
+        return res
     }
 
     /**====================================================================================================**/
@@ -157,7 +182,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
     }
 
     /**====================================================================================================**/
-    /** Fragment Methods **/
+    /** Fragment Interaction Methods **/
 
     // resultsCardSelected
     // Handles clicks on ResultsCard

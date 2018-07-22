@@ -3,7 +3,6 @@ package com.example.daniel.bitbite
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import org.jetbrains.anko.uiThread
 class OtherLocationCard : Fragment() {
 
     /** Variables **/
+    var dupIndex = 0
     var distance = Pair("", "")
     private lateinit var place : Place
     var user = BaseActivity.User(0.0, 0.0)
@@ -35,11 +35,11 @@ class OtherLocationCard : Fragment() {
         val view = inflater.inflate(R.layout.fragment_other_location_card, container, false)
 
         // Populate card
-        updateCard(view)
+        updateOtherLocationCard(view)
 
         // Set on click listener for card
         view.otherlocation_card.setOnClickListener {
-            listener!!.otherLocationFragmentSelected(place, distance)
+            listener!!.otherLocationFragmentSelected(dupIndex, distance.first, distance.second)
         }
 
         return view
@@ -63,7 +63,7 @@ class OtherLocationCard : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun otherLocationFragmentSelected(place: Place, distance: Pair<String, String>)
+        fun otherLocationFragmentSelected(dupIndex: Int, dist: String, dur: String)
     }
 
     companion object {
@@ -83,43 +83,29 @@ class OtherLocationCard : Fragment() {
     /**====================================================================================================**/
     /** Upadator Methods **/
 
-    // updateCard()
+    // updateOtherLocationCard()
     // Populates OtherLocationCard
     private
-    fun updateCard(view: View) {
+    fun updateOtherLocationCard(view: View) {
+        // Update name
         view.otherlocation_text_name.text = ellipsizeText(place.name, 25)
-        place.placePhotoCall(act, view.otherlocation_image)
-        updateClock(view)
-        updateDuration(view)
-    }
 
-    // updateClock()
-    // Updates clock section
-    private
-    fun updateClock(view: View) {
-        val bool = place.openNow
+        // Update photo
+        updatePhoto(act, place, view.otherlocation_image)
 
-        if(bool){
-            view.otherlocation_text_clock.text = getString(R.string.open)
-            view.otherlocation_text_clock.setTextColor(ContextCompat.getColor(act, R.color.green))
-        } else {
-            view.otherlocation_text_clock.text = getString(R.string.closed)
-            view.otherlocation_text_clock.setTextColor(ContextCompat.getColor(act, R.color.red))
-        }
-    }
+        // Update clock
+        updateClock(act, view.otherlocation_text_clock, place.openNow)
 
-    // updateDuration()
-    // Gets duration and distance from Matrix API and updates section
-    private
-    fun updateDuration(view: View) {
+        // If distance is empty, call API
         doAsync {
-            distance = callDistanceApi(act, user.lat, user.lng, place.placeID)
+            if(distance.first == "") {
+                distance = callDistanceApi(act, user.lat, user.lng, place.placeID)
+            }
 
             uiThread {
-                if(distance.second != "")
-                    view.otherlocation_text_duration.text = distance.second
+                // Update duration
+                updateDuration(view.otherlocation_text_duration, distance.second)
             }
         }
     }
-
 }

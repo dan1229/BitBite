@@ -22,7 +22,7 @@
             android:textSize="@dimen/text_x_large"
             android:textColor="@color/text_primary"
             android:gravity="center_horizontal"
-            android:text="@string/make_review_title"/>
+            android:text="@string/review_title_makereview"/>
         <TextView
             android:id="@+id/placeName"
             android:visibility="gone"

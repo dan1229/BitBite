@@ -32,7 +32,7 @@ class StyleTag : Fragment() {
 
         // Set listener for close icon
         view.styletag_icon_close.setOnClickListener {
-            listener!!.onFragmentInteraction(this, style)
+            listener!!.styleTagTouched(this, style)
         }
 
         return view
@@ -56,7 +56,7 @@ class StyleTag : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(frag : Fragment, string : String)
+        fun styleTagTouched(frag : Fragment, string : String)
     }
 
     /** newInstance **/

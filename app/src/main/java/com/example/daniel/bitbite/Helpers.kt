@@ -3,10 +3,12 @@ package com.example.daniel.bitbite
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.preference.PreferenceManager
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -19,7 +21,75 @@ import org.jetbrains.anko.toast
  */
 
 /**====================================================================================================**/
-/** Helper Methods **/
+/** Updator Methods **/
+
+// updatePhoto()
+// Updates photo
+fun updatePhoto(context: Context, place: Place, view: ImageView) {
+    place.placePhotoCall(context, view)
+}
+
+
+// updateClock()
+// Updates clock section
+fun updateClock(context: Context, view: TextView, bool: Boolean) {
+    if(bool){
+        view.text = context.getString(R.string.open)
+        view.setTextColor(ContextCompat.getColor(context, R.color.green))
+    } else {
+        view.text = context.getString(R.string.closed)
+        view.setTextColor(ContextCompat.getColor(context, R.color.red))
+    }
+}
+
+
+// updateOpennow()
+// Updates open now section
+fun updateOpennow(context: Context, view: TextView, bool: Boolean) {
+    if(bool){
+        view.text = context.getString(R.string.yes)
+        view.setTextColor(ContextCompat.getColor(context, R.color.green))
+    } else {
+        view.text = context.getString(R.string.no)
+        view.setTextColor(ContextCompat.getColor(context, R.color.red))
+    }
+}
+
+// updateDistance()
+// Updates distance section
+fun updateDistance(view: TextView, distance: String) {
+    if(distance != "")
+        view.text = distance
+}
+
+// updateDuration()
+// Updates duration section
+fun updateDuration(view: TextView, duration: String) {
+    if(duration != "")
+        view.text = duration
+}
+
+// updateWebsite()
+// Updates website section
+fun updateWebsite(view : TextView, input : String) {
+    if(!input.equals(""))
+        view.text = input
+}
+
+// updatePhone()
+// Update phone section
+fun updatePhone(view : TextView, input : String) {
+    if(!input.equals(""))
+        view.text = input
+}
+
+// updateAddress()
+// Update Address section
+fun updateAddress(view : TextView, input : String) {
+    if(input != "")
+        view.text = input
+}
+
 
 /**====================================================================================================**/
 /** Loading Screen **/

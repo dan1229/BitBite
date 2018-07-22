@@ -9,22 +9,25 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorSecondary">@color/text_secondary</item>
         <item name="cardBackgroundColor">@color/card_light</item>
+        <item name="android:homeAsUpIndicator">@drawable/icon_upnav</item>
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.OverFlow</item>
+
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
         <!-- enable window content transitions -->
-        <!--<item name="android:windowActivityTransitions">true</item>item-->
+        <item name="android:windowActivityTransitions">true</item>
 
          <!--specify enter and exit transitions-->
         <!--<item name="android:windowEnterTransition">@transition/fade_in</item>-->
         <!--<item name="android:windowExitTransition">@transition/fade_out</item>-->
-        <item name="android:fragmentEnterTransition">@animator/enter_from_right</item>
-        <item name="android:fragmentExitTransition">@animator/exit_to_left</item>
-
 
     </style>
 
+    <style name="AppTheme.OverFlow">
+        <item name="android:src">@drawable/icon_menudots</item>
+    </style>
 
     <!-- Splash/Launch Screen Theme -->
     <style name="AppTheme.Launcher" parent="AppTheme.NoActionBar">
@@ -36,12 +39,6 @@
     <style name="Animation.LauncherAnimation" parent="android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@animator/enter_from_right</item>
         <item name="android:windowEnterTransition">@animator/enter_from_right</item>
-    </style>
-
-
-    <style name="AppTheme.ExplodeTransition">
-        <item name="android:windowEnterTransition">@transition/explode</item>
-        <item name="android:windowExitTransition">@transition/explode</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -34,9 +34,12 @@ abstract class BaseActivity : AppCompatActivity() {
                     var style: String = "", var price: Int = 0,
                     var token: String = "") : Parcelable
 
+    /** Companion Object **/
     companion object {
         var placesList = ArrayList<Place>()
         var user = User(0.0, 0.0, "", 0, "")
+        var distance = ""
+        var duration = ""
     }
 
     /** ON CREATE **/
@@ -97,14 +100,21 @@ abstract class BaseActivity : AppCompatActivity() {
     // goToLocation()
     // Goes to LocationActivity.kt
     protected
-    fun goToLocation(place: Place, distance: String = "", duration: String = "") {
+    fun goToLocation(place: Place) {
         val intent = Intent(this, LocationActivity::class.java)
         intent.putExtra("PLACE", place)
-        intent.putExtra("DISTANCE", distance)
-        intent.putExtra("DURATION", duration)
         startActivity(intent)
     }
 
+    // goToReviews()
+    // Creates Intent for Reviews.kt and animates transition
+    protected
+    fun goToReviews(reviews: ArrayList<Reviews>, place: Place) {
+        val intent = Intent(this, ReviewActivity::class.java)
+        intent.putParcelableArrayListExtra("review_list", reviews) // Pass reviews
+        intent.putExtra("PLACE", place) // pass place
+        startActivity(intent)
+    }
 
     /**====================================================================================================**/
     /** Dialogs **/
@@ -116,7 +126,6 @@ abstract class BaseActivity : AppCompatActivity() {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
-
 
     /**====================================================================================================**/
     /** Misc. **/

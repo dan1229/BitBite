@@ -16,13 +16,12 @@
         android:transitionName="top_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        tools:context=".TopCard"
-        android:orientation="vertical" >
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".TopCard" >
         <ImageView
             android:id="@+id/topcard_image"
-            android:transitionName="place_image"
-            android:contentDescription="@string/imageview_description_location_image"
+            android:contentDescription="@string/imageview_description_place_image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/topcard_image_height"
             android:maxHeight="@dimen/topcard_image_height"
@@ -37,7 +36,6 @@
             android:src="@drawable/default_place_image" />
         <TextView
             android:id="@+id/topcard_name"
-            android:transitionName="place_name"
             android:textSize="@dimen/text_x_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/topcard_margin"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
             app:layout_constraintTop_toBottomOf="@id/topcard_name"
             app:layout_constraintBottom_toTopOf="@id/topcard_layout_opennow"
             app:layout_constraintLeft_toLeftOf="parent"

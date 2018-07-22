@@ -4,7 +4,6 @@ import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,8 +69,7 @@ class BottomCard : Fragment() {
 
         // Set on click listener for More Info Button -> makes views visible
         view.bottomcard_button_moreinfo.setOnClickListener {
-            val frag = createMoreInfoFragment()
-            listener!!.onMoreInfoCreation(frag)
+            listener!!.addMoreInfoCard()
         }
 
         // Set on click listener for Directions Button -> Google Maps
@@ -100,7 +98,8 @@ class BottomCard : Fragment() {
     }
     interface OnFragmentInteractionListener {
         fun fragmentFavoritesChanged(fave: Boolean)
-        fun onMoreInfoCreation(frag: MoreInfoCard)
+        fun addMoreInfoCard()
+        fun distanceCalled(dist: String, dur: String)
     }
 
     /** newInstance **/
@@ -119,22 +118,6 @@ class BottomCard : Fragment() {
     }
 
     /**====================================================================================================**/
-    /** Fragment Makers **/
-
-    // createMoreInfoFragment()
-    // Creates MoreInfoCard fragment and adds to container
-    private
-    fun createMoreInfoFragment() : MoreInfoCard {
-        val fragment = MoreInfoCard.newInstance(place, favorites, distance, distance, user)
-        fragment.index = 0
-
-        fragmentManager!!.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
-                .replace(R.id.location_bottomcard_container, fragment).commit()
-
-        return fragment
-    }
-
-    /**====================================================================================================**/
     /** Updater Methods **/
 
     // callMatrixApi()
@@ -142,10 +125,10 @@ class BottomCard : Fragment() {
     private
     fun callMatrixApi(view: View) {
         doAsync {
-            var pair = Pair("", "")
-            pair = callDistanceApi(act, user.lat, user.lng, place.placeID)
+            val pair = callDistanceApi(act, user.lat, user.lng, place.placeID)
             distance = pair.first
             duration = pair.second
+            listener!!.distanceCalled(distance, duration)
 
             uiThread { // Populate Location card
                 distanceUpdates(view, distance, duration)
