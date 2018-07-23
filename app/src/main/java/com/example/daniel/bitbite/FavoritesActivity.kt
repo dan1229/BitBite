@@ -62,11 +62,11 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
         }
     }
 
-    // updateFavorites()
+    // updateFavoritesList()
     // Update Favorites list
     fun updateFavorites() {
         // Get Favorites list
-        val list = getFavorites(this)
+        val list = getFavrotiesList(this)
 
         // Check if list is empty
         if(list != null) {

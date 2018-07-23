@@ -12,7 +12,6 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
     lateinit var place: Place
     var favorites = false
     var index = 0
-    lateinit var topCard: TopCard
     lateinit var bottomCard: BottomCard
     var moreInfoCard: MoreInfoCard? = null
 
@@ -25,18 +24,15 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
         // Get Place
         place = intent.getParcelableExtra("PLACE")
 
-        if(place.duplicates.isNotEmpty())
-            Log.d("OTHER", "DUPLICATES NOT EMPTY")
-
-        // Update toolbar title
-        toolbarBuilderUpNavLogo(location_toolbar)
-
         // Check if in Favorites
         favorites = favoritesContains(this, place.placeID)
 
-        // Add fragments
-        addTopCardFragment()
-        addBottomCardFragment()
+        // Clear distance and duration
+        distance = ""
+        duration = ""
+
+        // Update toolbar title
+        toolbarBuilderUpNavLogo(location_toolbar)
     }
 
     /**====================================================================================================**/
@@ -47,7 +43,6 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
     private
     fun addTopCardFragment() {
         val tfragment = TopCard.newInstance(place)
-        topCard = tfragment
         fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_top, R.animator.exit_to_top)
                 .replace(R.id.location_topcard_container, tfragment).commit()
     }
@@ -69,6 +64,18 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
         }
     }
 
+    // addMoreInfoCardFragment()
+    // Adds MoreInfoCard Fragment to LocationActivity
+    private
+    fun addMoreInfoCardFragment() {
+        val fragment = MoreInfoCard.newInstance(place, favorites, distance, duration, user)
+
+        fragment.index = index
+
+        fragmentManager!!.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
+                .replace(R.id.location_bottomcard_container, fragment).commit()
+    }
+
 
     /**====================================================================================================**/
     /** Fragment Interaction Methods **/
@@ -78,11 +85,7 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
     // addMoreInfoCard()
     // Adds MoreInfoCard Fragment to LocationActivity
     override fun addMoreInfoCard() {
-        val fragment = MoreInfoCard.newInstance(place, favorites, distance, duration, user)
-        fragment.index = index
-
-        fragmentManager!!.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
-                .replace(R.id.location_bottomcard_container, fragment).commit()
+        addMoreInfoCardFragment()
     }
 
     // fragmentFavoritesChanged()
@@ -96,6 +99,7 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
     override fun distanceCalled(dist: String, dur: String) {
         distance = dist
         duration = dur
+        Log.d("DIST", "UPDATING - dist: $distance, dur: $duration")
     }
 
     /** MoreInfoCard **/
@@ -124,7 +128,7 @@ class LocationActivity : BaseActivity(), MoreInfoCard.OnFragmentInteractionListe
         super.onPause()
 
         // Update Favorites list
-        updateFavorites(this, place, favorites)
+        updateFavoritesList(this, place, favorites)
     }
 
     // onResume()

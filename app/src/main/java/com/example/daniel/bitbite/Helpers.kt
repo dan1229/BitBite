@@ -91,6 +91,21 @@ fun updateAddress(view : TextView, input : String) {
 }
 
 
+// updateFavoritesList()
+// Update Favorites section
+fun updateFavorites(context: Context, txt: TextView, icon: ImageView, favorites: Boolean) {
+    if(!favorites) { // Not in favorites
+        icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.favorites_icon))
+        txt.text = context.getString(R.string.default_favorites)
+        txt.setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+    } else { // Already in favorites
+        icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.favorites_filled_icon))
+        txt.text = context.getString(R.string.default_already_favorited)
+        txt.setTextColor(ContextCompat.getColor(context, R.color.gold))
+    }
+}
+
+
 /**====================================================================================================**/
 /** Loading Screen **/
 
@@ -136,9 +151,9 @@ fun rotateFast(time : Long, view : View) {
 /** Settings Methods **/
 
 
-// updateFavorites()
+// updateFavoritesList()
 // Updates favorites list
-fun updateFavorites(context: Context, place: Place, favorites: Boolean) {
+fun updateFavoritesList(context: Context, place: Place, favorites: Boolean) {
     val inList = favoritesContains(context, place.placeID)
 
     if(favorites) { // Selected to be in favorites list
@@ -156,12 +171,12 @@ fun updateFavorites(context: Context, place: Place, favorites: Boolean) {
 // Clears favorites list
 fun clearFavoritesList(context: Context) {
     val list = ArrayList<Place>()
-    setFavorites(context, list)
+    setFavoriteList(context, list)
 }
 
-// setFavorites()
+// setFavoriteList()
 // Saves passed ArrayList as Favorites list
-fun setFavorites(context: Context, list: ArrayList<Place>) {
+fun setFavoriteList(context: Context, list: ArrayList<Place>) {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     val editor = prefs.edit()
     val gson = Gson()
@@ -170,9 +185,9 @@ fun setFavorites(context: Context, list: ArrayList<Place>) {
     editor.apply()
 }
 
-// getFavorites()
+// getFavrotiesList()
 // Returns saved Favorites list
-fun getFavorites(context: Context): ArrayList<Place>? {
+fun getFavrotiesList(context: Context): ArrayList<Place>? {
     val prefs = PreferenceManager.getDefaultSharedPreferences(context)
     val gson = Gson()
     val json = prefs.getString("FAVORITES", null)
@@ -183,7 +198,7 @@ fun getFavorites(context: Context): ArrayList<Place>? {
 // favoritesContains()
 // Checks if Favorites list contains a particular placeID
 fun favoritesContains(context: Context, id: String) : Boolean {
-    val list = getFavorites(context)
+    val list = getFavrotiesList(context)
     if(list != null) {
         for(i in 0..(list.size - 1)) {
             if(list[i].placeID == id) {
@@ -197,32 +212,32 @@ fun favoritesContains(context: Context, id: String) : Boolean {
 // addToFavorites()
 // Adds passed place to Favorites list
 fun addToFavorites(context: Context, place: Place) {
-    val list = getFavorites(context)
+    val list = getFavrotiesList(context)
     if (list != null) {
         if (list.size >= 30) { // List too big
             context.toast("Favorites list cannot have more than 50 places.")
             return
         } else {
             list.add(place)
-            setFavorites(context, list)
+            setFavoriteList(context, list)
             return
         }
     } else{ // List is null -> make list
         val newList = ArrayList<Place>()
         newList.add(place)
-        setFavorites(context, newList)
+        setFavoriteList(context, newList)
     }
 }
 
 // removeFromFavorites()
 // Removes passed place from Favorites list
 fun removeFromFavorites(context: Context, place: Place) {
-    val list = getFavorites(context)
+    val list = getFavrotiesList(context)
     if(list != null) {
         for(i in 0 until list.size) {
             if(list[i].placeID == place.placeID) {
                 list.removeAt(i)
-                setFavorites(context, list)
+                setFavoriteList(context, list)
                 return
             }
         }
@@ -328,7 +343,7 @@ fun directionsWarning(place: Place, context: Context) {
 // confirmClearFavorites()
 // Shows dialog confirming user wants to clear Favorites List
 fun confirmClearFavorites(context: Context) {
-    val list = getFavorites(context)
+    val list = getFavrotiesList(context)
 
     if(list != null) {
         // Build dialog box

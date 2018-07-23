@@ -3,7 +3,7 @@ package com.example.daniel.bitbite
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,10 +46,6 @@ class BottomCard : Fragment() {
         // Update card
         updateCard(view)
 
-        // Matrix API call
-        if(distance == "" && distance == "")
-            callMatrixApi(view)
-
         /**====================================================================================================**/
         /** On Click Listeners **/
 
@@ -63,11 +59,11 @@ class BottomCard : Fragment() {
 
             // Update view and send info to LocationActivity
             favorites = !favorites
-            updateFavorites(view)
+            updateFavorites(act, view.bottomcard_text_favorite, view.bottomcard_icon_favorite, favorites)
             listener!!.fragmentFavoritesChanged(favorites)
         }
 
-        // Set on click listener for More Info Button -> makes views visible
+        // Set on click listener for More Info Button -> adds fragment
         view.bottomcard_button_moreinfo.setOnClickListener {
             listener!!.addMoreInfoCard()
         }
@@ -81,7 +77,7 @@ class BottomCard : Fragment() {
     }
 
     /**====================================================================================================**/
-    /** Mandatory Methods **/
+    /** Life Cycle Methods **/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -107,10 +103,12 @@ class BottomCard : Fragment() {
         fun newInstance(place : Place, user : BaseActivity.User,
                         distance: String = "", duration: String = ""): BottomCard {
             val args = Bundle()
+
             args.putParcelable("PLACE", place)
             args.putParcelable("USER", user)
             args.putString("DISTANCE", distance)
             args.putString("DURATION", duration)
+
             val fragment = BottomCard()
             fragment.arguments = args
             return fragment
@@ -120,6 +118,27 @@ class BottomCard : Fragment() {
     /**====================================================================================================**/
     /** Updater Methods **/
 
+    // locationUpdates()
+    // Updates available card fields before Matrix API call
+    private
+    fun updateCard(view : View) {
+        // Update favorites section
+        updateFavorites(act, view.bottomcard_text_favorite, view.bottomcard_icon_favorite, favorites)
+
+        // Update clock section
+        updateClock(act, view.bottomcard_text_clock, place.openNow)
+
+        // Update distance and duration sections
+        if(distance == "" && distance == "") {
+            Log.d("DIST", "calling matrix api")
+            callMatrixApi(view)
+        } else {
+            updateDistance(view.bottomcard_text_distance, distance)
+            updateDuration(view.bottomcard_text_duration, duration)
+        }
+    }
+
+
     // callMatrixApi()
     // Calls Google Matrix API
     private
@@ -128,57 +147,13 @@ class BottomCard : Fragment() {
             val pair = callDistanceApi(act, user.lat, user.lng, place.placeID)
             distance = pair.first
             duration = pair.second
-            listener!!.distanceCalled(distance, duration)
-
-            uiThread { // Populate Location card
-                distanceUpdates(view, distance, duration)
+            uiThread {
+                updateDistance(view.bottomcard_text_distance, distance)
+                updateDuration(view.bottomcard_text_duration, duration)
+                listener!!.distanceCalled(distance, duration)
             }
         }
     }
 
-    // locationUpdates()
-    // Updates available card fields before Matrix API call
-    private
-    fun updateCard(view : View) {
-        updateFavorites(view)
-        updateClock(view, place.openNow)
-    }
 
-    // distanceUpdates()
-    // Updates fields with info. from Matrix API call
-    private
-    fun distanceUpdates(view : View, distance : String, duration : String) {
-        if(distance != "")
-            view.bottomcard_text_distance.text = distance
-        if(duration != "")
-            view.bottomcard_text_duration.text = duration
-    }
-
-    // updateClock()
-    private
-    fun updateClock(view : View, bool : Boolean) {
-        if(bool){
-            view.bottomcard_text_clock.text = getString(R.string.open)
-            view.bottomcard_text_clock.setTextColor(ContextCompat.getColor(act, R.color.green))
-        } else {
-            view.bottomcard_text_clock.text = getString(R.string.closed)
-            view.bottomcard_text_clock.setTextColor(ContextCompat.getColor(act, R.color.red))
-        }
-    }
-
-    // updateFavorites()
-    private
-    fun updateFavorites(view : View) {
-        val txtView = view.bottomcard_text_favorite
-
-        if(!favorites) { // Not in favorites
-            view.bottomcard_icon_favorite.setImageDrawable(ContextCompat.getDrawable(act, R.drawable.favorites_icon))
-            txtView.text = getString(R.string.default_favorites)
-            txtView.setTextColor(ContextCompat.getColor(act, R.color.text_primary))
-        } else { // Already in favorites
-            view.bottomcard_icon_favorite.setImageDrawable(ContextCompat.getDrawable(act, R.drawable.favorites_filled_icon))
-            txtView.text = getString(R.string.default_already_favorited)
-            txtView.setTextColor(ContextCompat.getColor(act, R.color.gold))
-        }
-    }
-}
+} /** END CLASS BottomCard.kt **/

@@ -2,7 +2,6 @@ package com.example.daniel.bitbite
 
 import android.Manifest
 import android.app.Fragment
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +12,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.KeyEvent
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.beust.klaxon.Klaxon
 import com.example.daniel.bitbite.R.style.AppTheme
@@ -152,14 +150,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         } else {
             toast("You can only select up to 3 types.")
         }
-    }
-
-    // closeKeyboard()
-    // Closes soft keyboard
-    private
-    fun closeKeyboard() {
-        val inputManager:InputMethodManager =getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(currentFocus.windowToken, InputMethodManager.SHOW_FORCED)
     }
 
     /**====================================================================================================**/
@@ -460,28 +450,6 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
     }
 
     /**====================================================================================================**/
-    /** Life Cycle Methods **/
-
-    // onPause()
-    // Handles when MainActivity.kt is paused
-    override fun onPause() {
-        super.onPause()
-        stopLoading(main_loading)
-    }
-
-    // onResume()
-    // Handles when MainActivity.kt resumes
-    override fun onResume() {
-        super.onResume()
-        Log.d("BITBITE", "Main onResume()")
-        setDefaultPrice()
-
-        if(styleTags.size == 0) {
-            addRandomStyleTag()
-        }
-    }
-
-    /**====================================================================================================**/
     /** StyleTag Methods **/
 
     // addRandomStyleTag()
@@ -557,6 +525,29 @@ class MainActivity : NavActivity(), SeekBar.OnSeekBarChangeListener,
         val fragment = StyleTag.newInstance(s)
         styleTags.add(fragment)
         fragmentManager.beginTransaction().add(R.id.main_container_tags, fragment).commit()
+    }
+
+
+    /**====================================================================================================**/
+    /** Life Cycle Methods **/
+
+    // onPause()
+    // Handles when MainActivity.kt is paused
+    override fun onPause() {
+        super.onPause()
+        stopLoading(main_loading)
+    }
+
+    // onResume()
+    // Handles when MainActivity.kt resumes
+    override fun onResume() {
+        super.onResume()
+        Log.d("BITBITE", "Main onResume()")
+        setDefaultPrice()
+
+        if(styleTags.size == 0) {
+            addRandomStyleTag()
+        }
     }
 
 

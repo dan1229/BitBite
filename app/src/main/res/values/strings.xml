@@ -72,7 +72,7 @@
     <string name="open_title">Open Now: </string>
     <string name="default_open"></string>
     <string name="default_duration">N/A</string>
-    <string name="default_distance">0 mi</string>
+    <string name="default_distance">N/A</string>
     <string name="default_favorites">Click to add to Favorites</string>
     <string name="default_already_favorited">Already in Favorites</string>
     <string name="default_clock"></string>

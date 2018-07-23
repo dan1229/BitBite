@@ -112,7 +112,7 @@ class MoreInfoCard : Fragment() {
 
             // Update view and send info to LocationActivity
             favorites = !favorites
-            updateFavorites(view)
+            updateFavorites(act, view.moreinfocard_text_favorites, view.moreinfocard_icon_favorites, favorites)
             listener!!.fragmentFavoritesChanged(favorites)
         }
 
@@ -146,7 +146,7 @@ class MoreInfoCard : Fragment() {
     }
 
     /**====================================================================================================**/
-    /** Mandatory Methods **/
+    /** Life Cycle Methods **/
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -233,27 +233,8 @@ class MoreInfoCard : Fragment() {
         updateReviews(view, detailsResponse.result.reviews)
 
         // Update Favorites
-        updateFavorites(view)
+        updateFavorites(act, view.moreinfocard_text_favorites, view.moreinfocard_icon_favorites, favorites)
     }
-
-    // updateFavorites()
-    private
-    fun updateFavorites(view : View) {
-        val txtView = view.moreinfocard_text_favorites
-
-        if(!favorites) { // Not in favorites
-            view.moreinfocard_icon_favorites.setImageDrawable(ContextCompat.getDrawable(
-                    act, R.drawable.favorites_icon))
-            txtView.text = getString(R.string.default_favorites)
-            txtView.setTextColor(ContextCompat.getColor(act, R.color.text_primary))
-        } else { // Already in favorites
-            view.moreinfocard_icon_favorites.setImageDrawable(ContextCompat.getDrawable(
-                    act, R.drawable.favorites_filled_icon))
-            txtView.text = getString(R.string.default_already_favorited)
-            txtView.setTextColor(ContextCompat.getColor(act, R.color.gold))
-        }
-    }
-
 
     // updateReviews()
     private
