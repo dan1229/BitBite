@@ -3,7 +3,6 @@ package com.example.daniel.bitbite
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -130,7 +129,6 @@ class BottomCard : Fragment() {
 
         // Update distance and duration sections
         if(distance == "" && distance == "") {
-            Log.d("DIST", "calling matrix api")
             callMatrixApi(view)
         } else {
             updateDistance(view.bottomcard_text_distance, distance)
