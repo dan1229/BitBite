@@ -28,7 +28,7 @@ class SettingsActivity : BaseActivity() {
             addPreferencesFromResource(R.xml.preferences)
 
             findPreference("clear_favorites").setOnPreferenceClickListener {
-                confirmClearFavorites(act)
+                dialogConfirmClearFavorites(act)
                 true
             }
         }

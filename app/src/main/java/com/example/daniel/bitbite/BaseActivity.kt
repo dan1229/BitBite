@@ -21,6 +21,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.appbar_standard.view.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.okButton
+import org.jetbrains.anko.toast
 import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -128,6 +129,40 @@ abstract class BaseActivity : AppCompatActivity() {
             okButton { dialog -> dialog.dismiss()  }
         }.show()
     }
+
+
+
+    // dialogConfirmClearFavorites() - FAVORITES ACTIVITY ONE
+    // Shows dialog confirming user wants to clear Favorites List
+    fun dialogConfirmClearFavorites() {
+        val list = getFavrotiesList(this)
+
+        if(list != null) {
+            // Build dialog box
+            val builder = android.support.v7.app.AlertDialog.Builder(this)
+            builder.setTitle(this.getString(R.string.dialog_confirmation_title))
+                    .setMessage(this.getString(R.string.dialog_favorites_confirmation_text))
+
+            // Yes button listener
+            builder.setPositiveButton("Yes") { dialog, _ ->
+                clearFavoritesList(this)
+                dialog.dismiss()
+                this.toast("Favorites list cleared!")
+
+                // Clears and repopulates list
+                this.onPause()
+                this.onResume()
+            }
+
+            // No button listener
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.show()
+        }
+    }
+
 
     /**====================================================================================================**/
     /** Misc. **/

@@ -148,8 +148,9 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         var res = input
 
         if(input.contains(' ')) { // Contains space
-            res = res.split(' ').first()
+           res  = res.split(' ')[0] + res.split(' ')[1]
         }
+
         return res
     }
 
@@ -170,12 +171,6 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
     override fun onResume() {
         super.onResume()
         Log.d("BITBITE", "Results onResume()")
-    }
-
-    // onPostResume()
-    // Handles post resume
-    override fun onPostResume() {
-        super.onPostResume()
 
         // Populate cards
         updateResults()

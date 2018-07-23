@@ -58,7 +58,7 @@ class BottomCard : Fragment() {
 
             // Update view and send info to LocationActivity
             favorites = !favorites
-            updateFavorites(act, view.bottomcard_text_favorite, view.bottomcard_icon_favorite, favorites)
+            updateFavoritesSection(act, view.bottomcard_text_favorite, view.bottomcard_icon_favorite, favorites)
             listener!!.fragmentFavoritesChanged(favorites)
         }
 
@@ -69,7 +69,7 @@ class BottomCard : Fragment() {
 
         // Set on click listener for Directions Button -> Google Maps
         view.bottomcard_button_directions.setOnClickListener{
-            directionsWarning(place, activity)
+            dialogDirectionsWarning(place, activity)
         }
 
         return view
@@ -122,7 +122,7 @@ class BottomCard : Fragment() {
     private
     fun updateCard(view : View) {
         // Update favorites section
-        updateFavorites(act, view.bottomcard_text_favorite, view.bottomcard_icon_favorite, favorites)
+        updateFavoritesSection(act, view.bottomcard_text_favorite, view.bottomcard_icon_favorite, favorites)
 
         // Update clock section
         updateClock(act, view.bottomcard_text_clock, place.openNow)

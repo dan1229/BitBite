@@ -112,13 +112,13 @@ class MoreInfoCard : Fragment() {
 
             // Update view and send info to LocationActivity
             favorites = !favorites
-            updateFavorites(act, view.moreinfocard_text_favorites, view.moreinfocard_icon_favorites, favorites)
+            updateFavoritesSection(act, view.moreinfocard_text_favorites, view.moreinfocard_icon_favorites, favorites)
             listener!!.fragmentFavoritesChanged(favorites)
         }
 
         // Set on click listener for Directions Button -> Google Maps
         view.moreinfocard_button_directions.setOnClickListener{
-            directionsWarning(place, activity)
+            dialogDirectionsWarning(place, activity)
         }
 
         // Set on click listener for Share Button -> Share Menu
@@ -233,7 +233,7 @@ class MoreInfoCard : Fragment() {
         updateReviews(view, detailsResponse.result.reviews)
 
         // Update Favorites
-        updateFavorites(act, view.moreinfocard_text_favorites, view.moreinfocard_icon_favorites, favorites)
+        updateFavoritesSection(act, view.moreinfocard_text_favorites, view.moreinfocard_icon_favorites, favorites)
     }
 
     // updateReviews()

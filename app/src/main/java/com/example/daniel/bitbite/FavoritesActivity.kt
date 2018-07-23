@@ -40,10 +40,36 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
     /**====================================================================================================**/
     /** Updater Methods  **/
 
+
+
+    // updateFavoritesSection()
+    // Update Favorites Activity
+    private
+    fun refreshFavoritesActivity() {
+        // Get Favorites list
+        val list = getFavrotiesList(this)
+
+        // Check if list is empty
+        if(list != null) {
+            Log.d("FAVE", "updating list")
+
+            // Save list and size
+            favoritesList = list
+            faveListSize = favoritesList.size
+
+            // updateCards
+            updateCards()
+        } else {
+            toast("Your favorites list is empty!")
+        }
+    }
+
     // updateResults()
     // Populates ResultsCard fragments
     private
     fun updateCards() {
+        Log.d("FAVE", "updating cards")
+
         for (i in 0 until faveListSize) {
             doAsync {
                 val fragment = ResultsCard.newInstance(favoritesList[i], user)
@@ -62,25 +88,6 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
         }
     }
 
-    // updateFavoritesList()
-    // Update Favorites list
-    fun updateFavorites() {
-        // Get Favorites list
-        val list = getFavrotiesList(this)
-
-        // Check if list is empty
-        if(list != null) {
-            // Save list and size
-            favoritesList = list
-            faveListSize = favoritesList.size
-
-            // updateCards
-            updateCards()
-        } else {
-            toast("Your favorites list is empty!")
-        }
-    }
-
     /**====================================================================================================**/
     /** Options Menu Methods **/
 
@@ -91,17 +98,14 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here.
         val id = item.itemId
 
         if (id == R.id.clear_list) {
-            val valid = confirmClearFavorites(this)
-            clearFavoritesList(this)
+            dialogConfirmClearFavorites()
             return true
         }
 
         return super.onOptionsItemSelected(item)
-
     }
 
     /**====================================================================================================**/
@@ -126,8 +130,17 @@ class FavoritesActivity : NavActivity(), ResultsCard.OnFragmentInteractionListen
         Log.d("BITBITE", "Favorites onResume()")
 
         // Update Favorites list
-        updateFavorites()
+        refreshFavoritesActivity()
     }
 
+
+    /**====================================================================================================**/
+    /** Fragment Interaction Methods **/
+
+    // resultsCardSelected
+    // Handles clicks on ResultsCard
+    override fun resultsCardSelected(place: Place) {
+        goToLocation(place)
+    }
 
 }  /** END CLASS FavoritesActivity.kt **/

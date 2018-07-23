@@ -91,9 +91,9 @@ fun updateAddress(view : TextView, input : String) {
 }
 
 
-// updateFavoritesList()
+// updateFavoritesSection()
 // Update Favorites section
-fun updateFavorites(context: Context, txt: TextView, icon: ImageView, favorites: Boolean) {
+fun updateFavoritesSection(context: Context, txt: TextView, icon: ImageView, favorites: Boolean) {
     if(!favorites) { // Not in favorites
         icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.favorites_icon))
         txt.text = context.getString(R.string.default_favorites)
@@ -313,9 +313,9 @@ fun priceConversion(price : Int) = when(price) {
 /**====================================================================================================**/
 /** Alert Dialogs **/
 
-// directionsWarning()
+// dialogDirectionsWarning()
 // Shows dialog confirming user wants to go place that is closed
-fun directionsWarning(place: Place, context: Context) {
+fun dialogDirectionsWarning(place: Place, context: Context) {
     if(!place.openNow) {
         // Build dialog box
         val builder = android.support.v7.app.AlertDialog.Builder(context)
@@ -340,9 +340,9 @@ fun directionsWarning(place: Place, context: Context) {
 }
 
 
-// confirmClearFavorites()
+// dialogConfirmClearFavorites() - SETTINGS FRAGMENT ONE
 // Shows dialog confirming user wants to clear Favorites List
-fun confirmClearFavorites(context: Context) {
+fun dialogConfirmClearFavorites(context: Context) {
     val list = getFavrotiesList(context)
 
     if(list != null) {
