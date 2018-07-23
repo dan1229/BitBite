@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <LinearLayout
-                android:id="@+id/layout_container"
+                android:id="@+id/results_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -26,7 +26,7 @@
                 tools:context=".ResultsActivity"
                 tools:showIn="@layout/activity_results" />
             <Button
-                android:id="@+id/show_more_button"
+                android:id="@+id/results_button_showmore"
                 style="@style/AppTheme.RoundedCornerMaterialButton"
                 android:visibility="gone"
                 android:layout_width="match_parent"
@@ -42,7 +42,7 @@
     </android.support.v4.widget.NestedScrollView>
 
     <include layout="@layout/loading_screen"
-        android:id="@+id/loading_results"
+        android:id="@+id/results_loading"
         android:visibility="gone" />
 
 </FrameLayout>

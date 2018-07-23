@@ -11,7 +11,7 @@ import android.util.Pair as UtilPair
 
 class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListener {
 
-    var fragmentList = ArrayList<ResultsCard>()
+    private var fragmentList = ArrayList<ResultsCard>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +32,14 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         createResultsCardFragments()
 
         // Set Show More button listener
-        show_more_button.setOnClickListener {
-            startLoading(loading_results)
+        results_button_showmore.setOnClickListener {
+            startLoading(results_loading)
 
             doAsync {
                 placesList.clear()
                 val (x, y) = callPlacesApi(this@ResultsActivity, token = user.token)
                 placesList = x
                 user.token = y
-
             }
             // Check for duplicates
             checkDuplicates()
@@ -49,7 +48,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
             createResultsCardFragments()
 
             // Populate Activity
-            updateResults()
+            updateResultsActivity()
         }
     }
 
@@ -69,37 +68,37 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         }
     }
 
-    // updateResults()
+    // updateResultsActivity()
     // Populates ResultsCard fragments
     private
-    fun updateResults() {
-        // Add fragment to layout
+    fun updateResultsActivity() {
+        // Add fragments to container
         for (i in 0 until placesList.size) {
             fragmentManager.beginTransaction().setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left)
-                    .add(R.id.layout_container, fragmentList[i]).commit()
+                    .add(R.id.results_container, fragmentList[i]).commit()
         }
 
-        stopLoading(loading_results)
-        updateButton()
+        stopLoading(results_loading)
+        updateShowMoreButton()
     }
 
-    // removeResults()
+    // removeResultsCards()
     // Removes all ResultsCard fragments
     private
-    fun removeResults() {
+    fun removeResultsCards() {
         for(i in 0 until fragmentList.size) {
             fragmentManager.beginTransaction().remove(fragmentList[i]).commit()
         }
     }
 
-    // updateButton()
+    // updateShowMoreButton()
     // Updates button visibility based on token
     private
-    fun updateButton() {
+    fun updateShowMoreButton() {
         if(user.token == "") { // Token doesn't exist
-            show_more_button.visibility = View.GONE
+            results_button_showmore.visibility = View.GONE
         } else { // Token exists
-            show_more_button.visibility = View.VISIBLE
+            results_button_showmore.visibility = View.VISIBLE
         }
     }
 
@@ -163,7 +162,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         super.onPause()
 
         // Remove old cards
-        removeResults()
+        removeResultsCards()
     }
 
     // onResume()
@@ -173,7 +172,7 @@ class ResultsActivity : BaseActivity(), ResultsCard.OnFragmentInteractionListene
         Log.d("BITBITE", "Results onResume()")
 
         // Populate cards
-        updateResults()
+        updateResultsActivity()
     }
 
     /**====================================================================================================**/
